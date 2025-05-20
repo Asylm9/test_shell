@@ -8,7 +8,7 @@ void	free_pipes(int **pipes, int i)
 	free(pipes);
 }
 
-void	free_array(char *s, int i)
+void	free_array(char **s, int i)
 {
 	if (!s)
 		return;
