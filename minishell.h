@@ -56,7 +56,7 @@ typedef struct s_sh
 int		execute(t_command *cmd_list, t_sh *shell);
 int		execute_command(t_command *cmd, t_sh *shell);
 int		execute_pipeline(t_command *cmds, t_sh *shell);
-int		execute_external_command(t_command *cmd, char **env);
+int		execute_binary(t_command *cmd, char **env);
 
 /* Path and environment handling */
 char	*get_env_var(char *name, char **env);

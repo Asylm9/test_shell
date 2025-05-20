@@ -1,5 +1,4 @@
-#include "exec.h"
-#include "parsing.h"
+#include "minishell.h"
 
 char	*get_env_var(char *name, char **env)
 {
@@ -22,60 +21,53 @@ char	*get_env_var(char *name, char **env)
 - D'abord configurer les pipes (stdin/stdout entre les commandes)
 - Ensuite appliquer les redirections locales de chaque commande */
 
-int		execute(t_command *cmd_list, t_sh *shell)
+int	execute_command(t_command *cmd, t_sh *shell)
 {
-	int	status;
-	int	nb;
 
-	nb = 0;
-	if (!cmd_list)
+	if (!cmd ||!cmd->cmd_name)
 		return (0);
-	pipe_nb(cmd_list, &nb);
-	init_pipes(nb);
-	if (cmd_list->next)
-		status = execute_pipeline(cmd_list, shell->env);
+	if (is_builtin(cmd->cmd_name))
+	{
+		//builtins executes par processus parent
+		//pas sure de la marche a suivre
+		//voir comment fonctionnent builtins
+		return (execute_builtin(cmd, shell));
+	}
 	else
-		status = execute_command(cmd_list, shell->env);
-	shell->exit_status = status;
-	return (status);
+		 return (execute_binary(cmd, shell->env));
 }
 
-/* Statut de sortie : Le shell doit toujours mettre à jour et retourner le statut de la dernière commande exécutée. */
-
-
-int	apply_redirections(t_command *cmd)
+int	execute_pipeline(t_command *cmd_list, t_sh *shell)
 {
-	t_redirect *redir;
-	int	fd;
+	int		nb_pipes;
+	int		**pipes;
+	pid_t	*pids;
 
-	redir = cmd->redirections;
-	if (redir->type == IN)
+	get_pipe_count(cmd_list, &nb_pipes);
+	pipes = create_pipes(nb_pipes);
+	if (!pipes)
+		return (1);
+	pids = malloc(sizeof(pid_t) * (nb_pipes + 1));
+	if (!pids)
 	{
-		fd = open(redir->target, O_RDONLY);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
-	else if (redir->type == OUT)
-	{
-		fd = open(redir->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-		else if (redir->type == APPEND)
-	{
-		fd = open(redir->target, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-		else if (redir->type == HEREDOC)
-	{
-		//voir comment heredoc fonctionne
+		close_pipes(pipes, nb_pipes);
+		return (1);
 	}
 	return (0);
 }
+
+int		execute(t_command *cmd_list, t_sh *shell)
+{
+	int	status;
+
+	if (!cmd_list)
+		return (0);
+	if (cmd_list->next)
+		status = execute_pipeline(cmd_list, shell);
+	else
+		status = execute_command(cmd_list, shell);
+	shell->exit_status = status;
+	return (status); //Le shell doit toujours mettre à jour et retourner le statut de la dernière commande exécutée.
+}
+
+
