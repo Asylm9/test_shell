@@ -22,37 +22,12 @@ char	*get_env_var(char *name, char **env)
 - D'abord configurer les pipes (stdin/stdout entre les commandes)
 - Ensuite appliquer les redirections locales de chaque commande */
 
-int	init_pipes(int nb)
-{
-	int	pfd[nb][2];
-	int	i;
-
-	i = 0;
-	while (i < nb)
-	{
-		if (pipe(pfd) < 0)
-			return (1);
-	}	
-	return (0);
-}
-
-void	pipe_nb(t_command *cmd_list, int *nb)
-{
-	int	nb;
-
-	nb = 0;
-	while (cmd_list->next)
-	{
-		cmd_list = cmd_list->next;
-		nb++;
-	}
-}
-
 int		execute(t_command *cmd_list, t_sh *shell)
 {
 	int	status;
 	int	nb;
 
+	nb = 0;
 	if (!cmd_list)
 		return (0);
 	pipe_nb(cmd_list, &nb);
@@ -72,7 +47,7 @@ int	apply_redirections(char *file, int pfd, int redirection)
 {
 	int	fd;
 
-	if (REDIR_IN)
+	if (IN)
 	{
 		fd = open(file, O_RDONLY);
 		if (fd < 0)
@@ -85,7 +60,7 @@ int	apply_redirections(char *file, int pfd, int redirection)
 		close(fd);
 		close(pfd[0]);
 	}
-	else if (REDIR_OUT)
+	else if (OUT)
 	{
 		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
