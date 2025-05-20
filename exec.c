@@ -43,35 +43,39 @@ int		execute(t_command *cmd_list, t_sh *shell)
 /* Statut de sortie : Le shell doit toujours mettre à jour et retourner le statut de la dernière commande exécutée. */
 
 
-int	apply_redirections(char *file, int pfd, int redirection)
+int	apply_redirections(t_command *cmd)
 {
+	t_redirect *redir;
 	int	fd;
 
-	if (IN)
+	redir = cmd->redirections;
+	if (redir->type == IN)
 	{
-		fd = open(file, O_RDONLY);
+		fd = open(redir->target, O_RDONLY);
 		if (fd < 0)
-		{
-			close(pfd[0]);
-			close(pfd[1]);
 			return (1);
-		}
 		dup2(fd, STDIN_FILENO);
 		close(fd);
-		close(pfd[0]);
 	}
-	else if (OUT)
+	else if (redir->type == OUT)
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		fd = open(redir->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd < 0)
-		{
-			close(pfd[0]);
-			close(pfd[1]);
 			return (1);
-		}
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
-		close(pfd[1]);
+	}
+		else if (redir->type == APPEND)
+	{
+		fd = open(redir->target, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		if (fd < 0)
+			return (1);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
+		else if (redir->type == HEREDOC)
+	{
+		//voir comment heredoc fonctionne
 	}
 	return (0);
 }
