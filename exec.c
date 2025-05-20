@@ -28,10 +28,13 @@ int		execute_ast(t_command *cmd_list, t_sh *shell)
 
 	if (!cmd_list)
 		return (0);
-	if (cmd_list)
-		status = execute_pipeline(cmd_list, shell->env);
-	else
-		status = execute_command(cmd_list, shell->env);
+	while (cmd_list)
+	{
+		if (cmd_list->next)
+			status = execute_pipeline(cmd_list, shell->env);
+		else
+			status = execute_command(cmd_list, shell->env);
+	}
 	shell->exit_status = status;
 	return (status);
 }
