@@ -52,6 +52,16 @@ typedef struct s_sh
 	int			exit_status;
 }			t_sh;
 
+typedef	struct s_exec
+{
+	int 		**pipes;
+	int			nb_pipes;
+	pid_t		*pids;
+	t_command	*current;
+	int			i;
+	int			status;
+}				t_exec;
+
 /* execution */
 int		execute(t_command *cmd_list, t_sh *shell);
 int		execute_command(t_command *cmd, t_sh *shell);
@@ -64,6 +74,7 @@ char	*find_cmd_path(char *cmd, char **env);
 
 /* Redirections */
 int		apply_redirections(t_command *cmd);
+void	setup_pipes_redirections(int **pipes, int nb_pipes, int i);
 int		setup_heredoc(t_redirect *redir);
 
 /* Pipe handling */

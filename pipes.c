@@ -5,6 +5,8 @@ int	apply_redirections(t_command *cmd)
 	t_redirect *redir;
 	int	fd;
 
+	if (!cmd->redirections)
+		return (0); //pas d'erreur si pas de redirections
 	redir = cmd->redirections;
 	if (redir->type == IN)
 	{
@@ -37,7 +39,7 @@ int	apply_redirections(t_command *cmd)
 	return (0);
 }
 
-int	**creates_pipes(int nb_pipes)
+int	**create_pipes(int nb_pipes)
 {
 	int	**pipes;
 	int	i;
@@ -75,9 +77,10 @@ void	close_pipes(int **pipes, int nb_pipes)
 
 void	get_pipe_count(t_command *cmd_list, int *nb_pipes)
 {
+	nb_pipes = 0;
 	while (cmd_list->next)
 	{
 		cmd_list = cmd_list->next;
-		nb_pipes++;
+		(*nb_pipes)++;
 	}
 }
