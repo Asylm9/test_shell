@@ -44,15 +44,11 @@ static char	*is_absolute(char *cmd)
 
 char	*find_cmd_path(char **paths, char *cmd_name)
 {
-	//char *abs_path;
-	char *test_path;
-	int	i;
+	char	*test_path;
+	int		i;
 
 	if (!paths)
 		return (NULL);
-/* 	abs_path = is_absolute(cmd_name);
-	if (abs_path)
-		return (abs_path); */
 	if (is_absolute(cmd_name))
 		return (cmd_name);
 	i = 0;
@@ -71,15 +67,16 @@ char	*find_cmd_path(char **paths, char *cmd_name)
 
 int	execute_binary(t_command *cmd, char **env)
 {
-	char 	**paths;
+	char	**paths;
 	char	*cmd_path;
 
 	if (!cmd || !env)
 		return (1);
 	paths = get_paths(env);
 	if (!paths)
-		return (1);	
+		return (1);
 	cmd_path = find_cmd_path(paths, cmd->cmd_name);
+	free_array(paths, -1);
 	if (!cmd_path)
 		return (1);
 	if (execve(cmd_path, cmd->args, env) < 0)
@@ -90,23 +87,15 @@ int	execute_binary(t_command *cmd, char **env)
 	return (0);
 }
 
-void	init_cmd_struct(t_command *cmd, char *arg1, char **arg2)
-{
-	cmd->cmd_name = arg1;
-	cmd->args = arg2;
-	cmd->redirections = NULL;
-}
-
 int	main(int ac, char **av, char **envp)
 {
-	t_command cmd;
+	t_command	cmd;
 
-	if (ac < 3)
+	if (ac != 3)
 		return (1);
 	printf("main 1");
-	init_cmd_struct(&cmd, av[1], av);
+	init_cmd_struct(&cmd, av[1], &av[1]);
 	printf("main 2");
-
 	execute_binary(&cmd, envp);
 	return (0);
 }

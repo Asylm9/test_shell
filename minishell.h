@@ -113,4 +113,7 @@ char	*ft_pathjoin(char const *s1, char const *s2);
 void	free_pipes(int **pipes, int i);
 void	free_array(char **array, int i);
 
+/* Testing */
+void	init_cmd_struct(t_command *cmd, char *arg1, char **arg2);
+
 #endif

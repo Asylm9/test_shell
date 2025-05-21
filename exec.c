@@ -14,12 +14,8 @@ int	wait_for_children(int nb_pipes, pid_t *pids)
 		if (i == nb_pipes)
 		{
 			if (WIFEXITED(status))
-			{
 				last_status = WEXITSTATUS(status);
-				if (status != 0)
-					exit(last_status);
-			}
-			if (WIFSIGNALED(status))
+			else if (WIFSIGNALED(status))
 				last_status = (128 + WTERMSIG(status));
 		}
 		i++;
@@ -79,10 +75,10 @@ int	execute_pipeline(t_command *cmd_list, t_sh *shell)
 			//ensuite redirections "locales"?
 			apply_redirections(current);
 
-			if (is_builtin(cmd_list->cmd_name))
-				return (execute_builtin(cmd_list, shell));
+			if (is_builtin(current->cmd_name))
+				return (execute_builtin(current, shell));
 			else
-				return (execute_binary(cmd_list, shell->env));
+				return (execute_binary(current, shell->env));
 
 		}
 		current = current->next;
