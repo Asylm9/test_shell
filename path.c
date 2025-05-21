@@ -20,16 +20,17 @@ char	*get_env_var(char *name, char **env)
 
 char	*find_cmd_path(char *cmd, char **env)
 {
-	char	*all_paths;
-	char	**separate_paths;
+	char	*env_path;
+	char	**paths;
 
-	all_paths = NULL;
+	env_path = NULL;
 	if (!cmd)
 		return (NULL);
-	all_paths = get_env_var("PATH", env);
-	if (!all_paths)
+	env_path = get_env_var("PATH", env);
+	if (!env_path)
 		return (NULL);
-	separate_paths = ft_split(all_paths, ':');
-	free(all_paths);
-	return (separate_paths);
+	paths = ft_split(env_path, ':');
+	free(env_path);
+	return (paths);
 }
+

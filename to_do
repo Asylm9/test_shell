@@ -1,0 +1,15 @@
+
+ELEVE:
+- fix pipes -> good pour l'instant
+- Builtins
+
+MOYEN
+- finir env cmd binaires
+- Transformer exucute fonctions pour parcourir AST -> attendre
+
+
+FAIBLE
+- traiter heredoc
+- gestion signaux
+
+

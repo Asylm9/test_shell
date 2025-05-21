@@ -43,6 +43,10 @@ int	execute_command(t_command *cmd, t_sh *shell)
 		 return (execute_binary(cmd, shell->env));
 }
 
+/* Ordre d'application des redirections lors de l'exécution :
+- D'abord configurer les pipes (stdin/stdout entre les commandes)
+- Ensuite appliquer les redirections locales de chaque commande */
+
 int	execute_pipeline(t_command *cmd_list, t_sh *shell)
 {
 	int			nb_pipes;

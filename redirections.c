@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-/* L'ordre d'application des redirections lors de l'exécution :
-- D'abord configurer les pipes (stdin/stdout entre les commandes)
-- Ensuite appliquer les redirections locales de chaque commande */
 
 int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
 {
@@ -27,33 +24,37 @@ int	apply_redirections(t_command *cmd)
 	if (!cmd->redirections)
 		return (0); //pas d'erreur si pas de redirections
 	redir = cmd->redirections;
-	if (redir->type == IN)
+	while (redir)
 	{
-		fd = open(redir->target, O_RDONLY);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-	}
-	else if (redir->type == OUT)
-	{
-		fd = open(redir->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-	else if (redir->type == APPEND)
-	{
-		fd = open(redir->target, O_WRONLY | O_CREAT | O_APPEND, 0644);
-		if (fd < 0)
-			return (1);
-		dup2(fd, STDOUT_FILENO);
-		close(fd);
-	}
-	else if (redir->type == HEREDOC)
-	{
-		//voir comment heredoc fonctionne
+		if (redir->type == IN)
+		{
+			fd = open(redir->target, O_RDONLY);
+			if (fd < 0)
+				return (1);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+		}
+		else if (redir->type == OUT)
+		{
+			fd = open(redir->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd < 0)
+				return (1);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		else if (redir->type == APPEND)
+		{
+			fd = open(redir->target, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd < 0)
+				return (1);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
+		}
+		else if (redir->type == HEREDOC)
+		{
+			//voir comment heredoc fonctionne
+		}
+		redir = redir->next;
 	}
 	return (0);
 }
