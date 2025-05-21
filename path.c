@@ -11,8 +11,8 @@ char	*get_env_var(char *name, char **env)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=') //attention verifier logique
-			return (env[i] + len + 1);
+		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
+			return (ft_strdup(env[i] + len + 1));
 		i++;
 	}
 	return (NULL);
@@ -31,12 +31,12 @@ char	**get_paths(char **env)
 	return (paths);
 }
 
-static char	*is_absolute(char *paths)
+static char	*is_absolute(char *cmd)
 {
-	if (paths[0] == '/')
+	if (cmd[0] == '/')
 	{
-		if (access(paths, F_OK | X_OK) == 0)
-			return (ft_strdup(paths));
+		if (access(cmd, F_OK | X_OK) == 0)
+			return (ft_strdup(cmd));
 		return (NULL); // ou exit?
 	}
 	return (NULL);
@@ -44,22 +44,27 @@ static char	*is_absolute(char *paths)
 
 char	*find_cmd_path(char **paths, char *cmd_name)
 {
+	//char *abs_path;
 	char *test_path;
 	int	i;
 
 	if (!paths)
 		return (NULL);
-	if (is_absolute)
-		return (paths[0]);
+/* 	abs_path = is_absolute(cmd_name);
+	if (abs_path)
+		return (abs_path); */
+	if (is_absolute(cmd_name))
+		return (cmd_name);
 	i = 0;
-	while (paths)
+	while (paths[i])
 	{
-		test_path = ft_pathjoin(paths[i++], cmd_name);
+		test_path = ft_pathjoin(paths[i], cmd_name);
 		if (!test_path)
 			return (NULL);
 		if (access(test_path, F_OK | X_OK) == 0)
 			return (test_path);
 		free(test_path);
+		i++;
 	}
 	return (NULL);
 }
@@ -70,7 +75,7 @@ int	execute_binary(t_command *cmd, char **env)
 	char	*cmd_path;
 
 	if (!cmd || !env)
-		return
+		return (1);
 	paths = get_paths(env);
 	if (!paths)
 		return (1);	
@@ -82,22 +87,25 @@ int	execute_binary(t_command *cmd, char **env)
 		free(cmd_path);
 		perror("execve");
 	}
-	return (0); //
+	return (0);
 }
 
 void	init_cmd_struct(t_command *cmd, char *arg1, char **arg2)
 {
 	cmd->cmd_name = arg1;
 	cmd->args = arg2;
+	cmd->redirections = NULL;
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_command cmd;
 
-	if (ac != 3)
+	if (ac < 3)
 		return (1);
+	printf("main 1");
 	init_cmd_struct(&cmd, av[1], av);
+	printf("main 2");
 
 	execute_binary(&cmd, envp);
 	return (0);
