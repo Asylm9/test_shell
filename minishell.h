@@ -5,6 +5,7 @@
 //-lhistory
 # include <readline/readline.h>
 # include <readline/history.h>
+# include "libft/libft.h"
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -39,7 +40,7 @@ typedef struct s_redirect
 typedef struct s_command
 {
 	char		*cmd_name;
-	char		**args;
+	char * const *args;
 	t_redirect	*redirections;
 	t_command	*next;
 }			t_command;
@@ -70,7 +71,8 @@ int		execute_binary(t_command *cmd, char **env);
 
 /* Path and environment handling */
 char	*get_env_var(char *name, char **env);
-char	*find_cmd_path(char *cmd, char **env);
+char	**get_paths(char **env);
+char	*find_cmd_path(char **paths, char *cmd_name);
 
 /* Redirections */
 int		apply_redirections(t_command *cmd);
@@ -79,8 +81,9 @@ int		setup_heredoc(t_redirect *redir); // parsing ou exec?
 
 /* Pipe handling */
 void	get_pipe_count(t_command *cmd_list, int *nb_pipes);
-int		**create_pipes(int nb_pipes);
 void	close_pipes(int **pipes, int nb_pipes);
+int		init_pipes(int **pipes, int nb_pipes);
+int		**create_pipes(int nb_pipes);
 
 /* Builtin commands */
 bool	is_builtin(char *cmd_name);
@@ -97,11 +100,12 @@ int		builtin_exit(char **args, t_sh *shell);
 
 /* Utils */
 void	error_message(const char *msg);
+int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_pathjoin(char const *s1, char const *s2);
 //char	*ft_strdup(const char *s);
 //char	**ft_split(const char *s, char c);
 //char	*ft_strjoin(const char *s1, const char *s2);
-//int		ft_strcmp(const char *s1, const char *s2);
-//int		ft_strncmp(const char *s1, const char *s2, size_t n);
 //size_t	ft_strlen(const char *s);
 //void	ft_putendl_fd(const char *s, int fd);
 
