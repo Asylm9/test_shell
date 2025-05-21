@@ -1,57 +1,5 @@
 #include "minishell.h"
 
-char	*get_env_var(char *name, char **env)
-{
-	int	i;
-	int	len;
-
-	if (!name || !env)
-		return (NULL);
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-			return (env[i] + len + 1);
-		i++;
-	}
-	return (NULL);
-}
-/* L'ordre d'application des redirections lors de l'exécution :
-- D'abord configurer les pipes (stdin/stdout entre les commandes)
-- Ensuite appliquer les redirections locales de chaque commande */
-
-int	execute_command(t_command *cmd, t_sh *shell)
-{
-
-	if (!cmd ||!cmd->cmd_name)
-		return (0);
-	if (is_builtin(cmd->cmd_name))
-	{
-		//builtins executes par processus parent
-		//pas sure de la marche a suivre
-		//voir comment fonctionnent builtins
-		return (execute_builtin(cmd, shell));
-	}
-	else
-		 return (execute_binary(cmd, shell->env));
-}
-
-int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
-{
-	if (i > 0)
-	{
-		if (dup2(pipes[i - 1][0], STDIN_FILENO) < 0) //le premier pipe devient le stdin de la 2ere CMD (read end)
-			return (1);
-	}
-	if (i < nb_pipes)
-	{
-		if (dup2(pipes[i][1], STDOUT_FILENO) < 0) //idem avec stdin si pas derniere CMD (write end)
-			return (1);
-	}
-	return (0);
-}
-
 int	wait_for_children(int nb_pipes, pid_t *pids)
 {
 	int	last_status;
@@ -77,6 +25,22 @@ int	wait_for_children(int nb_pipes, pid_t *pids)
 		i++;
 	}
 	return (last_status);
+}
+
+int	execute_command(t_command *cmd, t_sh *shell)
+{
+
+	if (!cmd ||!cmd->cmd_name)
+		return (0);
+	if (is_builtin(cmd->cmd_name))
+	{
+		//builtins executes par processus parent
+		//pas sure de la marche a suivre
+		//voir comment fonctionnent builtins
+		return (execute_builtin(cmd, shell));
+	}
+	else
+		 return (execute_binary(cmd, shell->env));
 }
 
 int	execute_pipeline(t_command *cmd_list, t_sh *shell)

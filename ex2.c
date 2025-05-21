@@ -1,5 +1,4 @@
-#include "exec.h"
-#include "parsing.h"
+#include "minishell.h"
 
 char	*get_env_var(char *name, char **env)
 {

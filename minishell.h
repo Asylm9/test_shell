@@ -31,9 +31,9 @@ typedef enum e_redir_type
 typedef struct s_redirect
 {
 	t_redir_type	type;
-	char			*target; // file name or delimiter
-	int 			fd;      // after redirection?
-	t_redirect		*next;   // next redirection
+	char			*target; // fichier ou delimiteur si heredoc
+	int 			fd;      // pour heredoc
+	t_redirect		*next;
 }			t_redirect;
 
 typedef struct s_command
@@ -62,8 +62,8 @@ typedef	struct s_exec
 	int			status;
 }				t_exec;
 
-/* execution */
-int		execute(t_command *cmd_list, t_sh *shell);
+/* Execution */
+int		execute(t_command *cmd_list, t_sh *shell); //transformer en execute_ast probablement :v
 int		execute_command(t_command *cmd, t_sh *shell);
 int		execute_pipeline(t_command *cmds, t_sh *shell);
 int		execute_binary(t_command *cmd, char **env);
@@ -74,8 +74,8 @@ char	*find_cmd_path(char *cmd, char **env);
 
 /* Redirections */
 int		apply_redirections(t_command *cmd);
-void	setup_pipes_redirections(int **pipes, int nb_pipes, int i);
-int		setup_heredoc(t_redirect *redir);
+int		setup_pipes_redirections(int **pipes, int nb_pipes, int i);
+int		setup_heredoc(t_redirect *redir); // parsing ou exec?
 
 /* Pipe handling */
 void	get_pipe_count(t_command *cmd_list, int *nb_pipes);
@@ -97,7 +97,6 @@ int		builtin_exit(char **args, t_sh *shell);
 
 /* Utils */
 void	error_message(const char *msg);
-void	free_array(char **array);
 //char	*ft_strdup(const char *s);
 //char	**ft_split(const char *s, char c);
 //char	*ft_strjoin(const char *s1, const char *s2);
@@ -105,5 +104,9 @@ void	free_array(char **array);
 //int		ft_strncmp(const char *s1, const char *s2, size_t n);
 //size_t	ft_strlen(const char *s);
 //void	ft_putendl_fd(const char *s, int fd);
+
+/* Resources */
+void	free_pipes(int **pipes, int i);
+void	free_array(char **array, int i);
 
 #endif

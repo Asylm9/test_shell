@@ -1,3 +1,4 @@
+#include "minishell.h"
 
 void	free_pipes(int **pipes, int i)
 {
@@ -8,11 +9,11 @@ void	free_pipes(int **pipes, int i)
 	free(pipes);
 }
 
-void	free_array(char **s, int i)
+void	free_array(char **array, int i)
 {
-	if (!s)
+	if (!array)
 		return;
 	while (i >= 0)
-		free(s[i]);
-	free(s);
+		free(array[i]);
+	free(array);
 }
