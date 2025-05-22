@@ -20,6 +20,8 @@
 # define SUCCESS 0
 # define ERROR 1
 
+# define CMD_NOT_FOUND 127
+
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;
 typedef struct s_sh		    t_sh;

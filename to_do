@@ -6,6 +6,7 @@ ELEVE:
 MOYEN
 - finir env cmd binaires
 - Transformer exucute fonctions pour parcourir AST -> attendre
+- binary paths OK
 
 
 FAIBLE

@@ -81,24 +81,24 @@ int	execute_binary(t_command *cmd, char **env)
 	if (!cmd_path)
 	{
 		free_array(paths, -1);
-		return (1);
+		return (CMD_NOT_FOUND);
 	}
-	if (!cmd_path)
-		return (1);
 	if (execve(cmd_path, cmd->args, env) < 0)
 		perror("execve");
 	free(cmd_path);
 	free_array(paths, -1);
-	return (0);
+	return (1);
 }
 
 int	main(int ac, char **av, char **envp)
 {
 	t_command	cmd;
+	int			status;
 
+	status = 0;
 	if (ac < 2)
 		return (0);
 	init_cmd_struct(&cmd, av[1], &av[1]);
-	execute_binary(&cmd, envp);
-	return (0);
+	status = execute_binary(&cmd, envp);
+	return (status);
 }

@@ -36,7 +36,7 @@ int	execute_command(t_command *cmd, t_sh *shell)
 		return (execute_builtin(cmd, shell));
 	}
 	else
-		 return (execute_binary(cmd, shell->env));
+		return (execute_binary(cmd, shell->env));
 }
 
 /* Ordre d'application des redirections lors de l'exécution :
