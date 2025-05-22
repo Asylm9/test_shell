@@ -17,6 +17,9 @@
 # include <string.h>
 # include <signal.h>
 
+# define SUCCESS 0
+# define ERROR 1
+
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;
 typedef struct s_sh		    t_sh;
@@ -114,6 +117,6 @@ void	free_pipes(int **pipes, int i);
 void	free_array(char **array, int i);
 
 /* Testing */
-void	init_cmd_struct(t_command *cmd, char *arg1, char **arg2);
+void	init_cmd_struct(t_command *cmd, char *arg1, char **av);
 
 #endif

@@ -97,10 +97,8 @@ int	main(int ac, char **av, char **envp)
 	t_command	cmd;
 
 	if (ac < 2)
-		return (1);
-	printf("main 1");
+		return (0);
 	init_cmd_struct(&cmd, av[1], &av[1]);
-	printf("main 2");
 	execute_binary(&cmd, envp);
 	return (0);
 }

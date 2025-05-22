@@ -13,10 +13,10 @@ int	wait_for_children(int nb_pipes, pid_t *pids)
 		waitpid(pids[i], &status, 0);
 		if (i == nb_pipes)
 		{
-			if (WIFEXITED(status))
+			if (WIFEXITED(status)) //tue if child exit normally
 				last_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				last_status = (128 + WTERMSIG(status));
+			else if (WIFSIGNALED(status)) //if interrupted by signal
+				last_status = (128 + WTERMSIG(status)); //Return signal number that caused process to terminate.
 		}
 		i++;
 	}
