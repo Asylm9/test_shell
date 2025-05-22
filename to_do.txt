@@ -1,0 +1,27 @@
+
+ELEVE:
+- fix pipes -> good pour l'instant
+- Builtins: is_builtin + execute_builtin OK
+	- echo
+	- cd
+	- pwd
+	- export
+	- unset
+	- env
+	- exit
+
+MOYEN
+- finir env cmd binaires
+- Transformer exucute fonctions pour parcourir AST -> attendre
+- binary paths OK
+
+
+FAIBLE
+- traiter heredoc
+- gestion signaux
+
+
+Redirections:
+- refactoriser apply_redirections()
+- proteger dup2 -> +- gere a la sortie de apply_redirections()
+- proteger close ???

@@ -90,15 +90,18 @@ int	execute_binary(t_command *cmd, char **env)
 	return (1);
 }
 
-int	main(int ac, char **av, char **envp)
+/* int	main(int ac, char **av, char **envp)
 {
 	t_command	cmd;
+	t_redirect	redir;
 	int			status;
+
 
 	status = 0;
 	if (ac < 2)
 		return (0);
-	init_cmd_struct(&cmd, av[1], &av[1]);
+	init_redir(&redir);
+	init_cmd_struct(&cmd, &av[1], &redir);
 	status = execute_binary(&cmd, envp);
 	return (status);
-}
+} */

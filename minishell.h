@@ -80,6 +80,7 @@ char	**get_paths(char **env);
 char	*find_cmd_path(char **paths, char *cmd_name);
 
 /* Redirections */
+int		redirect_in(int fd, t_redirect *redir);
 int		apply_redirections(t_command *cmd);
 int		setup_pipes_redirections(int **pipes, int nb_pipes, int i);
 int		setup_heredoc(t_redirect *redir); // parsing ou exec?
@@ -119,6 +120,7 @@ void	free_pipes(int **pipes, int i);
 void	free_array(char **array, int i);
 
 /* Testing */
-void	init_cmd_struct(t_command *cmd, char *arg1, char **av);
+void	init_redir(t_redirect *redir);
+void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir);
 
 #endif

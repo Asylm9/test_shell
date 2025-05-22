@@ -2,11 +2,14 @@
 
 void	get_pipe_count(t_command *cmd_list, int *nb_pipes)
 {
+	t_command	*current;
+
 	*nb_pipes = 0;
-	while (cmd_list->next)
+	current = cmd_list;
+	while (current->next)
 	{
-		cmd_list = cmd_list->next;
 		(*nb_pipes)++;
+		cmd_list = cmd_list->next;
 	}
 }
 

@@ -28,15 +28,15 @@ int	execute_command(t_command *cmd, t_sh *shell)
 
 	if (!cmd ||!cmd->cmd_name)
 		return (0);
-	if (is_builtin(cmd->cmd_name))
+/* 	if (is_builtin(cmd->cmd_name))
 	{
 		//builtins executes par processus parent
 		//pas sure de la marche a suivre
 		//voir comment fonctionnent builtins
 		return (execute_builtin(cmd, shell));
 	}
-	else
-		return (execute_binary(cmd, shell->env));
+	else */
+	return (execute_binary(cmd, shell->env));
 }
 
 /* Ordre d'application des redirections lors de l'exécution :
@@ -70,15 +70,18 @@ int	execute_pipeline(t_command *cmd_list, t_sh *shell)
 		{
 			//CHILD PROCESS
 
-			setup_pipes_redirections(pipes, nb_pipes, i);
-
-			//ensuite redirections "locales"?
-			apply_redirections(current);
-
-			if (is_builtin(current->cmd_name))
+			if (setup_pipes_redirections(pipes, nb_pipes, i) == ERROR)
+			{
+				perror("dup2");  //verifier, peut-etre pas ideal
+				return (ERROR);
+			}
+			//ensuite redirections "locales"
+			if (apply_redirections(current) == ERROR)
+				return (ERROR);
+/* 			if (is_builtin(current->cmd_name))
 				return (execute_builtin(current, shell));
-			else
-				return (execute_binary(current, shell->env));
+			else */
+			return (execute_binary(current, shell->env));
 
 		}
 		current = current->next;
@@ -102,4 +105,19 @@ int		execute(t_command *cmd_list, t_sh *shell)
 		status = execute_command(cmd_list, shell);
 	shell->exit_status = status;
 	return (status); //Le shell doit toujours mettre à jour et retourner le statut de la dernière commande exécutée.
+}
+
+int	main(int ac, char **av, char **envp)
+{
+	t_command	cmd;
+	//t_redirect	redir;
+	int			status;
+
+	status = 0;
+	if (ac < 2)
+		return (0);
+	//init_redir(&redir);
+	init_cmd_struct(&cmd, &av[1], NULL);
+	status = execute_binary(&cmd, envp);
+	return (status);
 }

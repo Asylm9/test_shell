@@ -5,7 +5,7 @@ int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
 {
 	if (i > 0)
 	{
-		if (dup2(pipes[i - 1][0], STDIN_FILENO) < 0) //le premier pipe devient le stdin de la 2ere CMD (read end)
+		if (dup2(pipes[i - 1][0], STDIN_FILENO) < 0) //le premier pipe devient le stdin de la 2ere CMD et ainsi de suite (read end)
 			return (1);
 	}
 	if (i < nb_pipes)
@@ -13,6 +13,16 @@ int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
 		if (dup2(pipes[i][1], STDOUT_FILENO) < 0) //idem avec stdin si pas derniere CMD (write end)
 			return (1);
 	}
+	return (0);
+}
+
+int	redirect_in(int fd, t_redirect *redir)
+{
+	fd = open(redir->target, O_RDONLY);
+	if (fd < 0)
+		return (1);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
 	return (0);
 }
 
@@ -27,13 +37,7 @@ int	apply_redirections(t_command *cmd)
 	while (redir)
 	{
 		if (redir->type == IN)
-		{
-			fd = open(redir->target, O_RDONLY);
-			if (fd < 0)
-				return (1);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
+			redirect_in(fd, redir); //a voir
 		else if (redir->type == OUT)
 		{
 			fd = open(redir->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);
