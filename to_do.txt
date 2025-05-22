@@ -2,13 +2,13 @@
 ELEVE:
 - fix pipes -> good pour l'instant
 - Builtins: is_builtin + execute_builtin OK
-	- echo
-	- cd
-	- pwd
-	- export
-	- unset
-	- env
-	- exit
+	- echo ++
+	- cd +++
+	- pwd +
+	- export ++++
+	- unset +++
+	- env +
+	- exit +++
 
 MOYEN
 - finir env cmd binaires

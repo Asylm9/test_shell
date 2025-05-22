@@ -87,7 +87,7 @@ int	execute_binary(t_command *cmd, char **env)
 		perror("execve");
 	free(cmd_path);
 	free_array(paths, -1);
-	return (1);
+	return (EXECVE_ERR);
 }
 
 /* int	main(int ac, char **av, char **envp)

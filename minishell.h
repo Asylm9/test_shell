@@ -11,6 +11,7 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <limits.h>
 # include <errno.h>
 # include <sys/wait.h>
 # include <sys/types.h>
@@ -19,8 +20,14 @@
 
 # define SUCCESS 0
 # define ERROR 1
+# define BUILTIN_ERR 2
 
 # define CMD_NOT_FOUND 127
+# define EXECVE_ERR 126
+
+#ifndef PATH_MAX
+# define PATH_MAX 4096  // valeur courante sur la plupart des systèmes Linux
+
 
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;
