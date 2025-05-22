@@ -36,8 +36,8 @@ static char	*is_absolute(char *cmd)
 	if (cmd[0] == '/')
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL); // ou exit?
+			return (ft_strdup(cmd)); //pour ne pas risquer de free directement cmd->name plus tard
+		return (NULL);
 	}
 	return (NULL);
 }
@@ -45,12 +45,14 @@ static char	*is_absolute(char *cmd)
 char	*find_cmd_path(char **paths, char *cmd_name)
 {
 	char	*test_path;
+	char	*abs_path;
 	int		i;
 
 	if (!paths)
 		return (NULL);
-	if (is_absolute(cmd_name))
-		return (cmd_name);
+	abs_path = is_absolute(cmd_name);
+	if (abs_path)
+		return (abs_path);
 	i = 0;
 	while (paths[i])
 	{
@@ -76,14 +78,17 @@ int	execute_binary(t_command *cmd, char **env)
 	if (!paths)
 		return (1);
 	cmd_path = find_cmd_path(paths, cmd->cmd_name);
-	free_array(paths, -1);
+	if (!cmd_path)
+	{
+		free_array(paths, -1);
+		return (1);
+	}
 	if (!cmd_path)
 		return (1);
 	if (execve(cmd_path, cmd->args, env) < 0)
-	{
-		free(cmd_path);
 		perror("execve");
-	}
+	free(cmd_path);
+	free_array(paths, -1);
 	return (0);
 }
 
@@ -91,7 +96,7 @@ int	main(int ac, char **av, char **envp)
 {
 	t_command	cmd;
 
-	if (ac != 3)
+	if (ac < 2)
 		return (1);
 	printf("main 1");
 	init_cmd_struct(&cmd, av[1], &av[1]);
