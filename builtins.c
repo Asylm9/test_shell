@@ -20,15 +20,36 @@ char	*get_env_var(char *name, char **env)
 }
 int	builtin_pwd(t_sh *shell)
 {
-	char	buffer[PATH_MAX];
+	char	buffer[PATH_MAX]; //normalement present dans limits.h
 
-	if (!getcwd(buffer, sizeof(buffer))) //normalement  present dans limits.h
+	if (!getcwd(buffer, sizeof(buffer))) 
 	{
 		perror("getcwd");
 		return (BUILTIN_ERR);
 	}
-	printf("%s\n", buffer);
+	ft_putendl_fd(buffer, 1);
 	return (SUCCESS);
+}
+
+int	builtin_env(t_sh *shell)
+{
+	int	i;
+
+	i = 0;
+	if (!shell || !shell->env) // Error: no environment variables found
+		return (BUILTIN_ERR);
+	while (shell->env[i])
+		ft_putendl_fd(shell->env[i++], 1);
+	return (SUCCESS);
+}
+
+int	builtin_cd(char **args, t_sh shell)
+{
+	// back to home : cd, ~, $HOME
+
+	// root : cd / (dir) opt
+
+	// curent_dir -> sub_dir: dir /
 }
 
 /* int	builtin_pwd(char **envp)
@@ -75,6 +96,10 @@ re} */
 
 int	main(int ac, char **av, char **envp)
 {
-	builtin_pwd(envp);
+	t_sh	shell;
+
+	init_shell_struct(&shell, envp);
+	//builtin_pwd(&shell);
+	//builtin_env(&shell);
 	return (0);
 }

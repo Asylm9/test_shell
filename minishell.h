@@ -25,7 +25,7 @@
 # define CMD_NOT_FOUND 127
 # define EXECVE_ERR 126
 
-#ifndef PATH_MAX
+/* #ifndef PATH_MAX */
 # define PATH_MAX 4096  // valeur courante sur la plupart des systèmes Linux
 
 
@@ -129,5 +129,6 @@ void	free_array(char **array, int i);
 /* Testing */
 void	init_redir(t_redirect *redir);
 void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir);
+void	init_shell_struct(t_sh *shell, char **envp);
 
 #endif
