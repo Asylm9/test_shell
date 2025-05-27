@@ -16,5 +16,20 @@ void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir)
 
 void	init_shell_struct(t_sh *shell, char **envp)
 {
-	shell->env = envp;
+	int	count;
+	int	i;
+
+	count = 0;
+	while(envp[count])
+		count++;
+	shell->env = malloc(sizeof(char *) * (count + 1));
+	if (!shell->env)
+		return;
+	i = 0;
+	while (envp[i])
+	{
+		shell->env[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	shell->env[i] = NULL;
 }

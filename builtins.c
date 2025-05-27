@@ -129,14 +129,12 @@ int		builtin_unset(char **args, t_sh *shell)
 	while (args[i])
 	{
 		len = ft_strlen(args[i]);
-		printf("len: %d\n", len);
 		j = 0;
 		while (shell->env[j])
 		{
 			if (ft_strncmp(shell->env[j], args[i], len) == 0 && shell->env[j][len] == '=')
 			{
 				free(shell->env[j]);
-				printf("gne");
 			}
 			j++;
 		}
