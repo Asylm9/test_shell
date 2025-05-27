@@ -116,6 +116,35 @@ int	builtin_echo(char **args, t_sh *shell)
 	return (SUCCESS);
 }
 
+int		builtin_unset(char **args, t_sh *shell)
+{
+	bool	found;
+	int		i;
+	int		j;
+	int		len;
+
+	if (!args[1])
+		return (SUCCESS); //ne se passe rien/retour de la ligne de commande
+	i = 1;
+	while (args[i])
+	{
+		len = ft_strlen(args[i]);
+		printf("len: %d\n", len);
+		j = 0;
+		while (shell->env[j])
+		{
+			if (ft_strncmp(shell->env[j], args[i], len) == 0 && shell->env[j][len] == '=')
+			{
+				free(shell->env[j]);
+				printf("gne");
+			}
+			j++;
+		}
+		i++;
+	}
+	return (SUCCESS);
+}
+
 int	builtin_cd(char **args, t_sh *shell)
 {
 	// chdir()
@@ -176,8 +205,9 @@ int	main(int ac, char **av, char **envp)
 	init_shell_struct(&shell, envp);
 	init_cmd_struct(&cmd, &av[1], NULL);
 	//builtin_pwd(&shell);
-	//builtin_env(&shell);
+	builtin_env(&shell);
 	//builtin_echo(cmd.args, &shell);
-	builtin_exit(cmd.args, &shell);
+	//builtin_exit(cmd.args, &shell);
+	builtin_unset(cmd.args, &shell);
 	return (0);
 }

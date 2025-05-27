@@ -8,7 +8,7 @@ ELEVE:
 	- export ++++
 	- unset +++
 	- env + ok
-	- exit +++
+	- exit +++ ok
 
 shlvl??
 
