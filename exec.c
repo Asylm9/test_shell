@@ -107,7 +107,7 @@ int		execute(t_command *cmd_list, t_sh *shell)
 	return (status); //Le shell doit toujours mettre à jour et retourner le statut de la dernière commande exécutée.
 }
 
-int	main(int ac, char **av, char **envp)
+/* int	main(int ac, char **av, char **envp)
 {
 	t_command	cmd;
 	//t_redirect	redir;
@@ -120,4 +120,4 @@ int	main(int ac, char **av, char **envp)
 	init_cmd_struct(&cmd, &av[1], NULL);
 	status = execute_binary(&cmd, envp);
 	return (status);
-}
+} */

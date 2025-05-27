@@ -40,29 +40,62 @@ int	builtin_env(t_sh *shell)
 		return (BUILTIN_ERR);
 	while (shell->env[i])
 		ft_putendl_fd(shell->env[i++], 1);
-	return (SUCCESS);
+		return (SUCCESS);
 }
 
-int		builtin_exit(char **args, t_sh *shell)
+static bool	is_numeric(char *arg)
 {
+	int	i;
+	while (arg[i])
+	{
+		if (!ft_isdigit((arg[i])))
+			return (false);
+		i++;
+	}
+	return (true);
+}
 
+int	builtin_exit(char **args, t_sh *shell)
+{	
+	int	code;
 
+	if (!is_numeric(args[1]))
+	{
+		printf("bash: exit: %s: numeric argument required", args[1]);
+		return (BUILTIN_ERR);
+	}
+	if (args[1] && args[2])
+	{
+		ft_putendl_fd("exit: too many arguments", 2);
+		return (ERROR);
+	}
+	code = ft_atoi(args[1]);
+/* 	if (code > 25)
+		code %= 256; */
+	exit(shell->exit_status);
+		printf("exit");
+	return (SUCCESS);
 }
 
 int	builtin_echo(char **args, t_sh *shell)
 {
 	int		i;
+	int		j;
 	bool	newline;
-
+                                                       
 	if (!args[0])
 		return (BUILTIN_ERR);
 	newline = true;
 	i = 1;
-	// cas quand "-" seul ou autre flag (-e par ex)?
-	if (args[1] && (ft_strcmp(args[1], "-n")) == 0)
+	while (args[i] && (ft_strncmp(args[i], "-n", 2)) == 0)
 	{
-		i = 2;
+		j = 2;
+		while(args[i][j] == 'n')
+			j++;
+		if (args[i][j] != '\0')
+			break ;
 		newline = false;
+		i++;
 	}
 	while (args[i])
 	{
@@ -126,7 +159,7 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 		return (builtin_env(shell));
 	else if (ft_strcmp(cmd->cmd_name, "exit") == 0)
 		return (builtin_unset(cmd->args, shell));
-re} */
+} */
 
 int	main(int ac, char **av, char **envp)
 {
@@ -137,7 +170,7 @@ int	main(int ac, char **av, char **envp)
 	init_cmd_struct(&cmd, &av[1], NULL);
 	//builtin_pwd(&shell);
 	//builtin_env(&shell);
-	//builtin_echo(cmd.args, &shell);
-	builtin_exit(cmd.args, &shell);
+	builtin_echo(cmd.args, &shell);
+	//builtin_exit(cmd.args, &shell);
 	return (0);
 }
