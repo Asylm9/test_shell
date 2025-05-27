@@ -52,7 +52,7 @@ typedef struct s_redirect
 typedef struct s_command
 {
 	char		*cmd_name;
-	char * const *args;
+	char 		**args;
 	t_redirect	*redirections;
 	t_command	*next;
 }			t_command;

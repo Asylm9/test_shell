@@ -43,8 +43,42 @@ int	builtin_env(t_sh *shell)
 	return (SUCCESS);
 }
 
-int	builtin_cd(char **args, t_sh shell)
+int		builtin_exit(char **args, t_sh *shell)
 {
+
+
+}
+
+int	builtin_echo(char **args, t_sh *shell)
+{
+	int		i;
+	bool	newline;
+
+	if (!args[0])
+		return (BUILTIN_ERR);
+	newline = true;
+	i = 1;
+	// cas quand "-" seul ou autre flag (-e par ex)?
+	if (args[1] && (ft_strcmp(args[1], "-n")) == 0)
+	{
+		i = 2;
+		newline = false;
+	}
+	while (args[i])
+	{
+		printf("%s", args[i]);
+		if (args[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (newline)
+		printf("\n");
+	return (SUCCESS);
+}
+
+int	builtin_cd(char **args, t_sh *shell)
+{
+	// chdir()
 	// back to home : cd, ~, $HOME
 
 	// root : cd / (dir) opt
@@ -96,10 +130,14 @@ re} */
 
 int	main(int ac, char **av, char **envp)
 {
-	t_sh	shell;
+	t_sh		shell;
+	t_command	cmd;	
 
 	init_shell_struct(&shell, envp);
+	init_cmd_struct(&cmd, &av[1], NULL);
 	//builtin_pwd(&shell);
 	//builtin_env(&shell);
+	//builtin_echo(cmd.args, &shell);
+	builtin_exit(cmd.args, &shell);
 	return (0);
 }

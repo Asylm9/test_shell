@@ -2,12 +2,12 @@
 ELEVE:
 - fix pipes -> good pour l'instant
 - Builtins: is_builtin + execute_builtin OK
-	- echo ++
+	- echo ++ ok
 	- cd +++
-	- pwd +
+	- pwd + ok
 	- export ++++
 	- unset +++
-	- env +
+	- env + ok
 	- exit +++
 
 MOYEN
