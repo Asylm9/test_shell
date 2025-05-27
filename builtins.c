@@ -46,6 +46,8 @@ int	builtin_env(t_sh *shell)
 static bool	is_numeric(char *arg)
 {
 	int	i;
+
+	i = 0;
 	while (arg[i])
 	{
 		if (!ft_isdigit((arg[i])))
@@ -59,21 +61,26 @@ int	builtin_exit(char **args, t_sh *shell)
 {	
 	int	code;
 
-	if (!is_numeric(args[1]))
+	printf("exit\n");
+	if (!args[1])
+		code = shell->exit_status;
+	else
 	{
-		printf("bash: exit: %s: numeric argument required", args[1]);
-		return (BUILTIN_ERR);
+		if (!is_numeric(args[1]))
+		{
+			printf("bash: exit: %s: numeric argument required", args[1]);
+			code = BUILTIN_ERR; //quitte avec code erreur 2
+		}
+		else if (args[1] && args[2])
+		{
+			ft_putendl_fd("exit: too many arguments", 2);
+			return (ERROR); //retourne l'invite de commande
+		}
+		code = ft_atoi(args[1]);
+	/* 	if (code > 25) -> se fait automatiquement dans exit()
+			code %= 256; */
 	}
-	if (args[1] && args[2])
-	{
-		ft_putendl_fd("exit: too many arguments", 2);
-		return (ERROR);
-	}
-	code = ft_atoi(args[1]);
-/* 	if (code > 25)
-		code %= 256; */
-	exit(shell->exit_status);
-		printf("exit");
+	exit(code);
 	return (SUCCESS);
 }
 
@@ -83,11 +90,11 @@ int	builtin_echo(char **args, t_sh *shell)
 	int		j;
 	bool	newline;
                                                        
-	if (!args[0])
+	if (!args[1])
 		return (BUILTIN_ERR);
 	newline = true;
 	i = 1;
-	while (args[i] && (ft_strncmp(args[i], "-n", 2)) == 0)
+	while ((ft_strncmp(args[i], "-n", 2)) == 0)
 	{
 		j = 2;
 		while(args[i][j] == 'n')
@@ -170,7 +177,7 @@ int	main(int ac, char **av, char **envp)
 	init_cmd_struct(&cmd, &av[1], NULL);
 	//builtin_pwd(&shell);
 	//builtin_env(&shell);
-	builtin_echo(cmd.args, &shell);
-	//builtin_exit(cmd.args, &shell);
+	//builtin_echo(cmd.args, &shell);
+	builtin_exit(cmd.args, &shell);
 	return (0);
 }
