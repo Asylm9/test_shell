@@ -6,7 +6,7 @@ ELEVE:
 	- cd +++
 	- pwd + ok
 	- export ++++
-	- unset +++
+	- unset +++ -> manque decalage
 	- env + ok
 	- exit +++ ok
 

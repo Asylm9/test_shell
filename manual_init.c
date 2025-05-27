@@ -9,7 +9,7 @@ void init_redir(t_redirect *redir)
 
 void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir)
 {
-	cmd->cmd_name = av[1];
+	cmd->cmd_name = av[0];
 	cmd->args = av;
 	cmd->redirections = redir;
 }
