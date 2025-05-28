@@ -78,10 +78,12 @@ int	main(int ac, char **av, char **envp)
 
 	init_shell_struct(&shell, envp);
 	init_cmd_struct(&cmd, &av[1], NULL);
+	printf("before\n");
 	//builtin_pwd(&shell);
-	builtin_echo(cmd.args, &shell);
-	//builtin_exit(cmd.args, &shell);
+	//builtin_echo(cmd.args, &shell);
+	shell.exit_status = builtin_exit(cmd.args, &shell);
 	//builtin_unset(cmd.args, &shell);
 	//builtin_env(&shell);
-	return (0);
+	printf("after\n");
+	return (shell.exit_status);
 }

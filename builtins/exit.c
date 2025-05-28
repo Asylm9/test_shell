@@ -23,9 +23,10 @@ int	builtin_exit(char **args, t_sh *shell)
 		code = shell->exit_status;
 	else
 	{
+		code = ft_atoi(args[1]);
 		if (!is_numeric(args[1]))
 		{
-			printf("bash: exit: %s: numeric argument required", args[1]);
+			printf("bash: exit: %s: numeric argument required\n", args[1]);
 			code = BUILTIN_ERR; //quitte avec code erreur 2
 		}
 		else if (args[1] && args[2])
@@ -33,7 +34,6 @@ int	builtin_exit(char **args, t_sh *shell)
 			ft_putendl_fd("exit: too many arguments", 2);
 			return (ERROR); //retourne l'invite de commande
 		}
-		code = ft_atoi(args[1]);
 	/* 	if (code > 25) -> se fait automatiquement dans exit()
 			code %= 256; */
 	}

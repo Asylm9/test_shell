@@ -32,4 +32,5 @@ void	init_shell_struct(t_sh *shell, char **envp)
 		i++;
 	}
 	shell->env[i] = NULL;
+	shell->exit_status = 0;
 }
