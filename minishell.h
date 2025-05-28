@@ -60,6 +60,7 @@ typedef struct s_command
 typedef struct s_sh
 {
 	char		**env;
+	char		**export; // static? 
 	t_command	*cmd_list;
 	char		*current_dir;
 	int			exit_status;

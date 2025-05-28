@@ -2,13 +2,14 @@
 
 int	builtin_cd(char **args, t_sh *shell)
 {
-	char *home;
+	char *new_pwd;
+
 	// chdir()
 
 	if (!args[1])
 	{
-		home = get_env_var("HOME", shell->env);
-		printf("home=%s\n", home);
+		new_pwd = get_env_var("HOME", shell->env);
+		printf("home=%s\n", new_pwd);
 	}
 	// back to home : cd, ~, $HOME
 
