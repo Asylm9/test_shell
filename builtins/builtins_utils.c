@@ -84,6 +84,7 @@ int	main(int ac, char **av, char **envp)
 	//builtin_echo(cmd.args, &shell);
 	//builtin_exit(cmd.args, &shell);
 	//builtin_unset(cmd.args, &shell);
-	//builtin_env(&shell);
+	sleep(1);
+	builtin_env(&shell);
 	return (shell.exit_status);
 }
