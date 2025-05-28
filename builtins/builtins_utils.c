@@ -50,26 +50,27 @@ int	builtin_cd(char **args, t_sh *shell)
 		ft_strcmp(cmd_name, "exit") == 0)
 		return (true);
 	return (false);
-}
+} */
 
 int		execute_builtin(t_command *cmd, t_sh *shell)
 {
 	// shell->exit_code a la place de return?
 	if (ft_strcmp(cmd->cmd_name, "echo") == 0)
-		return (builtin_echo(cmd->args, shell));
+		shell->exit_status = builtin_echo(cmd->args, shell);
 	else if (ft_strcmp(cmd->cmd_name, "cd") == 0)
-		return (builtin_cd(cmd->args, shell));
+		shell->exit_status = builtin_cd(cmd->args, shell);
 	else if (ft_strcmp(cmd->cmd_name, "pwd") == 0)
-		return (builtin_pwd(shell));
-	else if (ft_strcmp(cmd->cmd_name, "export") == 0)
-		return (builtin_export(cmd->args, shell->env));
+		shell->exit_status = builtin_pwd(shell);
+/* 	else if (ft_strcmp(cmd->cmd_name, "export") == 0)
+		shell->exit_status = builtin_export(cmd->args, shell); */
 	else if (ft_strcmp(cmd->cmd_name, "unset") == 0)
-		return (builtin_unset(cmd->args, shell));
+		shell->exit_status = builtin_unset(cmd->args, shell);
 	else if (ft_strcmp(cmd->cmd_name, "env") == 0)
-		return (builtin_env(shell));
+		shell->exit_status = builtin_env(shell);
 	else if (ft_strcmp(cmd->cmd_name, "exit") == 0)
-		return (builtin_unset(cmd->args, shell));
-} */
+		shell->exit_status = builtin_exit(cmd->args, shell);
+	return (0);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -78,12 +79,11 @@ int	main(int ac, char **av, char **envp)
 
 	init_shell_struct(&shell, envp);
 	init_cmd_struct(&cmd, &av[1], NULL);
-	printf("before\n");
+	execute_builtin(&cmd, &shell);
 	//builtin_pwd(&shell);
 	//builtin_echo(cmd.args, &shell);
-	shell.exit_status = builtin_exit(cmd.args, &shell);
+	//builtin_exit(cmd.args, &shell);
 	//builtin_unset(cmd.args, &shell);
 	//builtin_env(&shell);
-	printf("after\n");
 	return (shell.exit_status);
 }
