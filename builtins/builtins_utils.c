@@ -19,15 +19,6 @@ char	*get_env_var(char *name, char **env)
 	return (NULL);
 }
 
-int	builtin_cd(char **args, t_sh *shell)
-{
-	// chdir()
-	// back to home : cd, ~, $HOME
-
-	// root : cd / (dir) opt
-
-	// curent_dir -> sub_dir: dir /
-}
 
 /* int	builtin_pwd(char **envp)
 {
@@ -84,7 +75,8 @@ int	main(int ac, char **av, char **envp)
 	//builtin_echo(cmd.args, &shell);
 	//builtin_exit(cmd.args, &shell);
 	//builtin_unset(cmd.args, &shell);
-	sleep(1);
-	builtin_env(&shell);
+	//builtin_cd(cmd.args, &shell);
+	//sleep(1);
+	//builtin_env(&shell);
 	return (shell.exit_status);
 }
