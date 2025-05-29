@@ -84,6 +84,7 @@ int		execute_binary(t_command *cmd, char **env);
 
 /* Path and environment handling */
 char	*get_env_var(char *name, char **env);
+int		set_env_var(char *name, char **env, char *path);
 char	**get_paths(char **env);
 char	*find_cmd_path(char **paths, char *cmd_name);
 

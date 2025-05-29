@@ -19,14 +19,33 @@ char	*get_env_var(char *name, char **env)
 	return (NULL);
 }
 
-
-/* int	builtin_pwd(char **envp)
+int	set_env_var(char *name, char **env, char *value)
 {
-	char	*pwd;
+	int		i;
+	int		len;
+	char	*key;
+	char	*new_value;
 
-	pwd = get_env_var("PWD", envp);
-	printf("%s\n", pwd);
-} */
+	if (!name || !env)
+		return (ERROR);
+	len = ft_strlen(name);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
+		{
+			free(env[i]);
+			key = ft_strjoin(name, "="); //ajouter protections pour les 2 strjoin
+			new_value = ft_strjoin(key, value);
+			free(key);
+			env[i] = new_value;
+			return (SUCCESS);
+		}
+		i++;
+	}
+	return (ERROR);
+}
+
 
 /* bool	is_builtin(char *cmd_name)
 {
