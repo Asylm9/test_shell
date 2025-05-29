@@ -3,7 +3,7 @@ ELEVE:
 - fix pipes -> good pour l'instant
 - Builtins: is_builtin + execute_builtin OK
 	- echo ++ ok
-	- cd +++
+	- cd +++ en cours --> manque chemins relatifs et verification que chemins existent
 	- pwd + ok
 	- export ++++
 	- unset +++ -> ok

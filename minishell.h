@@ -23,7 +23,7 @@
 # define BUILTIN_ERR 2
 
 # define CMD_NOT_FOUND 127
-# define EXECVE_ERR 126
+# define EXECVE_ERR 126 //commande trouvee mais pas executable
 
 /* #ifndef PATH_MAX */
 # define PATH_MAX 4096  // valeur courante sur la plupart des systèmes Linux

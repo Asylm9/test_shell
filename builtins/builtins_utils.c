@@ -35,14 +35,19 @@ int	set_env_var(char *name, char **env, char *value)
 		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
 		{
 			free(env[i]);
-			key = ft_strjoin(name, "="); //ajouter protections pour les 2 strjoin
+			key = ft_strjoin(name, "=");
+			if (!key)
+				return (ERROR);
 			new_value = ft_strjoin(key, value);
+			if (!new_value)
+				return (ERROR);
 			free(key);
 			env[i] = new_value;
 			return (SUCCESS);
 		}
 		i++;
 	}
+	// key non trouvee
 	return (ERROR);
 }
 
@@ -85,10 +90,17 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 int	main(int ac, char **av, char **envp)
 {
 	t_sh		shell;
-	t_command	cmd;	
+	t_command	cmd;
+	int			i;
 
+	i = 0;
 	init_shell_struct(&shell, envp);
 	init_cmd_struct(&cmd, &av[1], NULL);
+/* 	while (av[i])
+	{
+		printf("args cmd: %s\n", cmd.args[i]);
+		i++;
+	} */
 	execute_builtin(&cmd, &shell);
 	//builtin_pwd(&shell);
 	//builtin_echo(cmd.args, &shell);

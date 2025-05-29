@@ -26,12 +26,12 @@ int	builtin_exit(char **args, t_sh *shell)
 		code = ft_atoi(args[1]);
 		if (!is_numeric(args[1]))
 		{
-			printf("bash: exit: %s: numeric argument required\n", args[1]);
+			printf("minishell: exit: %s: numeric argument required\n", args[1]);
 			code = BUILTIN_ERR; //quitte avec code erreur 2
 		}
 		else if (args[1] && args[2])
 		{
-			ft_putendl_fd("exit: too many arguments", 2);
+			ft_putendl_fd("minishell: exit: too many arguments", 2);
 			return (ERROR); //retourne l'invite de commande
 		}
 	/* 	if (code > 25) -> se fait automatiquement dans exit()
