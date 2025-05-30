@@ -28,14 +28,14 @@ int	execute_command(t_command *cmd, t_sh *shell)
 
 	if (!cmd ||!cmd->cmd_name)
 		return (0);
-/* 	if (is_builtin(cmd->cmd_name))
+	if (is_builtin(cmd->cmd_name))
 	{
 		//builtins executes par processus parent
 		//pas sure de la marche a suivre
 		//voir comment fonctionnent builtins
 		return (execute_builtin(cmd, shell));
 	}
-	else */
+	else
 	return (execute_binary(cmd, shell->env));
 }
 

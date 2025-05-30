@@ -24,13 +24,22 @@ static char *set_new_path(char **args, t_sh *shell)
 	{
 		new_path = get_env_var("HOME", shell->env);
 	}
-	else if (argc == 2) // absolute_path~ deja traduit en chemin absolu vers home
+	else if (argc == 2) // absolute_path ~ deja traduit en chemin absolu vers home
 	{
-		new_path = args[1];
+		if (args[1][0] == '-')
+			new_path = get_env_var("OLDPWD", shell->env);
+		//if (args[1][0] != '/')
+		else
+			new_path = args[1];
 	}
 	if (!new_path)
 		printf("minishell: cd: HOME not set\n");
 
+	if (access(new_path, F_OK | X_OK) < 0)
+	{
+		printf("cd: no such file or directory: %s\n", new_path);
+		return (NULL);
+	}
 	// cd '-' -> OLDPWD 
 
 	// root : cd / (dir) opt
