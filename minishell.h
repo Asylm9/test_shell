@@ -103,6 +103,7 @@ int		**create_pipes(int nb_pipes);
 /* Builtin commands */
 bool	is_builtin(char *cmd_name);
 int		execute_builtin(t_command *cmd, t_sh *shell);
+char	*reverse_trim(char const *s1, char const *set);
 
 /* Builtin implementations */
 int		builtin_echo(char **args, t_sh *shell);

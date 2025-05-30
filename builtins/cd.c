@@ -10,25 +10,39 @@ int	args_count(char **args)
 	return (count);
 }
 
-// faire un arg count a la place d'utiliser les index dans les verifications?
 static char *set_new_path(char **args, t_sh *shell)
 {
 	char	*new_path;
 	int 	argc;
+	char	*temp;
+	int		i;
 
 	new_path = NULL;
 	argc = args_count(args);
 	if (argc > 2)
 		return(printf("minishell: cd: too many arguments\n"), NULL);
 	if (argc == 1)
-	{
 		new_path = get_env_var("HOME", shell->env);
-	}
 	else if (argc == 2) // absolute_path ~ deja traduit en chemin absolu vers home
 	{
 		if (args[1][0] == '-')
 			new_path = get_env_var("OLDPWD", shell->env);
-		//if (args[1][0] != '/')
+		if (args[1][0] != '/')
+		{
+			i = 0;
+			while (args[1][i] == '.' && args[1][i + 1] == '.')
+			{
+				if (i == 0)
+					temp = get_env_var("PWD", shell->env);
+				else
+					temp = new_path;
+				//free(new_path);
+				new_path =  reverse_trim(temp, "/");
+				i += 2;
+				if (!args[1][i + 1] || args[1][i + 1] != '/')
+					break;
+			}
+		}
 		else
 			new_path = args[1];
 	}
@@ -41,8 +55,6 @@ static char *set_new_path(char **args, t_sh *shell)
 		return (NULL);
 	}
 	// cd '-' -> OLDPWD 
-
-	// root : cd / (dir) opt
 	// curent_dir -> sub_dir: dir /
 	return (new_path);
 }
