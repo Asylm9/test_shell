@@ -28,8 +28,10 @@ char	*reverse_trim(char const *s1, char const *set)
 		return (ft_strdup(""));
 	start = 0;
 	end = len - 1;
+	while (s1[end] == '/')
+			end--;
 	while (end > start && (!is_trim(s1[end], set)))
-		end--;
+			end--;
 	res = (char *) malloc((end - start + 2) * sizeof(char));
 	if (!res)
 		return (NULL);

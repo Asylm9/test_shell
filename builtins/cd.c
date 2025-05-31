@@ -10,11 +10,44 @@ int	args_count(char **args)
 	return (count);
 }
 
+char	*relative_path(char **args, t_sh *shell)
+{
+	char	**asplit;
+	char 	*new_path;
+	char	*temp;
+	int		i;
+
+	asplit = ft_split(args[1], '/');
+	if (!asplit)
+		return (NULL);
+	i = 0;
+	while (asplit[i])
+	{
+		if (ft_strcmp(asplit[i], ".") == 0)
+		{
+			if (i == 0)
+				new_path = get_env_var("PWD", shell->env);
+		}		
+		else if (ft_strcmp(asplit[i], "..") == 0)
+		{
+			if (i == 0)
+				temp = get_env_var("PWD", shell->env);
+			else
+				temp = new_path;
+			new_path =  reverse_trim(temp, "/");
+		}
+		else
+			new_path = ft_pathjoin(new_path, asplit[i]);
+		i++;
+	}
+	free_array(asplit, -1);
+	return (new_path);
+}
+
 static char *set_new_path(char **args, t_sh *shell)
 {
 	char	*new_path;
 	int 	argc;
-	char	*temp;
 	int		i;
 
 	new_path = NULL;
@@ -28,21 +61,7 @@ static char *set_new_path(char **args, t_sh *shell)
 		if (args[1][0] == '-')
 			new_path = get_env_var("OLDPWD", shell->env);
 		if (args[1][0] != '/')
-		{
-			i = 0;
-			while (args[1][i] == '.' && args[1][i + 1] == '.')
-			{
-				if (i == 0)
-					temp = get_env_var("PWD", shell->env);
-				else
-					temp = new_path;
-				//free(new_path);
-				new_path =  reverse_trim(temp, "/");
-				i += 2;
-				if (!args[1][i + 1] || args[1][i + 1] != '/')
-					break;
-			}
-		}
+			new_path = relative_path(args, shell);
 		else
 			new_path = args[1];
 	}
@@ -64,6 +83,7 @@ int	builtin_cd(char **args, t_sh *shell)
 	char	buffer[PATH_MAX];
 	char	*new_path;
 
+	builtin_pwd(shell);
 	// recuperer current_path
 	if (!getcwd(buffer, sizeof(buffer))) 
 	{
