@@ -67,14 +67,11 @@ static char *set_new_path(char **args, t_sh *shell)
 	}
 	if (!new_path)
 		printf("minishell: cd: HOME not set\n");
-
 	if (access(new_path, F_OK | X_OK) < 0)
 	{
 		printf("cd: no such file or directory: %s\n", new_path);
 		return (NULL);
 	}
-	// cd '-' -> OLDPWD 
-	// curent_dir -> sub_dir: dir /
 	return (new_path);
 }
 
@@ -83,7 +80,6 @@ int	builtin_cd(char **args, t_sh *shell)
 	char	buffer[PATH_MAX];
 	char	*new_path;
 
-	builtin_pwd(shell);
 	// recuperer current_path
 	if (!getcwd(buffer, sizeof(buffer))) 
 	{
@@ -97,20 +93,14 @@ int	builtin_cd(char **args, t_sh *shell)
 	// changer current directory
 	if (chdir(new_path) < 0)
 		return (BUILTIN_ERR);
-
 	// actualiser OLDPWD avec current
 	set_env_var("OLDPWD", shell->env, buffer);
-
 	if (!getcwd(buffer, sizeof(buffer))) 
 	{
 		perror("getcwd");
 		return (BUILTIN_ERR);
 	}
-
 	// actualiser PWD avec current
 	set_env_var("PWD", shell->env, buffer);
-
-	builtin_pwd(shell);
-
 	return (SUCCESS);
 }
