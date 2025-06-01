@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: agaland <agaland@student.42.fr>            +#+  +:+       +#+        */
+/*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 22:21:43 by agaland           #+#    #+#             */
-/*   Updated: 2025/03/16 23:10:43 by agaland          ###   ########.fr       */
+/*   Updated: 2025/06/01 02:21:03 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	**ft_split(char const *s, char c)
 	word_count = count_words(s, c);
 	if (word_count == 0)
 	{
-		split = ft_calloc(1, sizeof(char*));
+		split = ft_calloc(1, sizeof(char *));
 		return (split);
 	}
 	split = ft_calloc((word_count + 1), sizeof(char *));

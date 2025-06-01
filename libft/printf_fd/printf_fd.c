@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 22:14:14 by agaland           #+#    #+#             */
-/*   Updated: 2025/06/01 01:21:25 by agaland          ###   ########.fr       */
+/*   Updated: 2025/06/01 02:19:45 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ static int	ft_format(va_list arg, const char spec, int fd)
 	else if (spec == 'd' || spec == 'i')
 		return (ft_print_digit((long)va_arg(arg, int), 10, fd));
 	else if (spec == 'u')
-		return (ft_print_uns((unsigned long)va_arg(arg, unsigned int), 10, 0, fd));
+		return (ft_print_uns((unsigned long)
+				va_arg(arg, unsigned int), 10, 0, fd));
 	else if (spec == 'x')
-		return (ft_print_uns((unsigned long)va_arg(arg, unsigned int), 16, 0, fd));
+		return (ft_print_uns((unsigned long)
+				va_arg(arg, unsigned int), 16, 0, fd));
 	else if (spec == 'X')
-		return (ft_print_uns((unsigned long)va_arg(arg, unsigned int), 16, 1, fd));
+		return (ft_print_uns((unsigned long)
+				va_arg(arg, unsigned int), 16, 1, fd));
 	else if (spec == '%')
 		return (ft_print_char('%', fd));
 	else if (spec == 'p')
