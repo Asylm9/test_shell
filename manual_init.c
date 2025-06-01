@@ -34,3 +34,20 @@ void	init_shell_struct(t_sh *shell, char **envp)
 	shell->env[i] = NULL;
 	shell->exit_status = 0;
 }
+
+void cleanup_shell(t_sh *shell)
+{
+	int i;
+	
+	if (!shell || !shell->env)
+		return;
+	
+	i = 0;
+	while (shell->env[i])
+	{
+		free(shell->env[i]);
+		i++;
+	}
+	free(shell->env);
+	shell->env = NULL;
+}

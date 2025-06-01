@@ -22,6 +22,8 @@
 # define ERROR 1
 # define BUILTIN_ERR 2
 
+# define STDERR 2
+
 # define CMD_NOT_FOUND 127
 # define EXECVE_ERR 126 //commande trouvee mais pas executable
 
@@ -133,5 +135,6 @@ void	free_array(char **array, int i);
 void	init_redir(t_redirect *redir);
 void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir);
 void	init_shell_struct(t_sh *shell, char **envp);
+void	cleanup_shell(t_sh *shell);
 
 #endif

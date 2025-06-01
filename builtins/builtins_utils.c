@@ -3,8 +3,8 @@
 // doublon a supprimer apres tests
 char	*get_env_var(char *name, char **env)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
 
 	if (!name || !env)
 		return (NULL);
@@ -40,7 +40,10 @@ int	set_env_var(char *name, char **env, char *value)
 				return (ERROR);
 			new_value = ft_strjoin(key, value);
 			if (!new_value)
+			{
+				free(key);
 				return (ERROR);
+			}
 			free(key);
 			env[i] = new_value;
 			return (SUCCESS);
@@ -109,5 +112,6 @@ int	main(int ac, char **av, char **envp)
 	//builtin_cd(cmd.args, &shell);
 	//sleep(1);
 	//builtin_env(&shell);
+	cleanup_shell(&shell);
 	return (shell.exit_status);
 }

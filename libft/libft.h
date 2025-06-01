@@ -6,7 +6,7 @@
 /*   By: agaland <agaland@student.s19.be>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:40:30 by agaland           #+#    #+#             */
-/*   Updated: 2024/10/30 20:17:21 by agaland          ###   ########.fr       */
+/*   Updated: 2025/06/01 02:04:26 by agaland          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@
 # include <limits.h>
 # include <ctype.h>
 # include <stdint.h>
+# include "printf_fd/printf_fd.h"
 
-/*
-Fonctions de base
-*/
+/* Fonctions de base */
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -52,9 +51,7 @@ int		ft_atoi(const char *str);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(const char *s1);
 
-/*
-Fonctions supplementaires
-*/
+/* Fonctions supplementaires */
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
@@ -68,9 +65,7 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 char	**ft_split(char const *s, char c);
 
-/*
-BONUS
-*/
+/* BONUS */
 
 typedef struct s_list
 {
