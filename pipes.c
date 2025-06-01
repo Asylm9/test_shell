@@ -9,7 +9,7 @@ void	get_pipe_count(t_command *cmd_list, int *nb_pipes)
 	while (current->next)
 	{
 		(*nb_pipes)++;
-		cmd_list = cmd_list->next;
+		current = current->next;
 	}
 }
 

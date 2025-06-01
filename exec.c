@@ -25,18 +25,34 @@ int	wait_for_children(int nb_pipes, pid_t *pids)
 
 int	execute_command(t_command *cmd, t_sh *shell)
 {
+	pid_t	pid;
+	int		status;
 
 	if (!cmd ||!cmd->cmd_name)
 		return (0);
-	if (is_builtin(cmd->cmd_name))
+/* 	if (is_builtin(cmd->cmd_name))
 	{
 		//builtins executes par processus parent
 		//pas sure de la marche a suivre
 		//voir comment fonctionnent builtins
 		return (execute_builtin(cmd, shell));
+	} */
+	pid = fork();
+	if (pid < 0)
+		return (ERROR);
+	else if (pid == 0)
+	{
+		if (apply_redirections(cmd) == ERROR)
+			exit(1);
+		status = execute_binary(cmd, shell->env);
+			exit(status);
 	}
-	else
-	return (execute_binary(cmd, shell->env));
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+    	status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+    	status = 128 + WTERMSIG(status);
+	return(status);
 }
 
 /* Ordre d'application des redirections lors de l'exécution :
@@ -73,16 +89,16 @@ int	execute_pipeline(t_command *cmd_list, t_sh *shell)
 			if (setup_pipes_redirections(pipes, nb_pipes, i) == ERROR)
 			{
 				perror("dup2");  //verifier, peut-etre pas ideal
-				return (ERROR);
+				exit(1);
 			}
+			close_pipes(pipes, nb_pipes); // Aaah sans fermer les pipes les processus attendent indéfiniment des données qui n'arriveront jamais → boucle infinie!
 			//ensuite redirections "locales"
 			if (apply_redirections(current) == ERROR)
-				return (ERROR);
+				exit(1);
 /* 			if (is_builtin(current->cmd_name))
 				return (execute_builtin(current, shell));
 			else */
-			return (execute_binary(current, shell->env));
-
+			exit(execute_binary(current, shell->env));
 		}
 		current = current->next;
 		i++;

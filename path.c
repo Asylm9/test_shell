@@ -60,15 +60,12 @@ int	execute_binary(t_command *cmd, char **env)
 	if (!paths)
 		return (1);
 	cmd_path = find_cmd_path(paths, cmd->cmd_name);
-	if (!cmd_path)
-	{
-		free_array(paths, -1);
-		return (CMD_NOT_FOUND);
-	}
-	if (execve(cmd_path, cmd->args, env) < 0)
-		perror("execve");
-	free(cmd_path);
 	free_array(paths, -1);
+	if (!cmd_path)
+		return (CMD_NOT_FOUND);
+	execve(cmd_path, cmd->args, env);
+	perror("execve");
+	free(cmd_path);
 	return (EXECVE_ERR);
 }
 
