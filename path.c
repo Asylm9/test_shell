@@ -1,23 +1,5 @@
 #include "minishell.h"
 
-char	*get_env_var(char *name, char **env)
-{
-	int	i;
-	int	len;
-
-	if (!name || !env)
-		return (NULL);
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-			return (ft_strdup(env[i] + len + 1));
-		i++;
-	}
-	return (NULL);
-}
-
 char	**get_paths(char **env)
 {
 	char	*env_path;

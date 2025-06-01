@@ -1,59 +1,14 @@
 #include "../minishell.h"
 
-// doublon a supprimer apres tests
-char	*get_env_var(char *name, char **env)
+int	args_count(char **args)
 {
-	int		i;
-	int		len;
+	int count;
 
-	if (!name || !env)
-		return (NULL);
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-			return (ft_strdup(env[i] + len + 1));
-		i++;
-	}
-	return (NULL);
+	count = 0;
+	while (args[count])
+		count++;
+	return (count);
 }
-
-int	set_env_var(char *name, char **env, char *value)
-{
-	int		i;
-	int		len;
-	char	*key;
-	char	*new_value;
-
-	if (!name || !env)
-		return (ERROR);
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-		{
-			free(env[i]);
-			key = ft_strjoin(name, "=");
-			if (!key)
-				return (ERROR);
-			new_value = ft_strjoin(key, value);
-			if (!new_value)
-			{
-				free(key);
-				return (ERROR);
-			}
-			free(key);
-			env[i] = new_value;
-			return (SUCCESS);
-		}
-		i++;
-	}
-	// key non trouvee
-	return (ERROR);
-}
-
 
 /* bool	is_builtin(char *cmd_name)
 {
@@ -104,7 +59,9 @@ int	main(int ac, char **av, char **envp)
 		printf("args cmd: %s\n", cmd.args[i]);
 		i++;
 	} */
+	builtin_pwd(&shell);
 	execute_builtin(&cmd, &shell);
+	builtin_pwd(&shell);
 	cleanup_shell(&shell);
 	return (shell.exit_status);
 }

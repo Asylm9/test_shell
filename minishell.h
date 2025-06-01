@@ -34,6 +34,7 @@
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;
 typedef struct s_sh		    t_sh;
+//typedef struct s_env		t_env;
 
 typedef enum e_redir_type
 {
@@ -58,6 +59,14 @@ typedef struct s_command
 	t_redirect	*redirections;
 	t_command	*next;
 }			t_command;
+
+/* typedef struct s_env
+{
+	char	*key;
+	char	*value;
+	t_env	*next;
+}			t_env; */
+
 
 typedef struct s_sh
 {
@@ -103,9 +112,9 @@ int		init_pipes(int **pipes, int nb_pipes);
 int		**create_pipes(int nb_pipes);
 
 /* Builtin commands */
+int		args_count(char **args);
 bool	is_builtin(char *cmd_name);
 int		execute_builtin(t_command *cmd, t_sh *shell);
-char	*reverse_trim(char const *s1, char const *set);
 
 /* Builtin implementations */
 int		builtin_echo(char **args, t_sh *shell);
@@ -115,6 +124,9 @@ int		builtin_export(char **args, t_sh *shell);
 int		builtin_unset(char **args, t_sh *shell);
 int		builtin_env(t_sh *shell);
 int		builtin_exit(char **args, t_sh *shell);
+
+/* Env utils */
+
 
 /* Utils */
 void	error_message(const char *msg);
