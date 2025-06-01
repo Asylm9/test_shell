@@ -5,6 +5,12 @@ static bool	is_numeric(char *arg)
 	int	i;
 
 	i = 0;
+	while (ft_isspace(arg[i]))
+		i++;
+	if (arg[i] == '-' || arg[i] == '+')
+		i++;
+	if (!arg[i])
+		return (false);
 	while (arg[i])
 	{
 		if (!ft_isdigit((arg[i])))
@@ -15,7 +21,7 @@ static bool	is_numeric(char *arg)
 }
 
 int	builtin_exit(char **args, t_sh *shell)
-{	
+{
 	int	code;
 
 	printf("exit\n");
@@ -23,19 +29,19 @@ int	builtin_exit(char **args, t_sh *shell)
 		code = shell->exit_status;
 	else
 	{
-		code = ft_atoi(args[1]);
 		if (!is_numeric(args[1]))
 		{
-			printf("minishell: exit: %s: numeric argument required\n", args[1]);
-			code = BUILTIN_ERR; //quitte avec code erreur 2
+			printf_fd(STDERR,
+				"minishell: exit: %s: numeric argument required\n", args[1]);
+			code = BUILTIN_ERR;
 		}
-		else if (args[1] && args[2])
+		else if (args[2])
 		{
-			ft_putendl_fd("minishell: exit: too many arguments", 2);
-			return (ERROR); //retourne l'invite de commande
+			printf_fd(STDERR, "minishell: exit: too many arguments\n");
+			return (ERROR);
 		}
-	/* 	if (code > 25) -> se fait automatiquement dans exit()
-			code %= 256; */
+		else
+			code = ft_atoi(args[1]);
 	}
 	exit(code);
 	return (SUCCESS);

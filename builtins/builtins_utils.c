@@ -105,13 +105,6 @@ int	main(int ac, char **av, char **envp)
 		i++;
 	} */
 	execute_builtin(&cmd, &shell);
-	//builtin_pwd(&shell);
-	//builtin_echo(cmd.args, &shell);
-	//builtin_exit(cmd.args, &shell);
-	//builtin_unset(cmd.args, &shell);
-	//builtin_cd(cmd.args, &shell);
-	//sleep(1);
-	//builtin_env(&shell);
 	cleanup_shell(&shell);
 	return (shell.exit_status);
 }

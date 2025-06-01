@@ -3,12 +3,12 @@ ELEVE:
 - fix pipes -> good pour l'instant
 - Builtins: is_builtin + execute_builtin OK
 	- echo ++ ok
-	- cd +++ en cours --> manque chemins relatifs et verification que chemins existent
+	- cd +++ ok
 	- pwd + ok
 	- export ++++
-	- unset +++ -> ok
+	- unset +++ ok
 	- env + ok
-	- exit +++ ok
+	- exit +++ FINITO (p-e verifier si %256 auto avec exit() )
 
 shlvl??
 
@@ -22,6 +22,7 @@ FAIBLE
 - traiter heredoc
 - gestion signaux
 
+- remplacer printf (interdits)
 
 Redirections:
 - refactoriser apply_redirections()

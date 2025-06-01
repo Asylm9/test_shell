@@ -125,7 +125,6 @@ char	*ft_pathjoin(char const *s1, char const *s2);
 //char	**ft_split(const char *s, char c);
 //char	*ft_strjoin(const char *s1, const char *s2);
 //size_t	ft_strlen(const char *s);
-//void	ft_putendl_fd(const char *s, int fd);
 
 /* Resources */
 void	free_pipes(int **pipes, int i);
