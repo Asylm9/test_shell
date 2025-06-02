@@ -1,5 +1,14 @@
 #include "minishell.h"
 
+int	process_wait_status(int status)
+{
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (ERROR);
+}
+
 int	ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;

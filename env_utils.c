@@ -1,5 +1,25 @@
 # include "minishell.h"
 
+int	init_env_list(char *env)
+{
+	t_env	*envl;
+	char	**var;
+	int		i;
+
+	if (!var)
+		return (1);
+	i = 0;
+	while (env[i])
+	{
+		var = ft_split(env[i], '=');
+		ft_lstadd_back(&envl, envl);
+		envl->key = var[0];
+		envl->value = var[1];
+		envl->next = NULL;
+	}
+	return (0);
+}
+
 char	*get_env_var(char *name, char **env)
 {
 	int		i;

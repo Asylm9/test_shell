@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	builtin_echo(char **args, t_sh *shell)
+int	builtin_echo(char **args)
 {
 	int		i;
 	int		j;

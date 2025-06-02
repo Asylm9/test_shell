@@ -12,12 +12,7 @@ int	wait_for_children(int nb_pipes, pid_t *pids)
 	{
 		waitpid(pids[i], &status, 0);
 		if (i == nb_pipes)
-		{
-			if (WIFEXITED(status)) //tue if child exit normally
-				last_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status)) //if interrupted by signal
-				last_status = (128 + WTERMSIG(status)); //Return signal number that caused process to terminate.
-		}
+			last_status = process_wait_status(status);
 		i++;
 	}
 	return (last_status);
@@ -30,13 +25,8 @@ int	execute_command(t_command *cmd, t_sh *shell)
 
 	if (!cmd ||!cmd->cmd_name)
 		return (0);
-/* 	if (is_builtin(cmd->cmd_name))
-	{
-		//builtins executes par processus parent
-		//pas sure de la marche a suivre
-		//voir comment fonctionnent builtins
+	if (is_builtin(cmd->cmd_name))
 		return (execute_builtin(cmd, shell));
-	} */
 	pid = fork();
 	if (pid < 0)
 		return (ERROR);
@@ -45,14 +35,10 @@ int	execute_command(t_command *cmd, t_sh *shell)
 		if (apply_redirections(cmd) == ERROR)
 			exit(1);
 		status = execute_binary(cmd, shell->env);
-			exit(status);
+		exit(status);
 	}
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status))
-    	status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-    	status = 128 + WTERMSIG(status);
-	return(status);
+	return (process_wait_status(status));
 }
 
 /* Ordre d'application des redirections lors de l'exécution :
@@ -88,17 +74,17 @@ int	execute_pipeline(t_command *cmd_list, t_sh *shell)
 
 			if (setup_pipes_redirections(pipes, nb_pipes, i) == ERROR)
 			{
-				perror("dup2");  //verifier, peut-etre pas ideal
+				perror("dup2");
 				exit(1);
 			}
-			close_pipes(pipes, nb_pipes); // Aaah sans fermer les pipes les processus attendent indéfiniment des données qui n'arriveront jamais → boucle infinie!
+			close_pipes(pipes, nb_pipes); // didju sans fermer les pipes les processus attendent indéfiniment des données qui n'arriveront jamais → boucle infinie!
 			//ensuite redirections "locales"
 			if (apply_redirections(current) == ERROR)
 				exit(1);
-/* 			if (is_builtin(current->cmd_name))
+			if (is_builtin(current->cmd_name))
 				return (execute_builtin(current, shell));
-			else */
-			exit(execute_binary(current, shell->env));
+			else
+				exit(execute_binary(current, shell->env));
 		}
 		current = current->next;
 		i++;
@@ -113,6 +99,8 @@ int		execute(t_command *cmd_list, t_sh *shell)
 {
 	int	status;
 
+	//init_env_list(shell->env);
+
 	if (!cmd_list)
 		return (0);
 	if (cmd_list->next)
@@ -120,7 +108,7 @@ int		execute(t_command *cmd_list, t_sh *shell)
 	else
 		status = execute_command(cmd_list, shell);
 	shell->exit_status = status;
-	return (status); //Le shell doit toujours mettre à jour et retourner le statut de la dernière commande exécutée.
+	return (shell->exit_status ); //Le shell doit toujours mettre à jour et retourner le statut de la dernière commande exécutée.
 }
 
 /* int	main(int ac, char **av, char **envp)

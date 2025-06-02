@@ -256,6 +256,36 @@ void test_command_not_found(t_sh *shell)
     free_command_list(cmd);
 }
 
+// Test 9: exit
+void test_exit_simple(t_sh *shell)
+{
+    printf("\n=== TEST 9: exit 2 ===\n");
+    
+    char *args[] = {"2", NULL};
+    char **args_copy = dup_args(args);
+    t_command *cmd = create_command("exit", args_copy, NULL);
+    
+    int status = execute(cmd, shell);
+    printf("Status de retour: %d (2)\n", status);
+    
+    free_command_list(cmd);
+}
+
+// Test 10: pwd
+void test_pwd(t_sh *shell)
+{
+    printf("\n=== TEST 9: pwd ===\n");
+    
+    char *args[] = {NULL};
+    char **args_copy = dup_args(args);
+    t_command *cmd = create_command("pwd", args_copy, NULL);
+    
+    int status = execute(cmd, shell);
+    printf("Status de retour: %d (0)\n", status);
+    
+    free_command_list(cmd);
+}
+
 int main(int argc, char **argv, char **envp)
 {
     t_sh shell;
@@ -264,24 +294,24 @@ int main(int argc, char **argv, char **envp)
     
     printf("=== DÉBUT DES TESTS D'EXÉCUTION ===\n");
     
-    // Initialisation du shell
     init_shell_struct(&shell, envp);
     
     // Exécution des tests
-/* 
-    test_simple_command(&shell);
-    test_pipeline(&shell);
-    test_output_redirect(&shell);
-    test_input_redirect(&shell); */
-    test_pipeline_with_redirect(&shell); //loop
-    test_long_pipeline(&shell);
-/*     test_append_redirect(&shell);
-    test_command_not_found(&shell); */
+
+    //test_simple_command(&shell);
+    //test_pipeline(&shell);
+    //test_output_redirect(&shell);
+    //test_input_redirect(&shell);
+    //test_pipeline_with_redirect(&shell);
+    //test_long_pipeline(&shell);
+    //test_append_redirect(&shell);
+    //test_command_not_found(&shell);
+    //test_exit_simple(&shell);
+    test_pwd(&shell);
     
     printf("\n=== FIN DES TESTS ===\n");
     printf("Status final du shell: %d\n", shell.exit_status);
     
-    // Nettoyage
     cleanup_shell(&shell);
     
     return (0);

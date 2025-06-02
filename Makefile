@@ -4,7 +4,7 @@ NAME = test_exec
 
 # Compilateur et flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -w
 LIBS = -lreadline -lhistory
 
 # Répertoires
@@ -20,7 +20,14 @@ SRCS = main.c \
        env_utils.c \
        manual_init.c \
        resources.c \
-       utils.c
+       utils.c \
+	   builtins/builtins_utils.c \
+	   builtins/cd.c \
+	   builtins/echo.c \
+	   builtins/env.c \
+	   builtins/exit.c \
+	   builtins/pwd.c \
+	   builtins/unset.c
 
 # Fichiers objets
 OBJS = $(SRCS:.c=.o)

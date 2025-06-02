@@ -34,7 +34,20 @@
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;
 typedef struct s_sh		    t_sh;
-//typedef struct s_env		t_env;
+typedef struct s_token		t_token;
+typedef struct s_env		t_env;
+
+
+typedef enum e_token_type
+{
+	TOKEN_EXIT_STATUS
+}			t_token_type;
+
+typedef struct s_token
+{
+	t_token_type	type;
+	t_token			*next;
+}			t_token;
 
 typedef enum e_redir_type
 {
@@ -60,12 +73,12 @@ typedef struct s_command
 	t_command	*next;
 }			t_command;
 
-/* typedef struct s_env
+typedef struct s_env
 {
 	char	*key;
 	char	*value;
 	t_env	*next;
-}			t_env; */
+}			t_env;
 
 
 typedef struct s_sh
@@ -86,6 +99,9 @@ typedef	struct s_exec
 	int			i;
 	int			status;
 }				t_exec;
+
+/* Expander */
+char	*expand_exit_status(t_sh *shell, t_token token);
 
 /* Execution */
 int		execute(t_command *cmd_list, t_sh *shell); //transformer en execute_ast probablement :v
@@ -129,14 +145,11 @@ int		builtin_exit(char **args, t_sh *shell);
 
 
 /* Utils */
-void	error_message(const char *msg);
+int		process_wait_status(int status);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_pathjoin(char const *s1, char const *s2);
-//char	*ft_strdup(const char *s);
-//char	**ft_split(const char *s, char c);
-//char	*ft_strjoin(const char *s1, const char *s2);
-//size_t	ft_strlen(const char *s);
+//void	error_message(const char *msg);
 
 /* Resources */
 void	free_pipes(int **pipes, int i);

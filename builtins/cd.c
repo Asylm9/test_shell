@@ -4,7 +4,6 @@ static char *set_new_path(char **args, t_sh *shell)
 {
 	char	*new_path;
 	int 	argc;
-	int		i;
 
 	new_path = NULL;
 	argc = args_count(args);
@@ -72,7 +71,7 @@ int	builtin_cd(char **args, t_sh *shell)
 		return (ERROR);
 	// changer current directory
 	if (chdir(new_path) < 0)
-		return (free(new_path), BUILTIN_ERR);
+		return (BUILTIN_ERR);
 	if (update_pwds(shell, curr_dir) != 0)
 		return (BUILTIN_ERR);
 	return (SUCCESS);

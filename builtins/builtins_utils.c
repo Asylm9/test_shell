@@ -10,7 +10,7 @@ int	args_count(char **args)
 	return (count);
 }
 
-/* bool	is_builtin(char *cmd_name)
+bool	is_builtin(char *cmd_name)
 {
 	if (!cmd_name)
 		return (false);
@@ -23,7 +23,7 @@ int	args_count(char **args)
 		ft_strcmp(cmd_name, "exit") == 0)
 		return (true);
 	return (false);
-} */
+}
 
 int		execute_builtin(t_command *cmd, t_sh *shell)
 {
@@ -42,26 +42,23 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 		shell->exit_status = builtin_env(shell);
 	else if (ft_strcmp(cmd->cmd_name, "exit") == 0)
 		shell->exit_status = builtin_exit(cmd->args, shell);
-	return (0);
+	return (shell->exit_status);
 }
 
-int	main(int ac, char **av, char **envp)
+/* int	main(int ac, char **av, char **envp)
 {
 	t_sh		shell;
 	t_command	cmd;
 	int			i;
+	(void)ac;
 
 	i = 0;
 	init_shell_struct(&shell, envp);
 	init_cmd_struct(&cmd, &av[1], NULL);
-/* 	while (av[i])
-	{
-		printf("args cmd: %s\n", cmd.args[i]);
-		i++;
-	} */
+
 	builtin_pwd(&shell);
 	execute_builtin(&cmd, &shell);
 	builtin_pwd(&shell);
 	cleanup_shell(&shell);
 	return (shell.exit_status);
-}
+} */
