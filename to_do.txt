@@ -2,6 +2,7 @@
 ELEVE:
 - fix pipes -> good pour l'instant
 - Builtins: is_builtin + execute_builtin OK
+	- switch 2d array -> linked list
 	- echo ++ ok
 	- cd +++ ok
 	- pwd + ok
@@ -13,7 +14,6 @@ ELEVE:
 shlvl??
 
 MOYEN
-- finir env cmd binaires
 - Transformer exucute fonctions pour parcourir AST -> attendre
 - binary paths OK
 

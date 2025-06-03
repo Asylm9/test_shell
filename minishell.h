@@ -69,6 +69,7 @@ typedef struct s_command
 {
 	char		*cmd_name;
 	char 		**args;
+	//int		arg_count;
 	t_redirect	*redirections;
 	t_command	*next;
 }			t_command;
@@ -84,6 +85,7 @@ typedef struct s_env
 typedef struct s_sh
 {
 	char		**env;
+	t_env		*envl;
 	char		**export; // static? 
 	t_command	*cmd_list;
 	char		*current_dir;
@@ -104,6 +106,7 @@ typedef	struct s_exec
 char	*expand_exit_status(t_sh *shell, t_token token);
 
 /* Execution */
+int		process_wait_status(int status);
 int		execute(t_command *cmd_list, t_sh *shell); //transformer en execute_ast probablement :v
 int		execute_command(t_command *cmd, t_sh *shell);
 int		execute_pipeline(t_command *cmds, t_sh *shell);
@@ -129,6 +132,7 @@ int		**create_pipes(int nb_pipes);
 
 /* Builtin commands */
 int		args_count(char **args);
+bool	state_changing_builtin(char *cmd_name);
 bool	is_builtin(char *cmd_name);
 int		execute_builtin(t_command *cmd, t_sh *shell);
 
@@ -142,20 +146,28 @@ int		builtin_env(t_sh *shell);
 int		builtin_exit(char **args, t_sh *shell);
 
 /* Env utils */
-
+t_env	*init_env_list(char **env);
+/* char	*get_env_var(char *name, char **env);
+int		set_env_var(char *name, char **env, char *value); */
 
 /* Utils */
-int		process_wait_status(int status);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_pathjoin(char const *s1, char const *s2);
 //void	error_message(const char *msg);
+
+/* List utils */
+t_env	*create_node(char *key, char *value);
+t_env	*find_last_node(t_env *head);
+t_env	*add_back_node(t_env *new_node, t_env *head);
 
 /* Resources */
 void	free_pipes(int **pipes, int i);
 void	free_array(char **array, int i);
 
 /* Testing */
+void	print_env_list(t_env *envl);
+
 void	init_redir(t_redirect *redir);
 void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir);
 void	init_shell_struct(t_sh *shell, char **envp);

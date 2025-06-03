@@ -25,7 +25,7 @@ int	execute_command(t_command *cmd, t_sh *shell)
 
 	if (!cmd ||!cmd->cmd_name)
 		return (0);
-	if (is_builtin(cmd->cmd_name))
+	if (is_builtin(cmd->cmd_name) && (state_changing_builtin(cmd->cmd_name) || !cmd->redirections ))
 		return (execute_builtin(cmd, shell));
 	pid = fork();
 	if (pid < 0)
@@ -34,8 +34,9 @@ int	execute_command(t_command *cmd, t_sh *shell)
 	{
 		if (apply_redirections(cmd) == ERROR)
 			exit(1);
-		status = execute_binary(cmd, shell->env);
-		exit(status);
+		if (is_builtin(cmd->cmd_name))
+			exit(execute_builtin(cmd, shell));
+		exit(execute_binary(cmd, shell->env));
 	}
 	waitpid(pid, &status, 0);
 	return (process_wait_status(status));

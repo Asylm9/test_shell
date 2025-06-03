@@ -1,23 +1,32 @@
 # include "minishell.h"
 
-int	init_env_list(char *env)
+t_env	*init_env_list(char **env)
 {
-	t_env	*envl;
 	char	**var;
+	t_env	*new_node;
+	t_env	*head;
 	int		i;
 
-	if (!var)
-		return (1);
+	if (!env)
+		return (NULL);
+	head = NULL;
 	i = 0;
 	while (env[i])
 	{
 		var = ft_split(env[i], '=');
-		ft_lstadd_back(&envl, envl);
-		envl->key = var[0];
-		envl->value = var[1];
-		envl->next = NULL;
+		if (!var)
+			return (NULL);
+		if (var[1])
+			new_node = create_node(ft_strdup(var[0]), ft_strdup(var[1]));
+		else
+			new_node = create_node(ft_strdup(var[0]), NULL);
+		if (!new_node)
+			return (NULL);
+		free_array(var, -1);
+		head = add_back_node(new_node, head);
+		i++;
 	}
-	return (0);
+	return (head);
 }
 
 char	*get_env_var(char *name, char **env)

@@ -21,6 +21,7 @@ SRCS = main.c \
        manual_init.c \
        resources.c \
        utils.c \
+	   list_utils.c \
 	   builtins/builtins_utils.c \
 	   builtins/cd.c \
 	   builtins/echo.c \

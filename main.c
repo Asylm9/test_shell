@@ -261,7 +261,7 @@ void test_exit_simple(t_sh *shell)
 {
     printf("\n=== TEST 9: exit 2 ===\n");
     
-    char *args[] = {"2", NULL};
+    char *args[] = {"abc", NULL};
     char **args_copy = dup_args(args);
     t_command *cmd = create_command("exit", args_copy, NULL);
     
@@ -274,7 +274,7 @@ void test_exit_simple(t_sh *shell)
 // Test 10: pwd
 void test_pwd(t_sh *shell)
 {
-    printf("\n=== TEST 9: pwd ===\n");
+    printf("\n=== TEST 10: pwd ===\n");
     
     char *args[] = {NULL};
     char **args_copy = dup_args(args);
@@ -292,10 +292,12 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
     
+
     printf("=== DÉBUT DES TESTS D'EXÉCUTION ===\n");
     
     init_shell_struct(&shell, envp);
-    
+    init_env_list(shell.env);
+
     // Exécution des tests
 
     //test_simple_command(&shell);
@@ -307,10 +309,10 @@ int main(int argc, char **argv, char **envp)
     //test_append_redirect(&shell);
     //test_command_not_found(&shell);
     //test_exit_simple(&shell);
-    test_pwd(&shell);
+    //test_pwd(&shell);
     
-    printf("\n=== FIN DES TESTS ===\n");
-    printf("Status final du shell: %d\n", shell.exit_status);
+/*     printf("\n=== FIN DES TESTS ===\n");
+    printf("Status final du shell: %d\n", shell.exit_status); */
     
     cleanup_shell(&shell);
     
