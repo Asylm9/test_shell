@@ -10,11 +10,11 @@ static char *set_new_path(char **args, t_sh *shell)
 	if (argc > 2)
 		return(printf_fd(STDERR, "minishell: cd: too many arguments\n"), NULL);
 	if (argc == 1)
-		new_path = get_env_var("HOME", shell->envl);
+		new_path = get_envl_var("HOME", shell->envl);
 	else if (argc == 2)
 	{
 		if (args[1][0] == '-')
-			new_path = get_env_var("OLDPWD", shell->envl);
+			new_path = get_envl_var("OLDPWD", shell->envl);
 		else
 			new_path = (args[1]);
 	}
@@ -47,7 +47,7 @@ int	validate_path(char **args, char *new_path)
 int update_pwds(t_sh *shell, char *curr_dir)
 {
 	// actualiser OLDPWD avec current
-	set_env_varl("OLDPWD", &shell->envl, curr_dir);
+	set_envl_var("OLDPWD", &shell->envl, curr_dir);
 	if (!getcwd(curr_dir, PATH_MAX)) 
 		return (perror("getcwd"), BUILTIN_ERR);
 	// actualiser PWD avec current

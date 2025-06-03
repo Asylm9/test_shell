@@ -75,7 +75,9 @@ int	main(int ac, char **av, char **envp)
 	init_shell_struct(&shell, envp);
 	init_cmd_struct(&cmd, &av[1], NULL);
 
+	builtin_pwd(&shell);
 	execute_builtin(&cmd, &shell);
+	builtin_pwd(&shell);
 
 	cleanup_shell(&shell);
 	return (shell.exit_status);
