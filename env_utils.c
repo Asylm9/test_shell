@@ -28,26 +28,48 @@ t_env	*init_env_list(char **env)
 	}
 	return (head);
 }
-
-char	*get_env_var(char *name, char **env)
+char	*get_envl_var(char *name, t_env *envl)
 {
-	int		i;
 	int		len;
+	t_env	*current;
 
-	if (!name || !env)
+	if (!name || !envl)
 		return (NULL);
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
+	current = envl;
+	while (current)
 	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-			return (ft_strdup(env[i] + len + 1));
-		i++;
+		if (ft_strcmp(envl->key, name) == 0)
+			return (envl->value);
+		current = current->next;
 	}
 	return (NULL);
 }
+int	set_envl_var(char *name, t_env **envl, char *value)
+{
+	t_env	*head;
+	char	*key;
+	char	*new_value;
 
-int	set_env_var(char *name, char **env, char *value)
+	if (!name || !envl)
+		return (ERROR);
+	head = *envl;
+	while (*envl)
+	{
+		if (ft_strcmp((*envl)->key, name) == 0)
+		{
+			//if ((*envl)->value)
+			free((*envl)->value);
+			(*envl)->value = ft_strdup(value);
+			return (SUCCESS);
+		}
+		*envl = (*envl)->next;
+	}
+	//add entry
+	*envl = head;
+	return (ERROR);
+}
+
+/* int	set_env_var(char *name, char **env, char *value)
 {
 	int		i;
 	int		len;
@@ -80,7 +102,7 @@ int	set_env_var(char *name, char **env, char *value)
 	}
 	// key non trouvee
 	return (ERROR);
-}
+} */
 
 /* int	set_env_var(char *name, char **env, char *value)
 {

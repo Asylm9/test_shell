@@ -137,7 +137,7 @@ bool	is_builtin(char *cmd_name);
 int		execute_builtin(t_command *cmd, t_sh *shell);
 
 /* Builtin implementations */
-int		builtin_echo(char **args, t_sh *shell);
+int		builtin_echo(char **args);
 int		builtin_cd(char **args, t_sh *shell);
 int		builtin_pwd(t_sh *shell);
 int		builtin_export(char **args, t_sh *shell);
@@ -147,6 +147,8 @@ int		builtin_exit(char **args, t_sh *shell);
 
 /* Env utils */
 t_env	*init_env_list(char **env);
+char	*get_envl_var(char *name, t_env *envl);
+int		set_envl_var(char *name, t_env **envl, char *value);
 /* char	*get_env_var(char *name, char **env);
 int		set_env_var(char *name, char **env, char *value); */
 

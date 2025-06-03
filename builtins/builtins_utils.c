@@ -46,7 +46,7 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 	
 	// shell->exit_code a la place de return?
 	if (ft_strcmp(cmd->cmd_name, "echo") == 0)
-		shell->exit_status = builtin_echo(cmd->args, shell);
+		shell->exit_status = builtin_echo(cmd->args);
 	else if (ft_strcmp(cmd->cmd_name, "cd") == 0)
 		shell->exit_status = builtin_cd(cmd->args, shell);
 	else if (ft_strcmp(cmd->cmd_name, "pwd") == 0)
