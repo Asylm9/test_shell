@@ -164,6 +164,8 @@ t_env	*add_back_node(t_env *new_node, t_env *head);
 /* Resources */
 void	free_pipes(int **pipes, int i);
 void	free_array(char **array, int i);
+void	free_envl(t_env **head);
+void	cleanup_shell(t_sh *shell);
 
 /* Testing */
 void	print_env_list(t_env *envl);
@@ -171,6 +173,5 @@ void	print_env_list(t_env *envl);
 void	init_redir(t_redirect *redir);
 void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir);
 void	init_shell_struct(t_sh *shell, char **envp);
-void	cleanup_shell(t_sh *shell);
 
 #endif
