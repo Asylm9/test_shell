@@ -39,13 +39,10 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 {
 	t_env	envl;
 
-
 	if (!cmd || !shell)
 		return (ERROR); 
 
 	shell->envl = init_env_list(shell->env);
-	print_env_list(shell->envl);
-	printf("\n");
 	
 	// shell->exit_code a la place de return?
 	if (ft_strcmp(cmd->cmd_name, "echo") == 0)
