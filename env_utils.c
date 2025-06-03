@@ -28,6 +28,7 @@ t_env	*init_env_list(char **env)
 	}
 	return (head);
 }
+
 char	*get_envl_var(char *name, t_env *envl)
 {
 	int		len;
@@ -44,6 +45,7 @@ char	*get_envl_var(char *name, t_env *envl)
 	}
 	return (NULL);
 }
+
 int	set_envl_var(char *name, t_env **envl, char *value)
 {
 	t_env	*current;
@@ -57,7 +59,6 @@ int	set_envl_var(char *name, t_env **envl, char *value)
 	{
 		if (ft_strcmp(current->key, name) == 0)
 		{
-			//if (current->value)
 			free(current->value);
 			current->value = ft_strdup(value); //verifier vie de value/strdup obligatoire? 
 			if (!current->value)
@@ -66,102 +67,17 @@ int	set_envl_var(char *name, t_env **envl, char *value)
 		}
 		current = current->next;
 	}
-	//add entry
-	return (ERROR);
+	return (add_new_entry(name, value, envl));
 }
 
-/* int	set_env_var(char *name, char **env, char *value)
+int	add_new_entry(char *key, char *value, t_env **envl)
 {
-	int		i;
-	int		len;
-	char	*key;
-	char	*new_value;
+	t_env	*new_node;
 
-	if (!name || !env)
+	//uniquement appele depuis set_envl_var pour l'instant:pas besoin de reverifier !key,!value!,env
+	new_node = create_node(key, value);
+	if (!new_node)
 		return (ERROR);
-	len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-		{
-			free(env[i]);
-			key = ft_strjoin(name, "=");
-			if (!key)
-				return (ERROR);
-			new_value = ft_strjoin(key, value);
-			if (!new_value)
-			{
-				free(key);
-				return (ERROR);
-			}
-			free(key);
-			env[i] = new_value;
-			return (SUCCESS);
-		}
-		i++;
-	}
-	// key non trouvee
-	return (ERROR);
-} */
-
-/* int	set_env_var(char *name, char **env, char *value)
-{
-	int		i;
-	char	*key;
-	char	*new_value;
-
-	if (!name || !env)
-		return (ERROR);
-	i = 0;
-
-	if (key_found(name, env))
-	{
-
-	}
-	else
-		add_new_entry(name, value, env);
-	return (ERROR);
+	*envl = add_back_node(new_node, envl);
+	return (SUCCESS);
 }
-
-int	add_new_entry(char *name, char *value, char **env)
-{
-
-}
-
-bool	key_found(char *name, char **env)
-{
-	int		i;
-	int		len;
-
-	len = ft_strlen(name);
-	i = 0;
-	while (shell->env[i])
-	{
-		if (ft_strncmp(shell->env[i], name, len) == 0 && env[i][len] == '=')
-			retun(true);
-		i++;
-	}
-		while (env[i])
-	{
-		if (ft_strncmp(env[i], name, len) == 0 && env[i][len] == '=')
-		{
-			free(env[i]);
-			key = ft_strjoin(name, "=");
-			if (!key)
-				return (ERROR);
-			new_value = ft_strjoin(key, value);
-			if (!new_value)
-			{
-				free(key);
-				return (ERROR);
-			}
-			free(key);
-			env[i] = new_value;
-			return (SUCCESS);
-		}
-
-		i++;
-	}
-	return (false);
-} */

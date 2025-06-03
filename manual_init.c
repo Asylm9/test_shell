@@ -33,4 +33,6 @@ void	init_shell_struct(t_sh *shell, char **envp)
 	}
 	shell->env[i] = NULL;
 	shell->exit_status = 0;
+
+	shell->envl = init_env_list(shell->env);
 }

@@ -41,8 +41,6 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 
 	if (!cmd || !shell)
 		return (ERROR); 
-
-	shell->envl = init_env_list(shell->env);
 	
 	// shell->exit_code a la place de return?
 	if (ft_strcmp(cmd->cmd_name, "echo") == 0)
@@ -62,7 +60,7 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 	return (shell->exit_status);
 }
 
-int	main(int ac, char **av, char **envp)
+/* int	main(int ac, char **av, char **envp)
 {
 	t_sh		shell;
 	t_command	cmd;
@@ -81,4 +79,4 @@ int	main(int ac, char **av, char **envp)
 
 	cleanup_shell(&shell);
 	return (shell.exit_status);
-}
+} */

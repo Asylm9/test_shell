@@ -296,23 +296,28 @@ int main(int argc, char **argv, char **envp)
     printf("=== DÉBUT DES TESTS D'EXÉCUTION ===\n");
     
     init_shell_struct(&shell, envp);
-    init_env_list(shell.env);
+	if (!shell.envl)
+	{
+		printf("Erreur : impossible d'initialiser la liste d'environnement\n");
+		cleanup_shell(&shell);
+		return (1);
+	}
 
     // Exécution des tests
 
-    //test_simple_command(&shell);
-    //test_pipeline(&shell);
-    //test_output_redirect(&shell);
-    //test_input_redirect(&shell);
-    //test_pipeline_with_redirect(&shell);
-    //test_long_pipeline(&shell);
-    //test_append_redirect(&shell);
-    //test_command_not_found(&shell);
+    test_simple_command(&shell);
+    test_pipeline(&shell);
+    test_output_redirect(&shell);
+    test_input_redirect(&shell);
+    test_pipeline_with_redirect(&shell);
+    test_long_pipeline(&shell);
+    test_append_redirect(&shell);
+    test_command_not_found(&shell);
     //test_exit_simple(&shell);
-    //test_pwd(&shell);
+    test_pwd(&shell);
     
-/*     printf("\n=== FIN DES TESTS ===\n");
-    printf("Status final du shell: %d\n", shell.exit_status); */
+    printf("\n=== FIN DES TESTS ===\n");
+    printf("Status final du shell: %d\n", shell.exit_status);
     
     cleanup_shell(&shell);
     
