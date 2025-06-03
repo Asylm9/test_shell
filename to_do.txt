@@ -7,7 +7,7 @@ ELEVE:
 	- cd +++ ok
 	- pwd + ok
 	- export ++++
-	- unset +++ ok
+	- unset +++ -> en cours (manque suppression de node + export)
 	- env + ok
 	- exit +++ FINITO (p-e verifier si %256 auto avec exit() )
 
