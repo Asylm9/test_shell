@@ -38,34 +38,35 @@ char	*get_envl_var(char *name, t_env *envl)
 	current = envl;
 	while (current)
 	{
-		if (ft_strcmp(envl->key, name) == 0)
-			return (envl->value);
+		if (ft_strcmp(current->key, name) == 0)
+			return (current->value);
 		current = current->next;
 	}
 	return (NULL);
 }
 int	set_envl_var(char *name, t_env **envl, char *value)
 {
-	t_env	*head;
+	t_env	*current;
 	char	*key;
 	char	*new_value;
 
 	if (!name || !envl)
 		return (ERROR);
-	head = *envl;
-	while (*envl)
+	current = *envl;
+	while (current)
 	{
-		if (ft_strcmp((*envl)->key, name) == 0)
+		if (ft_strcmp(current->key, name) == 0)
 		{
-			//if ((*envl)->value)
-			free((*envl)->value);
-			(*envl)->value = ft_strdup(value);
+			//if (current->value)
+			free(current->value);
+			current->value = ft_strdup(value); //verifier vie de value/strdup obligatoire? 
+			if (!current->value)
+				return (ERROR);
 			return (SUCCESS);
 		}
-		*envl = (*envl)->next;
+		current = current->next;
 	}
 	//add entry
-	*envl = head;
 	return (ERROR);
 }
 

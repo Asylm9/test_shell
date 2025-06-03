@@ -41,6 +41,7 @@ void	free_envl(t_env **head)
 		free(*head);
 		*head = tmp;
 	}
+	*head = NULL;
 }
 
 void	cleanup_shell(t_sh *shell)
