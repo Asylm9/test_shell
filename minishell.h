@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/04 16:10:15 by magoosse          #+#    #+#             */
+/*   Updated: 2025/06/04 16:10:16 by magoosse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXEC_H
 # define EXEC_H
 
@@ -31,6 +43,19 @@
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;
 typedef struct s_sh			t_sh;
+typedef struct s_token		t_token;
+typedef struct s_ast		t_ast;
+
+typedef enum e_token_type
+{
+	COMMAND,
+	ARGUMENT,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	REDIR_HEREDOC
+}							t_token_type;
 
 typedef enum e_redir_type
 {
@@ -39,6 +64,23 @@ typedef enum e_redir_type
 	APPEND, // >>
 	HEREDOC // <<
 }							t_redir_type;
+
+typedef struct s_token
+{
+	char					*value;
+	int						expand;
+	t_token_type			type;
+	t_token					*next;
+}							t_token;
+
+typedef struct s_ast
+{
+	t_token_type			type;
+	// char				**cmd;
+	t_command				*cmd;
+	t_ast					*left;
+	t_ast					*right;
+}							t_ast;
 
 typedef struct s_redirect
 {
