@@ -1,26 +1,33 @@
 #include "../minishell.h"
 
+static int	delete_env_var(t_env *current, t_env **head)
+{
+
+	return (SUCCESS);
+}
+
+
 int		builtin_unset(char **args, t_env **envl)
 {
 	t_env	*current;
+	int		i;
 
 	if (!args[1])
 		return (SUCCESS); //ne se passe rien/retour de la ligne de commande
-	current = envl;
-	while (*args)
+	i = 1;
+	while (args[i])
 	{
-		j = 0;
+		current = *envl;
 		while (current)
 		{
-			if (ft_strcmp(current, *args) == 0)
+			if (ft_strcmp(current->key, args[i]) == 0)
 			{
-				free(current);
-				?
-				break ;
+				delete_env_var(current, envl);
+				break;
 			}
 			current = current->next;
 		}
-		args++;;
+		i++;
 	}
 	return (SUCCESS);
 }
