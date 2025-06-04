@@ -1,0 +1,34 @@
+# Object files
+*.o
+
+# Executable files
+minishell
+
+# Debug and core dumps
+*.log
+
+# Dependency files
+*.d
+
+# Temporary files
+*~
+*.swp
+*.swo
+.DS_Store
+
+# Makefile-generated files
+*.out
+*.a
+*.so
+
+# Build directories
+build/
+bin/
+obj/
+
+# Valgrind and gdb output
+vgcore.*
+.gdb_history
+
+# Visual Studio Code or other IDE config folders
+.vscode/
