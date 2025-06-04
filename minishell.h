@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:15 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/04 16:10:16 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/04 21:20:56 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ typedef struct s_ast		t_ast;
 
 typedef enum e_token_type
 {
-	COMMAND,
-	ARGUMENT,
+	WORD,
 	PIPE,
 	REDIR_IN,
 	REDIR_OUT,
@@ -65,10 +64,16 @@ typedef enum e_redir_type
 	HEREDOC // <<
 }							t_redir_type;
 
+typedef enum e_expand
+{
+	EXPAND,
+	NO_EXPAND
+}							t_expand;
+
 typedef struct s_token
 {
 	char					*value;
-	int						expand;
+	t_expand				expand;
 	t_token_type			type;
 	t_token					*next;
 }							t_token;
