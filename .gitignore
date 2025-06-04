@@ -31,8 +31,4 @@ vgcore.*
 .gdb_history
 
 # Visual Studio Code or other IDE config folders
-<<<<<<< HEAD
 .vscode/
-=======
-.vscode/
->>>>>>> 076bc1566e9b8695fb8efe2a916be88c810c55dc
