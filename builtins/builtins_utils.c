@@ -52,7 +52,7 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 /* 	else if (ft_strcmp(cmd->cmd_name, "export") == 0)
 		shell->exit_status = builtin_export(cmd->args, shell); */
 	else if (ft_strcmp(cmd->cmd_name, "unset") == 0)
-		shell->exit_status = builtin_unset(cmd->args, shell);
+		shell->exit_status = builtin_unset(cmd->args, &shell->envl);
 	else if (ft_strcmp(cmd->cmd_name, "env") == 0)
 		shell->exit_status = builtin_env(shell);
 	else if (ft_strcmp(cmd->cmd_name, "exit") == 0)
@@ -60,7 +60,7 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 	return (shell->exit_status);
 }
 
-/* int	main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	t_sh		shell;
 	t_command	cmd;
@@ -73,10 +73,11 @@ int		execute_builtin(t_command *cmd, t_sh *shell)
 	init_shell_struct(&shell, envp);
 	init_cmd_struct(&cmd, &av[1], NULL);
 
-	builtin_pwd(&shell);
+	builtin_env(&shell);
+	printf("\n---------------------------------\n");
 	execute_builtin(&cmd, &shell);
-	builtin_pwd(&shell);
+	builtin_env(&shell);
 
 	cleanup_shell(&shell);
 	return (shell.exit_status);
-} */
+}

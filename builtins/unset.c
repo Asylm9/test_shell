@@ -1,11 +1,18 @@
 #include "../minishell.h"
 
-static int	delete_env_var(t_env *current, t_env **head)
+static	void delete_env_var(t_env *current, t_env **head)
 {
+	t_env	*prev;
+	t_env	*next;
 
-	return (SUCCESS);
+	prev = current->prev;
+	next = current->next;
+	prev->next = next;
+	next->prev = prev;
+	free(current->key);
+	free(current->value);
+	free(current);
 }
-
 
 int		builtin_unset(char **args, t_env **envl)
 {

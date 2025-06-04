@@ -29,6 +29,18 @@ t_env	*init_env_list(char **env)
 	return (head);
 }
 
+int	add_new_entry(char *key, char *value, t_env **envl)
+{
+	t_env	*new_node;
+
+	//uniquement appele depuis set_envl_var pour l'instant:pas besoin de reverifier !key,!value!,env
+	new_node = create_node(key, value);
+	if (!new_node)
+		return (ERROR);
+	*envl = add_back_node(new_node, *envl);
+	return (SUCCESS);
+}
+
 char	*get_envl_var(char *name, t_env *envl)
 {
 	int		len;
@@ -70,14 +82,3 @@ int	set_envl_var(char *name, t_env **envl, char *value)
 	return (add_new_entry(name, value, envl));
 }
 
-int	add_new_entry(char *key, char *value, t_env **envl)
-{
-	t_env	*new_node;
-
-	//uniquement appele depuis set_envl_var pour l'instant:pas besoin de reverifier !key,!value!,env
-	new_node = create_node(key, value);
-	if (!new_node)
-		return (ERROR);
-	*envl = add_back_node(new_node, envl);
-	return (SUCCESS);
-}
