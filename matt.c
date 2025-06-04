@@ -1,34 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   matt.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
+/*   Updated: 2025/06/04 16:11:38 by magoosse         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-typedef enum e_token_type
-{
-	COMMAND,
-	ARGUMENT,
-	PIPE,
-	REDIR_IN,
-	REDIR_OUT,
-	REDIR_APPEND,
-	REDIR_HEREDOC
-}						t_token_type;
-
-typedef struct s_token	t_token;
-typedef struct s_ast	t_ast;
-
-typedef struct s_token
-{
-	char				*value;
-	t_token_type		type;
-	t_token				*next;
-}						t_token;
-
-typedef struct s_ast
-{
-	t_token_type		type;
-	// char				**cmd;
-	t_command			*cmd;
-	t_ast				*left;
-	t_ast				*right;
-}						t_ast;
 
 int	tokenize_input(t_token *tok_lst, const char *input)
 {
@@ -96,10 +78,7 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 			i++;
 		if (input[i] == '\0')
 			break ;
-		// while (input[end] && input[end] == ' ')
-		// 	end++;
-		if (input[end] != '\0')
-			tok_lst = tok_lst->next;
+		tok_lst = tok_lst->next;
 		start = end + 1;
 	}
 	tok_lst->next = NULL;
@@ -123,14 +102,14 @@ void	print_token(t_token *tok_lst)
 	}
 }
 
-int	count_cmd_args(t_token *tok_lst)
+int	count_cmds(t_token *tok_lst)
 {
 	int	count;
 
 	count = 0;
 	while (tok_lst)
 	{
-		if (tok_lst->type == COMMAND || tok_lst->type == ARGUMENT)
+		if (tok_lst->type == COMMAND)
 			count++;
 		tok_lst = tok_lst->next;
 	}
@@ -141,14 +120,15 @@ int	parse_ast(t_token *tok_lst, t_ast *ast)
 {
 	t_ast	*new_ast;
 	int		arg_count;
+	int		i;
+	char	**new_args;
 
-	arg_count = count_cmd_args(tok_lst);
+	arg_count = count_cmds(tok_lst);
 	if (arg_count > 0)
 	{
 		ast->cmd = malloc(sizeof(t_command));
 		if (!ast->cmd)
 			return (1);
-		ast->cmd = NULL;
 	}
 	else
 		ast->cmd = NULL;
@@ -156,11 +136,36 @@ int	parse_ast(t_token *tok_lst, t_ast *ast)
 	{
 		if (tok_lst->type == COMMAND)
 		{
-			printf("test\n");
 			ast->cmd->cmd_name = strdup(tok_lst->value);
 			if (!ast->cmd->cmd_name)
 				return (1);
 			ast->type = COMMAND;
+		}
+		else if (tok_lst->type == ARGUMENT)
+		{
+			if (ast->cmd->args == NULL)
+			{
+				ast->cmd->args = malloc(sizeof(char *) * 2);
+				if (!ast->cmd->args)
+					return (1);
+				ast->cmd->args[0] = ft_strdup(tok_lst->value);
+				if (!ast->cmd->args[0])
+					return (1);
+				ast->cmd->args[1] = NULL;
+			}
+			else
+			{
+				for (i = 0; ast->cmd->args[i]; i++)
+					;
+				new_args = realloc(ast->cmd->args, sizeof(char *) * (i + 2));
+				if (!new_args)
+					return (1);
+				new_args[i] = strdup(tok_lst->value);
+				if (!new_args[i])
+					return (1);
+				new_args[i + 1] = NULL;
+				ast->cmd->args = new_args;
+			}
 		}
 		else if (tok_lst->type == PIPE)
 		{
@@ -213,6 +218,7 @@ int	parse_ast(t_token *tok_lst, t_ast *ast)
 		}
 		tok_lst = tok_lst->next;
 	}
+	printf("AST created successfully.\n");
 	return (0);
 }
 
@@ -250,7 +256,9 @@ void	print_ast(t_ast *ast)
 		print_ast(ast->left);
 	else
 		printf("No left child\n");
-	if (ast->right)
+	printf("Right child:\n");
+	printf("ast right value: %p\n", (void *)ast->right);
+	if (ast->right->cmd)
 		print_ast(ast->right);
 	else
 		printf("No right child\n");
@@ -262,6 +270,18 @@ int	main(int ac, char **av)
 	t_token		*tok_lst;
 	t_ast		*ast;
 
+	if (ac > 1)
+	{
+		fprintf(stderr, "Usage: %s\n", av[0]);
+		return (1);
+	}
+	tok_lst = malloc(sizeof(t_token));
+	if (!tok_lst)
+	{
+		perror("malloc");
+		return (1);
+	}
+	tok_lst->next = NULL;
 	while (1)
 	{
 		input = readline("Minishell> ");
