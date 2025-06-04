@@ -87,7 +87,7 @@ typedef struct s_sh
 {
 	char		**env;
 	t_env		*envl;
-	char		**export; // static? 
+
 	t_command	*cmd_list;
 	char		*current_dir;
 	int			exit_status;
@@ -141,7 +141,7 @@ int		execute_builtin(t_command *cmd, t_sh *shell);
 int		builtin_echo(char **args);
 int		builtin_cd(char **args, t_sh *shell); //double pointeur??
 int		builtin_pwd(t_sh *shell);
-int		builtin_export(char **args, t_sh *shell);
+int		builtin_export(char **args, t_env **envl);
 int		builtin_unset(char **args, t_env **envl);
 int		builtin_env(t_sh *shell);
 int		builtin_exit(char **args, t_sh *shell);
@@ -161,6 +161,8 @@ char	*ft_pathjoin(char const *s1, char const *s2);
 //void	error_message(const char *msg);
 
 /* List utils */
+void	print_env_list(t_env *envl);
+void	print_exp_list(t_env *envl);
 t_env	*create_node(char *key, char *value);
 t_env	*find_last_node(t_env *head);
 t_env	*add_back_node(t_env *new_node, t_env *head);
@@ -172,8 +174,6 @@ void	free_envl(t_env **head);
 void	cleanup_shell(t_sh *shell);
 
 /* Testing */
-void	print_env_list(t_env *envl);
-
 void	init_redir(t_redirect *redir);
 void	init_cmd_struct(t_command *cmd, char **av, t_redirect *redir);
 void	init_shell_struct(t_sh *shell, char **envp);

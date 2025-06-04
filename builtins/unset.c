@@ -12,6 +12,11 @@ static	void delete_env_var(t_env *current, t_env **head)
 	free(current->key);
 	free(current->value);
 	free(current);
+/* 	printf("prev key: %s, prev value: %s\n", prev->key, prev->value);
+	printf("next key: %s, next->value: %s\n", prev->next->key, prev->next->value);
+	printf("\n---------------------------------------------\n");
+	printf("next key: %s, next value: %s\n", next->key, next->value);
+	printf("prev key: %s, prev->value: %s\n", next->key, next->value); */
 }
 
 int		builtin_unset(char **args, t_env **envl)
@@ -36,7 +41,7 @@ int		builtin_unset(char **args, t_env **envl)
 		}
 		i++;
 	}
-	return (SUCCESS);
+	return (SUCCESS); // si variable non trouve return avec 0, pas d'erreur
 }
 
 /* int		builtin_unset(char **args, t_sh *shell)
