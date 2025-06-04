@@ -139,11 +139,9 @@ int	count_cmd_args(t_token *tok_lst)
 
 int	parse_ast(t_token *tok_lst, t_ast *ast)
 {
-	int		i;
 	t_ast	*new_ast;
 	int		arg_count;
 
-	i = 0;
 	arg_count = count_cmd_args(tok_lst);
 	if (arg_count > 0)
 	{
@@ -158,11 +156,11 @@ int	parse_ast(t_token *tok_lst, t_ast *ast)
 	{
 		if (tok_lst->type == COMMAND)
 		{
+			printf("test\n");
 			ast->cmd->cmd_name = strdup(tok_lst->value);
 			if (!ast->cmd->cmd_name)
 				return (1);
 			ast->type = COMMAND;
-			i++;
 		}
 		else if (tok_lst->type == PIPE)
 		{
@@ -221,26 +219,22 @@ int	parse_ast(t_token *tok_lst, t_ast *ast)
 void	print_ast(t_ast *ast)
 {
 	printf("Type: %d\n", ast->type);
-	// printf("Type 2: %d\n", ast->right->type);
 	if (!ast)
 		return ;
-	if (ast->type == COMMAND)
+	if (ast->type == COMMAND && ast->cmd)
 	{
-		printf("Command/Argument: ");
-		while (ast->cmd && ast->cmd[0] && ast->cmd[0][0] == '\0')
-			ast->cmd++;
-		if (ast->cmd == NULL || ast->cmd->args == NULL)
-			printf("No command/argument\n");
+		if (ast->cmd->cmd_name == NULL)
+			printf("Command name: NULL\n");
 		else
+			printf("Command name: %s\n", ast->cmd->cmd_name);
+		if (ast->cmd->args)
 		{
-			for (int i = 0; ast->cmd[i]; i++)
-			{
-				printf("%s", ast->cmd[i]);
-				if (ast->cmd[i + 1])
-					printf(" ");
-			}
-			printf("\n");
+			printf("Arguments:\n");
+			for (int i = 0; ast->cmd->args[i]; i++)
+				printf("  Arg %d: %s\n", i + 1, ast->cmd->args[i]);
 		}
+		else
+			printf("No arguments\n");
 	}
 	else if (ast->type == PIPE)
 		printf("Pipe\n");
@@ -256,7 +250,6 @@ void	print_ast(t_ast *ast)
 		print_ast(ast->left);
 	else
 		printf("No left child\n");
-	printf("test right\n");
 	if (ast->right)
 		print_ast(ast->right);
 	else
@@ -269,11 +262,6 @@ int	main(int ac, char **av)
 	t_token		*tok_lst;
 	t_ast		*ast;
 
-	char *const *args;
-	tok_lst = malloc(sizeof(t_token) * 50);
-	for (int i = 0; i < 49; i++)
-		tok_lst[i].next = &tok_lst[i + 1];
-	tok_lst[49].next = NULL;
 	while (1)
 	{
 		input = readline("Minishell> ");
