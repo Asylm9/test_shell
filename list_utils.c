@@ -7,9 +7,8 @@ void	print_env_list(t_env *envl)
 	current = envl;
 	while (current)
 	{
-		if (current->value == NULL) //skip les var ne devant etre affichees que par export
-			continue;
-		printf("%s=%s\n", current->key, current->value);
+		if (current->value != NULL) //skip les var ne devant etre affichees que par export
+			printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}
 }
@@ -35,7 +34,6 @@ t_env	*create_node(char *key, char *value)
 		return (NULL);
 	new_node->key = key;
 	new_node->value = value;
-	//new_node->exp = true;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);

@@ -11,6 +11,7 @@ t_env	*init_env_list(char **env)
 		return (NULL);
 	head = NULL;
 	i = 0;
+
 	while (env[i])
 	{
 		var = ft_split(env[i], '=');
@@ -18,6 +19,8 @@ t_env	*init_env_list(char **env)
 			return (NULL);
 		if (var[1])
 			new_node = create_node(ft_strdup(var[0]), ft_strdup(var[1]));
+		else
+			new_node = create_node(ft_strdup(var[0]), NULL);		
 		if (!new_node)
 			return (NULL);
 		free_array(var, -1);
