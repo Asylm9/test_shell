@@ -15,12 +15,18 @@ int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
 	return (0);
 }
 
-int	redirect_in(int fd, t_redirect *redir)
+int	redirect_in(t_redirect *redir)
 {
+	int fd;
+
 	fd = open(redir->target, O_RDONLY);
 	if (fd < 0)
-		return (1);
-	dup2(fd, STDIN_FILENO);
+		return (perror("open"), 1);
+	if (dup2(fd, STDIN_FILENO) < 0)
+	{
+		close (fd);
+		return (perror("dup2"), 1);
+	}
 	close(fd);
 	return (0);
 }
@@ -36,7 +42,7 @@ int	apply_redirections(t_command *cmd)
 	while (redir)
 	{
 		if (redir->type == IN)
-			redirect_in(fd, redir); //a voir
+			redirect_in(redir); //a voir
 		else if (redir->type == OUT)
 		{
 			fd = open(redir->target, O_WRONLY | O_CREAT | O_TRUNC, 0644);

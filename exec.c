@@ -25,7 +25,7 @@ int	execute_command(t_command *cmd, t_sh *shell)
 
 	if (!cmd ||!cmd->cmd_name)
 		return (0);
-	if (is_builtin(cmd->cmd_name) && (state_changing_builtin(cmd->cmd_name) || !cmd->redirections ))
+	if (is_builtin(cmd->cmd_name)) // jamais de fork! si redirection (sans pipeline)->save & restore fd pour ne pas alterer les stdin/out du shell
 		return (execute_builtin(cmd, shell));
 	pid = fork();
 	if (pid < 0)
@@ -83,7 +83,7 @@ int	execute_pipeline(t_command *cmd_list, t_sh *shell)
 			if (apply_redirections(current) == ERROR)
 				exit(1);
 			if (is_builtin(current->cmd_name))
-				return (execute_builtin(current, shell));
+				exit (execute_builtin(current, shell));
 			else
 				exit(execute_binary(current, shell->env));
 		}

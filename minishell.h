@@ -91,6 +91,8 @@ typedef struct s_sh
 
 	t_command	*cmd_list;
 	char		*current_dir;
+	int			saved_stdin;
+	int			saved_stdout;
 	int			exit_status;
 }			t_sh;
 
@@ -121,7 +123,7 @@ char	**get_paths(char **env);
 char	*find_cmd_path(char **paths, char *cmd_name);
 
 /* Redirections */
-int		redirect_in(int fd, t_redirect *redir);
+int		redirect_in(t_redirect *redir);
 int		apply_redirections(t_command *cmd);
 int		setup_pipes_redirections(int **pipes, int nb_pipes, int i);
 int		setup_heredoc(t_redirect *redir); // parsing ou exec?
