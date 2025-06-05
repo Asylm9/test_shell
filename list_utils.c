@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+void	sort_index(t_env *exp)
+{
+	t_env	*compare;
+
+	while (exp)
+	{
+		compare = exp;
+		while (compare)
+		{
+			if (exp->key > compare->value)
+				exp->index++;
+			compare = compare->next;
+		}
+		exp = exp->next;
+	}
+}
+
 void	print_env_list(t_env *envl)
 {
 	t_env	*current;

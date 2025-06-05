@@ -78,6 +78,7 @@ typedef struct s_env
 {
 	char	*key;
 	char	*value;
+	int		index;
 	t_env	*next;
 	t_env	*prev;
 }			t_env;
