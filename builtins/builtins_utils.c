@@ -76,6 +76,6 @@ int	main(int ac, char **av, char **envp)
 	printf("\n---------------------------------\n");
 	//builtin_env(&shell);
 
-	//cleanup_shell(&shell);
+	cleanup_shell(&shell);
 	return (shell.exit_status);
 }
