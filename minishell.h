@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:15 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/05 12:09:49 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/05 14:42:38 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct s_command
 {
 	char					*cmd_name;
 	char					**args;
+	int						argc;
 	t_redirect				*redirections;
 	t_command				*next;
 }							t_command;
@@ -107,6 +108,8 @@ typedef struct s_sh
 {
 	char					**env;
 	t_command				*cmd_list;
+	// t_ast 				*ast; // AST pour l'exécution
+	// int					nb_pipes; // nombre de pipes
 	char					*current_dir;
 	int						exit_status;
 }							t_sh;

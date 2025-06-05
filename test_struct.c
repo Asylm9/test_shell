@@ -205,10 +205,9 @@ int	init_struct_double_pipe(t_ast *first_node)
 	return (0);
 }
 
-int	init_struct_redir(t_ast *first_node)
+int	init_struct_redir_in(t_ast *first_node)
 {
 	t_command	*cmd;
-	t_ast		*cmd_ast;
 	FILE		*file;
 
 	if (!first_node)
@@ -232,9 +231,9 @@ int	init_struct_redir(t_ast *first_node)
 		free(cmd);
 		return (1);
 	}
-	cmd->redirections->type = IN;            // Example type
-	cmd->redirections->target = "input.txt"; // Example target
-	cmd->redirections->fd = -1;              // Not used for this example
+	cmd->redirections->type = IN;             // Example type
+	cmd->redirections->target = "output.txt"; // Example target
+	cmd->redirections->fd = -1;               // Not used for this example
 	cmd->redirections->next = NULL;
 	if ((file = fopen(cmd->redirections->target, "r")) == NULL)
 	{
@@ -251,19 +250,9 @@ int	init_struct_redir(t_ast *first_node)
 	cmd->redirections->next = NULL;
 	// Initialize the command structure
 	cmd->next = NULL;
-	cmd_ast = malloc(sizeof(t_ast));
-	if (!cmd_ast)
-	{
-		free(cmd);
-		return (1);
-	}
-	cmd_ast->type = REDIR_IN; // Example type
-	cmd_ast->cmd = cmd;
-	cmd_ast->left = NULL;
-	cmd_ast->right = NULL;
 	first_node->type = REDIR_IN; // Example type
-	first_node->cmd = NULL;
-	first_node->left = cmd_ast;
+	first_node->cmd = cmd;
+	first_node->left = NULL;
 	first_node->right = NULL;
 	return (0);
 }
@@ -293,13 +282,70 @@ void	print_ast(t_ast *ast)
 	else if (ast->type == PIPE)
 		printf("	Pipe\n");
 	else if (ast->type == REDIR_IN)
+	{
 		printf("	Redirect In\n");
+		if (ast->cmd && ast->cmd->redirections)
+		{
+			printf("        Command:\n");
+			if (ast->cmd->cmd_name == NULL)
+				printf("		Name: NULL\n");
+			else
+				printf("		Name: %s\n", ast->cmd->cmd_name);
+			if (ast->cmd->args)
+			{
+				printf("		Arguments:\n");
+				for (int i = 0; ast->cmd->args[i]; i++)
+				{
+					printf("			%s\n", ast->cmd->args[i]);
+				}
+			}
+			else
+				printf("No arguments\n");
+			printf("		Redirection Target: %s\n",
+						ast->cmd->redirections->target);
+			printf("		File Descriptor: %d\n", ast->cmd->redirections->fd);
+		}
+		else
+			printf("No redirection target or file descriptor\n");
+	}
 	else if (ast->type == REDIR_OUT)
+	{
 		printf("	Redirect Out\n");
+		if (ast->cmd && ast->cmd->redirections)
+		{
+			printf("		Redirection Target: %s\n",
+						ast->cmd->redirections->target);
+			printf("		File Descriptor: %d\n", ast->cmd->redirections->fd);
+		}
+		else
+			printf("No redirection target or file descriptor\n");
+	}
 	else if (ast->type == REDIR_APPEND)
+	{
 		printf("	Redirect Append\n");
+		if (ast->cmd && ast->cmd->redirections)
+		{
+			printf("		Redirection Target: %s\n",
+						ast->cmd->redirections->target);
+			printf("		File Descriptor: %d\n", ast->cmd->redirections->fd);
+		}
+		else
+			printf("No redirection target or file descriptor\n");
+	}
 	else if (ast->type == REDIR_HEREDOC)
+	{
 		printf("	Redirect Heredoc\n");
+		if (ast->cmd && ast->cmd->redirections)
+		{
+			printf("		Redirection Target: %s\n",
+						ast->cmd->redirections->target);
+			printf("		File Descriptor: %d\n", ast->cmd->redirections->fd);
+		}
+		else
+			printf("No redirection target or file descriptor\n");
+	}
+	else
+		printf("Unknown type\n");
 	if (ast->left)
 	{
 		printf("Left child:\n");
@@ -358,7 +404,7 @@ int	main(void)
 	printf("Double Pipe AST:\n");
 	print_ast(ast_double_pipe);
 
-	if (init_struct_redir(ast_redir) != 0)
+	if (init_struct_redir_in(ast_redir) != 0)
 	{
 		free(ast);
 		free(ast_double_pipe);
