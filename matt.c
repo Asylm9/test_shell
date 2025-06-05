@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/05 19:39:48 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/05 20:30:19 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ int	expand_size(char *value, char **env)
 			while (value[len + i] && value[len + i] != ' ')
 				i++;
 			cur_env = ft_substr(value, len + 1, i - 1);
-			env_prev_size += i;
+			env_prev_size += i; /* join substr d'avant $ avec getenv,
+				rince and repeat*/
 			if (getenv(cur_env) == NULL)
 				env_expd_size -= i;
 			else
