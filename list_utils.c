@@ -36,7 +36,7 @@ t_env	*create_node(char *key, char *value)
 	if (!new_node)
 		return (NULL);
 	new_node->key = key;
-	if (value);
+	if (value)
 		new_node->value = value;
 	new_node->next = NULL;
 	new_node->prev = NULL;

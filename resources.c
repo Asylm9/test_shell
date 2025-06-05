@@ -36,8 +36,10 @@ void	free_envl(t_env **head)
 	while (*head)
 	{
 		tmp = (*head)->next;
-		free((*head)->key);
-		free((*head)->value);
+		if ((*head)->key)
+			free((*head)->key);
+		if ((*head)->value)
+			free((*head)->value);
 		free(*head);
 		*head = tmp;
 	}
@@ -46,10 +48,11 @@ void	free_envl(t_env **head)
 
 void	cleanup_shell(t_sh *shell)
 {
-	if (!shell || !shell->env)
-		return;
-	free_array(shell->env, -1);
-	shell->env = NULL;
+	if (shell || shell->env)
+	{
+		free_array(shell->env, -1);
+		shell->env = NULL;
+	}
 	if (!shell->envl)
 		return;
 	free_envl(&shell->envl);

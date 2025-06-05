@@ -33,9 +33,21 @@ t_env	*init_env_list(char **env)
 int	add_new_entry(char *key, char *value, t_env **envl)
 {
 	t_env	*new_node;
+	char	*key_copy;
+	char	*value_copy;
 
 	//uniquement appele depuis set_envl_var pour l'instant:pas besoin de reverifier !key,!value!,env
-	new_node = create_node(key, value);
+	key_copy = ft_strdup(key);
+	if (!key_copy)
+		return (ERROR);
+	value_copy = NULL;
+	if (value)
+	{
+		value_copy = ft_strdup(value);
+		if (!value_copy)
+			return (free(key), ERROR);
+	}
+	new_node = create_node(key_copy, value_copy);
 	if (!new_node)
 		return (ERROR);
 	*envl = add_back_node(new_node, *envl);
@@ -73,8 +85,11 @@ int	set_envl_var(char *name, t_env **envl, char *value)
 		if (ft_strcmp(current->key, name) == 0)
 		{
 			free(current->value);
-			current->value = ft_strdup(value); //verifier vie de value/strdup obligatoire? 
-			if (!current->value)
+			if (value)
+				current->value = ft_strdup(value); //verifier vie de value/strdup obligatoire? 
+			else 
+				current->value = NULL;
+			if (value && !current->value)
 				return (ERROR);
 			return (SUCCESS);
 		}

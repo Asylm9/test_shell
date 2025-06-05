@@ -13,6 +13,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 # Fichiers sources
 SRCS = env_utils.c \
+       path.c \
        manual_init.c \
        resources.c \
        utils.c \
