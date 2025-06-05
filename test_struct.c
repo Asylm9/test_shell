@@ -20,8 +20,9 @@ int	init_struct_pipe(t_ast *first_node)
 		return (1);
 	}
 	cmd->args[0] = "ls";
-	cmd->args[0] = "-l";
-	cmd->args[1] = NULL;
+	cmd->args[1] = "-l";
+	cmd->args[2] = NULL;
+	cmd->argc = 2; // Set argc to the number of arguments
 	cmd->redirections = NULL;
 	cmd->next = NULL;
 	cmd_second = malloc(sizeof(t_command));
@@ -41,6 +42,7 @@ int	init_struct_pipe(t_ast *first_node)
 	cmd_second->args[0] = "wc";
 	cmd_second->args[1] = "-l";
 	cmd_second->args[2] = NULL;
+	cmd_second->argc = 2; // Set argc to the number of arguments
 	cmd_second->redirections = NULL;
 	cmd_second->next = NULL;
 	cmd_ast = malloc(sizeof(t_ast));
@@ -270,6 +272,7 @@ void	print_ast(t_ast *ast)
 			printf("	Command:\n		Name: %s\n", ast->cmd->cmd_name);
 		if (ast->cmd->args)
 		{
+			printf("		Arguments count: %d\n", ast->cmd->argc);
 			printf("		Arguments:\n");
 			for (int i = 0; ast->cmd->args[i]; i++)
 			{
@@ -293,6 +296,7 @@ void	print_ast(t_ast *ast)
 				printf("		Name: %s\n", ast->cmd->cmd_name);
 			if (ast->cmd->args)
 			{
+				printf("		Arguments count: %d\n", ast->cmd->argc);
 				printf("		Arguments:\n");
 				for (int i = 0; ast->cmd->args[i]; i++)
 				{

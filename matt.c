@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/04 21:20:46 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:34:26 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 		if (!tok_lst->value)
 			return (1);
 		if (input[end] == '|')
+		{
 			tok_lst->type = PIPE;
+			tok_lst->expand = NO_EXPAND;
+		}
 		else if (input[end] == '<')
 		{
 			if (input[end + 1] == '<')
@@ -53,6 +56,7 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 			}
 			else
 				tok_lst->type = REDIR_IN;
+			tok_lst->expand = NO_EXPAND;
 		}
 		else if (input[end] == '>')
 		{
@@ -63,6 +67,7 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 			}
 			else
 				tok_lst->type = REDIR_OUT;
+			tok_lst->expand = NO_EXPAND;
 		}
 		else
 		{
@@ -89,10 +94,28 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 
 int	expand_token(t_token *tok_lst, char **env)
 {
-	// This function would handle the expansion of tokens based on the environment variables.
-	// For now, we will just return 0 to indicate success.
-	(void)tok_lst;
-	(void)env;
+	t_token	*current;
+	char	*expanded_value;
+
+	current = malloc(sizeof(t_token));
+	if (!current)
+		return (1);
+	while (tok_lst)
+	{
+		if (tok_lst->expand == NO_EXPAND)
+		{
+			current->value = ft_strdup(tok_lst->value);
+			if (!current->value)
+			{
+				free(current);
+				return (1);
+			}
+			current->type = tok_lst->type;
+		}
+		// else
+		// {
+		// }
+	}
 	return (0);
 }
 
@@ -279,9 +302,10 @@ void	print_token(t_token *tok_lst)
 
 int	main(int ac, char **av)
 {
-	const char	*input;
-	t_token		*tok_lst;
-	t_ast		*ast;
+	char	*input;
+	t_token	*tok_lst;
+	t_ast	*ast;
+	t_token	*temp;
 
 	if (ac > 1)
 	{
@@ -309,10 +333,23 @@ int	main(int ac, char **av)
 			free(tok_lst);
 			return (1);
 		}
+		while (tok_lst->next)
+		{
+			temp = tok_lst->next;
+			tok_lst->next = temp->next;
+			free(temp->value);
+			free(temp);
+		}
+		free(input);
 		// parse_ast(tok_lst, ast);
 		printf("AST:\n");
+		// printf("%d\n", execve("/bin/ls", (char *[]){"ls", "-l", NULL},
+		// NULL));
 		// print_ast(ast);
 	}
 }
 
 // execve("/bin/cat", args, NULL);
+
+// export plusieurs variables d'environnement d'un coup
+// pour les binaires 1 string par flag
