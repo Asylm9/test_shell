@@ -2,9 +2,11 @@
 
 int	validate_format_export(char **args, int i)
 {
-	int	j;
-	int	count;
+	int		j;
+	int		count;
+	bool	is_value;
 
+	is_value = false;
 	if (ft_isdigit(args[i][0]) || args[i][0] == '=')
 	{
 		printf_fd(2, "minishell: export: `%s': not a valid identifier\n", args[i]);
@@ -14,18 +16,17 @@ int	validate_format_export(char **args, int i)
 	j = 0;
 	while (args[i][j])
 	{
-		printf("c: %c\n", args[i][j]);
 		if (args[i][j] == '=')
-		{
 			count += 1;
-			printf("%d\n", count);
-		}
-		printf("count: %d\n", count);
-		if ((ft_isspec(args[i][j]) && args[i][j] != '=') || count > 1)
+		if (count == 1)
+			is_value = true;
+		if (!is_value)
 		{
-			printf("ici\n");
-			printf_fd(2, "minishell: export: `%s': not a valid identifier\n", args[i]);
-			return (ERROR);
+			if (ft_isspec(args[i][j]) && args[i][j] != '=')
+			{
+				printf_fd(2, "minishell: export: `%s': not a valid identifier\n", args[i]);
+				return (ERROR);
+			}
 		}
 		j++;
 	}
@@ -65,11 +66,12 @@ int	builtin_export(char **args, t_env **envl)
 		}
 		else
 		{
-			split = ft_split(args[i], '='); 
+			printf("sub: %s\n", equal_pos);
+			split = ft_split(args[i], '='); // attention cas: test== -> deuxieme '=' perdu !
 			if (!split || !split[0])
 				return (free(split), ERROR);
 			else if (!split[1])
-				add_new_entry(split[0], "", envl);
+				add_new_entry(split[0], EMPTY, envl);
 			else
 				add_new_entry(split[0], split[1], envl);
 			free_array(split, -1);

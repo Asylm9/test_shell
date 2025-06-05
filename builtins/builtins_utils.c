@@ -71,10 +71,10 @@ int	main(int ac, char **av, char **envp)
 	init_cmd_struct(&cmd, &av[1], NULL);
 
 	//builtin_env(&shell);
-	printf("\n---------------------------------\n");
+	printf("\n-------------EXP-----------------\n");
 	execute_builtin(&cmd, &shell);
-	printf("\n---------------------------------\n");
-	//builtin_env(&shell);
+	printf("\n-------------ENV-----------------\n");
+	builtin_env(&shell);
 
 	cleanup_shell(&shell);
 	return (shell.exit_status);

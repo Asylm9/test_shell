@@ -23,7 +23,7 @@ void	print_exp_list(t_env *envl)
 		if (!current->value)
 			printf("export %s\n", current->key);
 		else
-			printf("export %s=%s\n", current->key, current->value);
+			printf("export %s=\"%s\"\n", current->key, current->value); // gestion "" = sparadrap :v
 		current = current->next;
 	}
 }

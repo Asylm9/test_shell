@@ -29,7 +29,7 @@
 
 /* #ifndef PATH_MAX */
 # define PATH_MAX 4096  // valeur courante sur la plupart des systèmes Linux
-
+# define EMPTY ""
 
 typedef struct s_redirect	t_redirect;
 typedef struct s_command	t_command;

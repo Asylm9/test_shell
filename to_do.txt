@@ -6,8 +6,8 @@ ELEVE:
 	- echo ++ ok
 	- cd +++ ok
 	- pwd + ok
-	- export ++++
-	- unset +++ -> en cours (manque suppression de node + export)
+	- export ++++ -> tri + gestion test== (split)
+	- unset +++ ok
 	- env + ok
 	- exit +++ FINITO (p-e verifier si %256 auto avec exit() )
 
