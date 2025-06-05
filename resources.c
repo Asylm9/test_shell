@@ -31,7 +31,7 @@ void	free_envl(t_env **head)
 {
 	t_env	*tmp;
 
-	if (!*head)
+	if (!head || !*head)
 		return ;
 	while (*head)
 	{

@@ -74,7 +74,7 @@ int	main(int ac, char **av, char **envp)
 	printf("\n---------------------------------\n");
 	execute_builtin(&cmd, &shell);
 	printf("\n---------------------------------\n");
-	//uiltin_env(&shell);
+	//builtin_env(&shell);
 
 	cleanup_shell(&shell);
 	return (shell.exit_status);

@@ -1,42 +1,55 @@
 #include "../minishell.h"
 
-int	builtin_export(char **args, t_env **envl)
+int	validate_format_export(char **args, int i)
 {
-	// export -> affiche env var par ordre ascii ainsi que var custom(valides ou non)
-	//"export: not valid in this context:[arg]" code 1 -> verifier , ne retombe plus sur ce message: p-e zsh)
-	// export permet de passer les variables crees (ou non) au futures chil processes -> only exported variables go into the process’s environment.
-	int	i;
 	int	j;
 
-	if (!envl)
-		return (ERROR); // verifier comportement
-	if (args_count(args) == 1 )
-		print_exp_list(*envl);
-	i = 1;
-	if (ft_isspec(args[i][0]) || ft_isdigit(args[i][0]))
+	if (ft_isdigit(args[i][0]) || args[i][j] == '=')
 	{
-		printf_fd(2, "minishell: export: `%c': not a valid identifier\n", args[i][0]);
+		printf_fd(2, "minishell: export: `%s': not a valid identifier\n", args[i]);
 		return (ERROR);
 	}
-	while (args[i])
+	j = 0;
+	while (args[i][j])
 	{
-		j = 0;
-		while (args[i][j])
+		if (ft_isspec(args[i][j]) && args[i][j] != '=')
 		{
-			if (ft_isspec(args[i][j]))
-			{
-				printf_fd(2, "minishell: export: `%s': not a valid identifier\n", args[i]);
-				return (ERROR);
-			}
-			j++;
+			printf_fd(2, "minishell: export: `%s': not a valid identifier\n", args[i]);
+			return (ERROR);
 		}
-		// add_new_entry(, true);
-		i++;
+		j++;
 	}
 	return (SUCCESS);
 }
 
-// minishell: export: `9ekwlfhk': not a valid identifier
-// bash: export: `/ekwlfhk': not a valid identifier
-// bash: export: `bettera#ve': not a valid identifier
+int	builtin_export(char **args, t_env **envl)
+{
+	// exporexportt -> affiche env var par ordre ascii ainsi que var custom(valides ou non)
+	//"export: not valid in this context:[arg]" code 1 -> verifier , ne retombe plus sur ce message: p-e zsh)
+	// export permet de passer les variables crees (ou non) au futures chil processes -> only exported variables go into the process’s environment.
+	int	i;
+	char **split;
+	if (!envl)
+		return (ERROR); // verifier comportement
+	if (args_count(args) == 1 )
+	{
+		print_exp_list(*envl);
+		return (SUCCESS);
+	}
+	i = 1;
+	while (args[i])
+	{
 
+		if (validate_format_export(args, i) != 0)
+			return (ERROR);
+		if (!ft_strchr(args[i], '='))
+			add_new_entry(args[i], NULL, *envl);
+		else
+			add_new_entry(args[i], args[i+1], envl);
+			
+		i++;
+		printf("\n---------------------------------\n");
+		print_exp_list(*envl);
+	}
+	return (SUCCESS);
+}

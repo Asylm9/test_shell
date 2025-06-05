@@ -20,7 +20,10 @@ void	print_exp_list(t_env *envl)
 	current = envl;
 	while (current)
 	{
-		printf("export %s=%s\n", current->key, current->value);
+		if (!current->value)
+			printf("export %s\n", current->key);
+		else
+			printf("export %s=%s\n", current->key, current->value);
 		current = current->next;
 	}
 }
@@ -33,7 +36,8 @@ t_env	*create_node(char *key, char *value)
 	if (!new_node)
 		return (NULL);
 	new_node->key = key;
-	new_node->value = value;
+	if (value);
+		new_node->value = value;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);
@@ -57,10 +61,10 @@ t_env	*add_back_node(t_env *new_node, t_env *head)
 {
 	t_env	*last_node;
 
-	new_node->next = NULL;
+	//new_node->next = NULL;
 	if (!head)
 	{
-		new_node->prev = NULL;
+		//new_node->prev = NULL;
 		return (new_node);
 	}
 	else
