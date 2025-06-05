@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/05 17:34:26 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/05 19:39:48 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,50 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 	return (0);
 }
 
-int	expand_token(t_token *tok_lst, char **env)
+int	expand_size(char *value, char **env)
+{
+	int		i;
+	int		len;
+	int		env_prev_size;
+	int		env_expd_size;
+	char	*cur_env;
+
+	i = 0;
+	len = 0;
+	env_prev_size = 0;
+	env_expd_size = 0;
+	while (value[len])
+	{
+		if (value[len] == '$')
+		{
+			i = 0;
+			while (value[len + i] && value[len + i] != ' ')
+				i++;
+			cur_env = ft_substr(value, len + 1, i - 1);
+			env_prev_size += i;
+			if (getenv(cur_env) == NULL)
+				env_expd_size -= i;
+			else
+				env_expd_size += ft_strlen(ft_strdup(getenv(cur_env)));
+		}
+		if (i != 0)
+			len += i;
+		else
+			len++;
+	}
+	printf("env prev : %d\n", env_prev_size);
+	printf("env expd : %d\n", env_expd_size);
+	env_expd_size = len - env_prev_size + env_expd_size + 1;
+	return (env_expd_size);
+}
+
+int	expand_list(t_token *tok_lst, char **env)
 {
 	t_token	*current;
 	char	*expanded_value;
+	int		i;
 
+	i = 0;
 	current = malloc(sizeof(t_token));
 	if (!current)
 		return (1);
@@ -112,9 +151,15 @@ int	expand_token(t_token *tok_lst, char **env)
 			}
 			current->type = tok_lst->type;
 		}
-		// else
-		// {
-		// }
+		else
+		{
+			i = 0;
+			while (tok_lst->value[i] && tok_lst->value[i] != '$'
+				&& tok_lst->value[i] != '\0')
+			{
+				i++;
+			}
+		}
 	}
 	return (0);
 }
@@ -300,7 +345,7 @@ void	print_token(t_token *tok_lst)
 // 		printf("No right child\n");
 // }
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_token	*tok_lst;
