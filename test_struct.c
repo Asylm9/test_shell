@@ -57,41 +57,47 @@ int	init_struct_pipe(t_ast *ast)
 }
 void	print_ast(t_ast *ast)
 {
-	printf("Type: %d\n", ast->type);
+	printf("Type:\n");
 	if (!ast)
 		return ;
 	if (ast->type == WORD && ast->cmd)
 	{
 		if (ast->cmd->cmd_name == NULL)
-			printf("Command name: NULL\n");
+			printf("	Command:\n	   Name: NULL\n");
 		else
-			printf("Command name: %s\n", ast->cmd->cmd_name);
+			printf("	Command:\n	   Name: %s\n", ast->cmd->cmd_name);
 		if (ast->cmd->args)
 		{
-			printf("Arguments:\n");
-			printf("  Arg : %s\n", ast->cmd->args);
+			printf("	Arguments:\n");
+			printf("	   Arg : %s\n", ast->cmd->args);
 		}
 		else
 			printf("No arguments\n");
 	}
 	else if (ast->type == PIPE)
-		printf("Pipe\n");
+		printf("	Pipe\n");
 	else if (ast->type == REDIR_IN)
-		printf("Redirect In\n");
+		printf("	Redirect In\n");
 	else if (ast->type == REDIR_OUT)
-		printf("Redirect Out\n");
+		printf("	Redirect Out\n");
 	else if (ast->type == REDIR_APPEND)
-		printf("Redirect Append\n");
+		printf("	Redirect Append\n");
 	else if (ast->type == REDIR_HEREDOC)
-		printf("Redirect Heredoc\n");
+		printf("	Redirect Heredoc\n");
 	if (ast->left)
+	{
+		printf("Left child:\n");
 		print_ast(ast->left);
-	else
-		printf("No left child\n");
+	}
+	// else
+	// 	printf("No left child\n");
 	if (ast->right)
+	{
+		printf("Right child:\n");
 		print_ast(ast->right);
-	else
-		printf("No right child\n");
+	}
+	// else
+	// 	printf("No right child\n");
 }
 
 int	main(void)

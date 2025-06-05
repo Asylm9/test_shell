@@ -14,6 +14,7 @@ minishell
 *~
 *.swp
 *.swo
+*.gch
 .DS_Store
 
 # Makefile-generated files
