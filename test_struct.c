@@ -205,6 +205,69 @@ int	init_struct_double_pipe(t_ast *first_node)
 	return (0);
 }
 
+int	init_struct_redir(t_ast *first_node)
+{
+	t_command	*cmd;
+	t_ast		*cmd_ast;
+	FILE		*file;
+
+	if (!first_node)
+		return (1);
+	cmd = malloc(sizeof(t_command));
+	if (!cmd)
+		return (1);
+	cmd->cmd_name = "cat";
+	cmd->args = malloc(2 * sizeof(char *));
+	if (!cmd->args)
+	{
+		free(cmd);
+		return (1);
+	}
+	cmd->args[0] = "cat";
+	cmd->args[1] = NULL;
+	cmd->redirections = malloc(sizeof(t_redirect));
+	if (!cmd->redirections)
+	{
+		free(cmd->args);
+		free(cmd);
+		return (1);
+	}
+	cmd->redirections->type = IN;            // Example type
+	cmd->redirections->target = "input.txt"; // Example target
+	cmd->redirections->fd = -1;              // Not used for this example
+	cmd->redirections->next = NULL;
+	if ((file = fopen(cmd->redirections->target, "r")) == NULL)
+	{
+		perror("fopen");
+		free(cmd->redirections);
+		free(cmd->args);
+		free(cmd);
+		return (1);
+	}
+	cmd->redirections->fd = fileno(file); // Set the file descriptor
+	cmd->cmd_name = "cat";
+	cmd->args[0] = "cat";
+	cmd->args[1] = NULL;
+	cmd->redirections->next = NULL;
+	// Initialize the command structure
+	cmd->next = NULL;
+	cmd_ast = malloc(sizeof(t_ast));
+	if (!cmd_ast)
+	{
+		free(cmd);
+		return (1);
+	}
+	cmd_ast->type = REDIR_IN; // Example type
+	cmd_ast->cmd = cmd;
+	cmd_ast->left = NULL;
+	cmd_ast->right = NULL;
+	first_node->type = REDIR_IN; // Example type
+	first_node->cmd = NULL;
+	first_node->left = cmd_ast;
+	first_node->right = NULL;
+	return (0);
+}
+
 void	print_ast(t_ast *ast)
 {
 	printf("Type:\n");
@@ -257,6 +320,7 @@ int	main(void)
 {
 	t_ast *ast;
 	t_ast *ast_double_pipe;
+	t_ast *ast_redir;
 
 	ast = malloc(sizeof(t_ast));
 	if (!ast)
@@ -267,13 +331,21 @@ int	main(void)
 		free(ast);
 		return (1);
 	}
+	ast_redir = malloc(sizeof(t_ast));
+	if (!ast_redir)
+	{
+		free(ast);
+		free(ast_double_pipe);
+		return (1);
+	}
 
 	if (init_struct_pipe(ast) != 0)
 	{
 		free(ast);
 		return (1);
 	}
-
+	printf("---------------------------------------------------------------------------------------------------------------------\n");
+	printf("First pipe AST:\n");
 	print_ast(ast);
 
 	if (init_struct_double_pipe(ast_double_pipe) != 0)
@@ -282,8 +354,20 @@ int	main(void)
 		free(ast_double_pipe);
 		return (1);
 	}
-	printf("\nDouble Pipe AST:\n");
+	printf("---------------------------------------------------------------------------------------------------------------------\n");
+	printf("Double Pipe AST:\n");
 	print_ast(ast_double_pipe);
+
+	if (init_struct_redir(ast_redir) != 0)
+	{
+		free(ast);
+		free(ast_double_pipe);
+		free(ast_redir);
+		return (1);
+	}
+	printf("---------------------------------------------------------------------------------------------------------------------\n");
+	printf("Redirection AST:\n");
+	print_ast(ast_redir);
 
 	// Free allocated memory
 	if (ast->left && ast->left->cmd)
