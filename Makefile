@@ -25,7 +25,8 @@ SRCS = env_utils.c \
 	   builtins/exit.c \
 	   builtins/pwd.c \
 	   builtins/unset.c \
-	   builtins/export.c
+	   builtins/export.c \
+	   builtins/export_sorting.c
 
 # Fichiers objets
 OBJS = $(SRCS:.c=.o)

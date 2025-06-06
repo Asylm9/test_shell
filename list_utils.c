@@ -1,22 +1,5 @@
 #include "minishell.h"
 
-void	sort_index(t_env *exp)
-{
-	t_env	*compare;
-
-	while (exp)
-	{
-		compare = exp;
-		while (compare)
-		{
-			if (exp->key > compare->value)
-				exp->index++;
-			compare = compare->next;
-		}
-		exp = exp->next;
-	}
-}
-
 void	print_env_list(t_env *envl)
 {
 	t_env	*current;
@@ -30,19 +13,25 @@ void	print_env_list(t_env *envl)
 	}
 }
 
-void	print_exp_list(t_env *envl)
+void	print_exp_list(t_env **envl)
 {
-	t_env	*current;
+	t_env	**ptr_array;
+	int		count;
+	int		i;
 
-	current = envl;
-	while (current)
+	count = count_elements(*envl);
+	ptr_array = init_temp_array(*envl, count);
+	selection_sort(ptr_array, count);
+	i = 0;
+	while (i < count)
 	{
-		if (!current->value)
-			printf("export %s\n", current->key);
+		if (!ptr_array[i]->value)
+			printf("export %s\n", ptr_array[i]->key);
 		else
-			printf("export %s=\"%s\"\n", current->key, current->value); // gestion "" = sparadrap :v
-		current = current->next;
+			printf("export %s=\"%s\"\n", ptr_array[i]->key, ptr_array[i]->value); // gestion "" = sparadrap :v
+		i++;
 	}
+	free(ptr_array);
 }
 
 t_env	*create_node(char *key, char *value)

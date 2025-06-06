@@ -142,11 +142,20 @@ int		execute_builtin(t_command *cmd, t_sh *shell);
 
 /* Builtin implementations */
 int		builtin_echo(char **args);
+
 int		builtin_cd(char **args, t_sh *shell); //double pointeur??
+
 int		builtin_pwd(t_sh *shell);
+
 int		builtin_export(char **args, t_env **envl);
+t_env	**init_temp_array(t_env *envl, int count);
+void	selection_sort(t_env **array, int count);
+int		count_elements(t_env *envl);
+
 int		builtin_unset(char **args, t_env **envl);
+
 int		builtin_env(t_sh *shell);
+
 int		builtin_exit(char **args, t_sh *shell);
 
 /* Env utils */
@@ -165,7 +174,7 @@ char	*ft_pathjoin(char const *s1, char const *s2);
 
 /* List utils */
 void	print_env_list(t_env *envl);
-void	print_exp_list(t_env *envl);
+void	print_exp_list(t_env **envl);
 t_env	*create_node(char *key, char *value);
 t_env	*find_last_node(t_env *head);
 t_env	*add_back_node(t_env *new_node, t_env *head);
