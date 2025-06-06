@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:02 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/06 16:37:45 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:24:13 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*result;
 
-	result = expand_token("abc def ghi $HOME test ca $HOME");
+	result = expand_token("abc def ghi test ca");
 	printf("result : +++%s+++\n", result);
 	free(result);
 	return (0);

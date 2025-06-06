@@ -6,11 +6,25 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/06 16:39:26 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:38:48 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_env_var(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 int	tokenize_input(t_token *tok_lst, const char *input)
 {
@@ -72,7 +86,7 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 		else
 		{
 			tok_lst->type = WORD;
-			if (input[end] == '\'')
+			if (input[end] == '\'' || !is_env_var(tok_lst->value))
 				tok_lst->expand = NO_EXPAND;
 			else
 				tok_lst->expand = EXPAND;
@@ -90,6 +104,23 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 	}
 	tok_lst->next = NULL;
 	return (0);
+}
+
+char	*expand_var(char *str)
+{
+	int		i;
+	char	*var;
+	char	*result;
+
+	i = 1;
+	while (ft_isalnum(str[i]) || str[i] == '_')
+	{
+		i++;
+	}
+	var = ft_substr(str, 0, i);
+	result = getenv(var + 1);
+	free(var);
+	return (result);
 }
 
 char	*expand_token(char *input)
@@ -129,37 +160,50 @@ char	*expand_token(char *input)
 			pos++;
 	}
 	buffer = ft_substr(input, start, pos - start);
-	free(result);
-	result = ft_strjoin(tmp, buffer);
+	if (is_env_var(input))
+	{
+		free(result);
+		result = ft_strjoin(tmp, buffer);
+	}
+	else
+	{
+		free(result);
+		free(tmp);
+		return (buffer);
+	}
 	free(tmp);
 	free(buffer);
 	return (result);
 }
 
-int	expand_list(t_token *tok_lst, char **env)
+t_token	*expand_list(t_token *tok_lst, char **env)
 {
 	t_token	*current;
+	t_token	*head;
 	char	*expanded_value;
 	int		i;
 
 	i = 0;
 	current = malloc(sizeof(t_token));
 	if (!current)
-		return (1);
+		return (NULL);
+	head = current;
 	while (tok_lst)
 	{
+		current->expand = NO_EXPAND;
 		if (tok_lst->expand == NO_EXPAND)
 		{
 			current->value = ft_strdup(tok_lst->value);
 			if (!current->value)
 			{
 				free(current);
-				return (1);
+				return (NULL);
 			}
 			current->type = tok_lst->type;
 		}
 		else
 		{
+			printf("%s test2\n", tok_lst->value);
 			current->value = expand_token(tok_lst->value);
 			current->type = tok_lst->type;
 		}
@@ -167,7 +211,8 @@ int	expand_list(t_token *tok_lst, char **env)
 		current = current->next;
 		tok_lst = tok_lst->next;
 	}
-	return (current);
+	printf("Head value : %s\n", head->value);
+	return (head);
 }
 
 void	print_token(t_token *tok_lst)
@@ -355,8 +400,8 @@ int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_token	*tok_lst;
-	t_ast	*ast;
 	t_token	*temp;
+	t_ast	*ast;
 
 	if (ac > 1)
 	{
@@ -377,6 +422,8 @@ int	main(int ac, char **av, char **envp)
 		printf("Input: %s\n", input);
 		tokenize_input(tok_lst, input);
 		print_token(tok_lst);
+		temp = expand_list(tok_lst, envp);
+		print_token(temp);
 		ast = malloc(sizeof(t_ast));
 		if (!ast)
 		{
