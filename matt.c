@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/06 17:38:48 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/06 17:57:11 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,6 +396,19 @@ void	print_token(t_token *tok_lst)
 // 		printf("No right child\n");
 // }
 
+void	free_tok_lst(t_token *list)
+{
+	t_token	*temp;
+
+	while (list->next)
+	{
+		temp = list->next;
+		list->next = temp->next;
+		free(temp->value);
+		free(temp);
+	}
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	char	*input;
@@ -415,36 +428,32 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	}
 	tok_lst->next = NULL;
-	while (1)
+	// while (1)
+	// {
+	input = "test tout ca";
+	// input = readline("Minishell> ");
+	// add_history(input);
+	printf("Input: %s\n", input);
+	tokenize_input(tok_lst, input);
+	print_token(tok_lst);
+	temp = expand_list(tok_lst, envp);
+	print_token(temp);
+	ast = malloc(sizeof(t_ast));
+	if (!ast)
 	{
-		input = readline("Minishell> ");
-		add_history(input);
-		printf("Input: %s\n", input);
-		tokenize_input(tok_lst, input);
-		print_token(tok_lst);
-		temp = expand_list(tok_lst, envp);
-		print_token(temp);
-		ast = malloc(sizeof(t_ast));
-		if (!ast)
-		{
-			perror("malloc");
-			free(tok_lst);
-			return (1);
-		}
-		while (tok_lst->next)
-		{
-			temp = tok_lst->next;
-			tok_lst->next = temp->next;
-			free(temp->value);
-			free(temp);
-		}
-		free(input);
-		// parse_ast(tok_lst, ast);
-		printf("AST:\n");
-		// printf("%d\n", execve("/bin/ls", (char *[]){"ls", "-l", NULL},
-		// NULL));
-		// print_ast(ast);
+		perror("malloc");
+		free(tok_lst);
+		return (1);
 	}
+	free_tok_lst(tok_lst);
+	free_tok_lst(temp);
+	// free(input);
+	// parse_ast(tok_lst, ast);
+	printf("AST:\n");
+	// printf("%d\n", execve("/bin/ls", (char *[]){"ls", "-l", NULL},
+	// NULL));
+	// print_ast(ast);
+	// }
 }
 
 // execve("/bin/cat", args, NULL);
