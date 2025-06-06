@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/05 20:30:19 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/06 16:39:26 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,42 +92,48 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 	return (0);
 }
 
-int	expand_size(char *value, char **env)
+char	*expand_token(char *input)
 {
-	int		i;
-	int		len;
-	int		env_prev_size;
-	int		env_expd_size;
-	char	*cur_env;
+	char	*result;
+	char	*buffer;
+	char	*tmp;
+	int		pos;
+	int		start;
 
-	i = 0;
-	len = 0;
-	env_prev_size = 0;
-	env_expd_size = 0;
-	while (value[len])
+	result = ft_calloc(1, 1);
+	buffer = NULL;
+	tmp = NULL;
+	pos = 0;
+	start = 0;
+	while (input[pos] != '\0')
 	{
-		if (value[len] == '$')
+		if (input[pos] == '$')
 		{
-			i = 0;
-			while (value[len + i] && value[len + i] != ' ')
-				i++;
-			cur_env = ft_substr(value, len + 1, i - 1);
-			env_prev_size += i; /* join substr d'avant $ avec getenv,
-				rince and repeat*/
-			if (getenv(cur_env) == NULL)
-				env_expd_size -= i;
-			else
-				env_expd_size += ft_strlen(ft_strdup(getenv(cur_env)));
+			buffer = ft_substr(input, start, pos - start);
+			if (tmp)
+				free(tmp);
+			tmp = ft_strjoin(result, buffer);
+			free(buffer);
+			buffer = expand_var(input + pos);
+			if (buffer)
+			{
+				free(result);
+				result = ft_strjoin(tmp, expand_var(input + pos));
+			}
+			pos++;
+			while ((ft_isalnum(input[pos]) || input[pos] == '_') && input[pos])
+				pos++;
+			start = pos;
 		}
-		if (i != 0)
-			len += i;
 		else
-			len++;
+			pos++;
 	}
-	printf("env prev : %d\n", env_prev_size);
-	printf("env expd : %d\n", env_expd_size);
-	env_expd_size = len - env_prev_size + env_expd_size + 1;
-	return (env_expd_size);
+	buffer = ft_substr(input, start, pos - start);
+	free(result);
+	result = ft_strjoin(tmp, buffer);
+	free(tmp);
+	free(buffer);
+	return (result);
 }
 
 int	expand_list(t_token *tok_lst, char **env)
@@ -154,15 +160,14 @@ int	expand_list(t_token *tok_lst, char **env)
 		}
 		else
 		{
-			i = 0;
-			while (tok_lst->value[i] && tok_lst->value[i] != '$'
-				&& tok_lst->value[i] != '\0')
-			{
-				i++;
-			}
+			current->value = expand_token(tok_lst->value);
+			current->type = tok_lst->type;
 		}
+		current->next = malloc(sizeof(t_token));
+		current = current->next;
+		tok_lst = tok_lst->next;
 	}
-	return (0);
+	return (current);
 }
 
 void	print_token(t_token *tok_lst)
