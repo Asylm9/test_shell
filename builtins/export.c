@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	validate_format_export(char **args, int i)
+static int	validate_format_export(char **args, int i)
 {
 	int		j;
 	int		count;
@@ -23,7 +23,7 @@ int	validate_format_export(char **args, int i)
 	return (SUCCESS);
 }
 
-int	update_var(char **args, int i, t_env **envl)
+static int	process_export_arg(char **args, int i, t_env **envl)
 {
 	char 	*equal_pos;
 	char	*value;
@@ -70,7 +70,7 @@ int	builtin_export(char **args, t_env **envl)
 		if (update_var(args, i, envl) != 0)
 			return (ERROR);
 		i++;
-		
+
 		printf("\n---------------------------------\n");
 		print_exp_list(*envl);
 	}
