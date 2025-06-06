@@ -86,7 +86,7 @@ int	set_envl_var(char *name, t_env **envl, char *value)
 		{
 			free(current->value);
 			if (value)
-				current->value = ft_strdup(value); //verifier vie de value/strdup obligatoire? 
+				current->value = value;
 			else 
 				current->value = NULL;
 			if (value && !current->value)
@@ -97,4 +97,3 @@ int	set_envl_var(char *name, t_env **envl, char *value)
 	}
 	return (add_new_entry(name, value, envl));
 }
-

@@ -10,6 +10,7 @@ int	args_count(char **args)
 	return (count);
 }
 
+
 bool	is_builtin(char *cmd_name)
 {
 	if (!cmd_name)
@@ -27,10 +28,11 @@ bool	is_builtin(char *cmd_name)
 
 int		execute_builtin(t_command *cmd, t_sh *shell)
 {
+	t_env	envl;
+
 	if (!cmd || !shell)
 		return (ERROR); 
 	
-	// shell->exit_code a la place de return?
 	if (ft_strcmp(cmd->cmd_name, "echo") == 0)
 		shell->exit_status = builtin_echo(cmd->args);
 	else if (ft_strcmp(cmd->cmd_name, "cd") == 0)
@@ -62,7 +64,7 @@ int	main(int ac, char **av, char **envp)
 	printf("\n-------------EXP-----------------\n");
 	execute_builtin(&cmd, &shell);
 	printf("\n-------------ENV-----------------\n");
-	builtin_env(&shell);
+	//builtin_env(&shell);
 
 	cleanup_shell(&shell);
 	return (shell.exit_status);
