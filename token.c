@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 18:29:29 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:20:43 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	create_token_list(t_token **tok_lst)
 	return (SUCCESS);
 }
 
-int	create_token_back(t_token **tok_lst)
+int	create_token_node(t_token **tok_lst)
 {
 	t_token	*new_token;
 	t_token	*temp;
@@ -55,6 +55,10 @@ int	create_token_back(t_token **tok_lst)
 	}
 	return (SUCCESS);
 }
+
+// int	tokenize_input(t_token *tok_lst, const char *input)
+// {
+// }
 
 int	tokenize_input(t_token *tok_lst, const char *input)
 {

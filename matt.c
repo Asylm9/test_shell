@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 18:07:59 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:19:59 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ int	main(int ac, char **av, char **envp)
 		input = readline("Minishell> ");
 		add_history(input);
 		printf("Input: %s\n", input);
-		if (create_token_list(&tok_lst))
+		if (create_token_node(&tok_lst))
 		{
 			free(input);
 			return (1);

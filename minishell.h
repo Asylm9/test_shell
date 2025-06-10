@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:15 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 17:55:54 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 19:20:16 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ typedef struct s_exec
 // Tokenizer
 
 int							create_token_list(t_token **tok_lst);
+int							create_token_node(t_token **tok_lst);
 int							tokenize_input(t_token *tok_lst, const char *input);
 int							is_env_var(char *str);
 
