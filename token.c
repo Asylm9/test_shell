@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 20:33:16 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:27:07 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,7 @@ int	create_token_node(t_token **tok_lst)
 	new_token->type = WORD;
 	new_token->next = NULL;
 	if (*tok_lst == NULL)
-	{
 		*tok_lst = new_token;
-	}
 	else
 	{
 		while (temp->next)
@@ -116,7 +114,9 @@ int	tokenize_input_bis(t_token *tok_lst, const char *input)
 {
 	int	start;
 	int	end;
+	int	i;
 
+	i = 0;
 	start = 0;
 	while (input[start])
 	{
@@ -127,7 +127,18 @@ int	tokenize_input_bis(t_token *tok_lst, const char *input)
 			return (ERROR);
 		tok_lst->value = ft_substr(input, start, end - start);
 		set_token_type(tok_lst, input, &end);
+		while (input[i] && input[i] == ' ')
+			i++;
+		if (input[i] == '\0')
+			break ;
+		create_token_node(&tok_lst);
+		if (!tok_lst->next)
+			return (ERROR);
+		tok_lst = tok_lst->next;
+		start = end + 1;
 	}
+	tok_lst->next = NULL;
+	return (SUCCESS);
 }
 
 /*

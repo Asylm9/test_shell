@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 19:19:59 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 21:27:44 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ int	main(int ac, char **av, char **envp)
 	t_token	*temp;
 	t_ast	*ast;
 
+	tok_lst = NULL;
 	if (ac > 1)
 	{
 		fprintf(stderr, "Usage: %s\n", av[0]);
@@ -237,13 +238,14 @@ int	main(int ac, char **av, char **envp)
 		input = readline("Minishell> ");
 		add_history(input);
 		printf("Input: %s\n", input);
+		printf("Creating new token node.\n");
 		if (create_token_node(&tok_lst))
 		{
 			free(input);
 			return (1);
 		}
 		printf("Token list created successfully.\n");
-		if (tokenize_input(tok_lst, input))
+		if (tokenize_input_bis(tok_lst, input))
 		{
 			// FREE TOK_LST
 			free(input);
@@ -252,6 +254,7 @@ int	main(int ac, char **av, char **envp)
 		printf("Tokenization successful.\n");
 		free(input);
 		print_token(tok_lst);
+		printf("Expanding token list.\n");
 		temp = expand_list(tok_lst, envp);
 		print_token(temp);
 		ast = malloc(sizeof(t_ast));

@@ -1,6 +1,6 @@
 # Makefile pour tester la partie exécution du minishell
 
-NAME = tbuiltin
+NAME = a.out
 
 # Compilateur et flags
 CC = gcc
