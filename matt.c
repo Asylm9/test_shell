@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/06 19:03:37 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 18:07:59 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,195 +24,6 @@ int	is_env_var(char *str)
 		i++;
 	}
 	return (0);
-}
-
-int	tokenize_input(t_token *tok_lst, const char *input)
-{
-	int		start;
-	int		end;
-	int		i;
-	char	quote;
-
-	start = 0;
-	end = 0;
-	while (input[start])
-	{
-		while (input[start] && input[start] == ' ')
-			start++;
-		if (input[start] == '\0')
-			break ;
-		end = start;
-		while (input[end] && input[end] != ' ' && input[end] != '|'
-			&& input[end] != '<' && input[end] != '>')
-			end++;
-		if (input[start] == '"' || input[start] == '\'')
-		{
-			quote = input[start++];
-			while (input[end] && input[end] != quote)
-				end++;
-			if (input[end] == '\0')
-				return (1);
-		}
-		tok_lst->value = ft_substr(input, start, end - start);
-		if (!tok_lst->value)
-			return (1);
-		if (input[end] == '|')
-		{
-			tok_lst->type = PIPE;
-			tok_lst->expand = NO_EXPAND;
-		}
-		else if (input[end] == '<')
-		{
-			if (input[end + 1] == '<')
-			{
-				tok_lst->type = REDIR_HEREDOC;
-				end++;
-			}
-			else
-				tok_lst->type = REDIR_IN;
-			tok_lst->expand = NO_EXPAND;
-		}
-		else if (input[end] == '>')
-		{
-			if (input[end + 1] == '>')
-			{
-				tok_lst->type = REDIR_APPEND;
-				end++;
-			}
-			else
-				tok_lst->type = REDIR_OUT;
-			tok_lst->expand = NO_EXPAND;
-		}
-		else
-		{
-			tok_lst->type = WORD;
-			if (input[end] == '\'' || !is_env_var(tok_lst->value))
-				tok_lst->expand = NO_EXPAND;
-			else
-				tok_lst->expand = EXPAND;
-		}
-		tok_lst->next = malloc(sizeof(t_token));
-		if (!tok_lst->next)
-			return (1);
-		i = end;
-		while (input[i] && input[i] == ' ')
-			i++;
-		if (input[i] == '\0')
-			break ;
-		tok_lst = tok_lst->next;
-		start = end + 1;
-	}
-	tok_lst->next = NULL;
-	return (0);
-}
-
-char	*expand_var(char *str)
-{
-	int		i;
-	char	*var;
-	char	*result;
-
-	i = 1;
-	while (ft_isalnum(str[i]) || str[i] == '_')
-	{
-		i++;
-	}
-	var = ft_substr(str, 0, i);
-	result = getenv(var + 1);
-	free(var);
-	return (result);
-}
-
-char	*expand_token(char *input)
-{
-	char	*result;
-	char	*buffer;
-	char	*tmp;
-	int		pos;
-	int		start;
-
-	result = ft_calloc(1, 1);
-	buffer = NULL;
-	tmp = NULL;
-	pos = 0;
-	start = 0;
-	while (input[pos] != '\0')
-	{
-		if (input[pos] == '$')
-		{
-			buffer = ft_substr(input, start, pos - start);
-			if (tmp)
-				free(tmp);
-			tmp = ft_strjoin(result, buffer);
-			free(buffer);
-			buffer = expand_var(input + pos);
-			if (buffer)
-			{
-				free(result);
-				result = ft_strjoin(tmp, expand_var(input + pos));
-			}
-			pos++;
-			while ((ft_isalnum(input[pos]) || input[pos] == '_') && input[pos])
-				pos++;
-			start = pos;
-		}
-		else
-			pos++;
-	}
-	buffer = ft_substr(input, start, pos - start);
-	if (is_env_var(input))
-	{
-		free(result);
-		result = ft_strjoin(tmp, buffer);
-	}
-	else
-	{
-		free(result);
-		free(tmp);
-		return (buffer);
-	}
-	free(tmp);
-	free(buffer);
-	return (result);
-}
-
-t_token	*expand_list(t_token *tok_lst, char **env)
-{
-	t_token	*current;
-	t_token	*head;
-	char	*expanded_value;
-	int		i;
-
-	i = 0;
-	current = malloc(sizeof(t_token));
-	if (!current)
-		return (NULL);
-	head = current;
-	while (tok_lst)
-	{
-		current->expand = NO_EXPAND;
-		if (tok_lst->expand == NO_EXPAND)
-		{
-			current->value = ft_strdup(tok_lst->value);
-			if (!current->value)
-			{
-				free(current);
-				return (NULL);
-			}
-			current->type = tok_lst->type;
-		}
-		else
-		{
-			printf("%s test2\n", tok_lst->value);
-			current->value = expand_token(tok_lst->value);
-			current->type = tok_lst->type;
-		}
-		current->next = malloc(sizeof(t_token));
-		current = current->next;
-		tok_lst = tok_lst->next;
-	}
-	printf("Head value : %s\n", head->value);
-	return (head);
 }
 
 void	print_token(t_token *tok_lst)
@@ -421,20 +232,25 @@ int	main(int ac, char **av, char **envp)
 		fprintf(stderr, "Usage: %s\n", av[0]);
 		return (1);
 	}
-	tok_lst = malloc(sizeof(t_token));
-	if (!tok_lst)
-	{
-		perror("malloc");
-		return (1);
-	}
-	tok_lst->next = NULL;
 	while (1)
 	{
-		// input = "test tout ca";
 		input = readline("Minishell> ");
 		add_history(input);
 		printf("Input: %s\n", input);
-		tokenize_input(tok_lst, input);
+		if (create_token_list(&tok_lst))
+		{
+			free(input);
+			return (1);
+		}
+		printf("Token list created successfully.\n");
+		if (tokenize_input(tok_lst, input))
+		{
+			// FREE TOK_LST
+			free(input);
+			return (1);
+		}
+		printf("Tokenization successful.\n");
+		free(input);
 		print_token(tok_lst);
 		temp = expand_list(tok_lst, envp);
 		print_token(temp);
@@ -460,3 +276,23 @@ int	main(int ac, char **av, char **envp)
 
 // export plusieurs variables d'environnement d'un coup
 // pour les binaires 1 string par flag
+
+/*
+	Parse()
+		Readline()
+		Tokenize()
+			Create_tok_lst()
+				Init_token()
+				Add_token()
+			Fill_token()
+		Expand_tok_lst()
+			Expand_token()
+				Expand_var()
+		Create_AST()
+			Count_pipes()
+			Create_pipes_nodes()
+				Init_pipe_node()
+			Create_cmd_nodes()
+				Init_cmd_node()
+				Fill_cmd()
+*/

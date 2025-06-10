@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:15 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/05 14:42:38 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:55:54 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,24 @@ typedef struct s_exec
 	int						status;
 }							t_exec;
 
-/* Execution */
+/**************************		Parsing		*****************************/
+
+// Tokenizer
+
+int							create_token_list(t_token **tok_lst);
+int							tokenize_input(t_token *tok_lst, const char *input);
+int							is_env_var(char *str);
+
+// Expander
+
+char						*expand_var(char *str);
+char						*expand_token(char *input);
+t_token						*expand_list(t_token *tok_lst, char **env);
+
+// Parser
+
+/**************************		Execution	*****************************/
+
 int							execute(t_command *cmd_list, t_sh *shell);
 // transformer en execute_ast probablement :v
 int							execute_command(t_command *cmd, t_sh *shell);

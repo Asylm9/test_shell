@@ -6,119 +6,84 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:02 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/06 17:24:13 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/10 17:57:11 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include <stdio.h>
-#include <stdlib.h>
+#include "minishell.h"
 
-// int	expand_size(char *value, char **env)
+// char	*expand_token(char *input)
 // {
-// 	int		i;
-// 	int		len;
-// 	int		env_prev_size;
-// 	int		env_expd_size;
-// 	char	*cur_env;
+// 	char	*result;
+// 	char	*buffer;
+// 	char	*tmp;
+// 	int		pos;
+// 	int		start;
 
-// 	i = 0;
-// 	len = 0;
-// 	env_prev_size = 0;
-// 	env_expd_size = 0;
-// 	while (value[len])
+// 	result = ft_calloc(1, 1);
+// 	buffer = NULL;
+// 	tmp = NULL;
+// 	pos = 0;
+// 	start = 0;
+// 	while (input[pos] != '\0')
 // 	{
-// 		if (value[len] == '$')
+// 		if (input[pos] == '$')
 // 		{
-// 			i = 0;
-// 			while (value[len + i] && value[len + i] != ' ')
-// 				i++;
-// 			cur_env = ft_substr(value, len + 1, i - 1);
-// 			env_prev_size += i;
-// 			if (getenv(cur_env) == NULL)
-// 				env_expd_size -= i;
-// 			else
-// 				env_expd_size += ft_strlen(ft_strdup(getenv(cur_env)));
+// 			buffer = ft_substr(input, start, pos - start);
+// 			if (tmp)
+// 				free(tmp);
+// 			tmp = ft_strjoin(result, buffer);
+// 			free(buffer);
+// 			buffer = expand_var(input + pos);
+// 			if (buffer)
+// 			{
+// 				free(result);
+// 				result = ft_strjoin(tmp, expand_var(input + pos));
+// 			}
+// 			pos++;
+// 			while ((ft_isalnum(input[pos]) || input[pos] == '_') && input[pos])
+// 				pos++;
+// 			start = pos;
 // 		}
-// 		if (i != 0)
-// 			len += i;
 // 		else
-// 			len++;
+// 			pos++;
 // 	}
-// 	printf("env prev : %d\n", env_prev_size);
-// 	printf("env expd : %d\n", env_expd_size);
-// 	env_expd_size = len - env_prev_size + env_expd_size + 1;
-// 	return (env_expd_size);
+// 	buffer = ft_substr(input, start, pos - start);
+// 	free(result);
+// 	result = ft_strjoin(tmp, buffer);
+// 	free(tmp);
+// 	free(buffer);
+// 	return (result);
 // }
 
-char	*expand_var(char *str)
+int	is_env_var(char *str)
 {
-	int		i;
-	char	*var;
-	char	*result;
+	int	i;
 
-	i = 1;
-	while (ft_isalnum(str[i]) || str[i] == '_')
+	i = 0;
+	while (str[i])
 	{
+		if (str[i] == '$')
+			return (1);
 		i++;
 	}
-	var = ft_substr(str, 0, i);
-	result = getenv(var + 1);
-	free(var);
-	return (result);
-}
-
-char	*expand_token(char *input)
-{
-	char	*result;
-	char	*buffer;
-	char	*tmp;
-	int		pos;
-	int		start;
-
-	result = ft_calloc(1, 1);
-	buffer = NULL;
-	tmp = NULL;
-	pos = 0;
-	start = 0;
-	while (input[pos] != '\0')
-	{
-		if (input[pos] == '$')
-		{
-			buffer = ft_substr(input, start, pos - start);
-			if (tmp)
-				free(tmp);
-			tmp = ft_strjoin(result, buffer);
-			free(buffer);
-			buffer = expand_var(input + pos);
-			if (buffer)
-			{
-				free(result);
-				result = ft_strjoin(tmp, expand_var(input + pos));
-			}
-			pos++;
-			while ((ft_isalnum(input[pos]) || input[pos] == '_') && input[pos])
-				pos++;
-			start = pos;
-		}
-		else
-			pos++;
-	}
-	buffer = ft_substr(input, start, pos - start);
-	free(result);
-	result = ft_strjoin(tmp, buffer);
-	free(tmp);
-	free(buffer);
-	return (result);
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*result;
+	char	*input;
+	t_token	*tok_lst;
 
-	result = expand_token("abc def ghi test ca");
-	printf("result : +++%s+++\n", result);
-	free(result);
+	input = ft_strdup("abc def ghi");
+	if (!create_token_list(&tok_lst))
+	{
+		printf("Token list creation failed.\n");
+		return (1);
+	}
+	tokenize_input(tok_lst, input);
+	printf("first token : +++%s+++\n", tok_lst->value);
+	free(input);
 	return (0);
 }
 // int i = 0;
