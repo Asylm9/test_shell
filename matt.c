@@ -6,7 +6,7 @@
 /*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 19:21:09 by matthieu         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:27:55 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,20 +47,16 @@ void	print_token(t_token *tok_lst)
 
 void	free_tok_lst(t_token *list)
 {
-	t_token	*temp;
+    t_token	*temp;
 
-	while (list)
-	{
-		temp = list;
-		list = list->next;
-		if (temp->value)
-		{
-			free(temp->value);
-			free(temp->next);
-			free(temp);
-		}
-		// free(temp);
-	}
+    while (list)
+    {
+        temp = list;
+        list = list->next;
+        if (temp->value)
+            free(temp->value);
+        free(temp);
+    }
 }
 
 int	main(int ac, char **av, char **envp)
