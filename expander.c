@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 19:14:06 by matthieu         ###   ########.fr       */
+/*   Updated: 2025/06/11 21:00:37 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,46 +76,44 @@ char	*expand_token(char *input)
 	return (result);
 }
 
-t_token	*expand_list(t_token *tok_lst, char **env)
+int	expand_list(t_token *tok_lst, char **env, t_token *exp_lst)
 {
-	t_token	*current;
 	t_token	*head;
 	char	*expanded_value;
 	int		i;
 
 	i = 0;
-	current = malloc(sizeof(t_token));
-	if (!current)
-		return (NULL);
-	head = current;
-	while (tok_lst->value != NULL)
+	if (!exp_lst)
+		return (1);
+	head = exp_lst;
+	while (tok_lst->next)
 	{
-		current->expand = NO_EXPAND;
+		exp_lst->expand = NO_EXPAND;
 		if (tok_lst->expand == NO_EXPAND)
 		{
-			current->value = ft_strdup(tok_lst->value);
-			if (!current->value)
+			exp_lst->value = ft_strdup(tok_lst->value);
+			if (!exp_lst->value)
 			{
-				free(current);
-				return (NULL);
+				free(exp_lst);
+				return (1);
 			}
 		}
 		else
-			current->value = expand_token(tok_lst->value);
-		current->type = tok_lst->type;
+			exp_lst->value = expand_token(tok_lst->value);
+		exp_lst->type = tok_lst->type;
 		tok_lst = tok_lst->next;
 		if (tok_lst != NULL)
 		{
-			current->next = malloc(sizeof(t_token));
-			current = current->next;
+			create_token_node(&exp_lst);
+			exp_lst = exp_lst->next;
 		}
 		else
 		{
-			current->next = NULL;
+			exp_lst->next = NULL;
 			break ;
 		}
 	}
-	return (head);
+	return (0);
 }
 
 // int	expand_size(char *value, char **env)

@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:15 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 14:20:43 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 20:55:51 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,8 @@ int							is_env_var(char *str);
 
 char						*expand_var(char *str);
 char						*expand_token(char *input);
-t_token						*expand_list(t_token *tok_lst, char **env);
+int							expand_list(t_token *tok_lst, char **env,
+								t_token *exp_lst);
 
 // Parser
 

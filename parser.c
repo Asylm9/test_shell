@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:53:25 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 16:07:38 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 16:10:59 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int	create_node_redir(t_ast **ast, t_token *tok_lst)
 	*ast = new_ast;
 	return (0);
 }
+
 int	create_node_command(t_ast **ast, t_token *tok_lst)
 {
 	t_ast	*new_ast;
