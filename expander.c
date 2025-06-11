@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 15:19:47 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:49:25 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ char	*expand_var(char *str)
 
 	i = 1;
 	while (ft_isalnum(str[i]) || str[i] == '_')
-	{
 		i++;
-	}
 	var = ft_substr(str, 0, i);
 	result = getenv(var + 1);
 	free(var);
@@ -92,9 +90,7 @@ t_token	*expand_list(t_token *tok_lst, char **env)
 	head = current;
 	while (tok_lst->value != NULL)
 	{
-		printf("test1\n");
 		current->expand = NO_EXPAND;
-		printf("test1.5\n");
 		if (tok_lst->expand == NO_EXPAND)
 		{
 			current->value = ft_strdup(tok_lst->value);
@@ -105,22 +101,13 @@ t_token	*expand_list(t_token *tok_lst, char **env)
 			}
 		}
 		else
-		{
-			printf("|%s| test2\n", tok_lst->value);
 			current->value = expand_token(tok_lst->value);
-			printf("|%s| test3\n", current->value);
-		}
 		current->type = tok_lst->type;
-		printf("|%d| test3\n", current->type);
 		current->next = malloc(sizeof(t_token));
-		printf("test4\n");
 		tok_lst = tok_lst->next;
 		if (tok_lst != NULL)
 			current = current->next;
-		printf("test4.5\n");
 	}
-	printf("test5\n");
-	printf("Head value : %s\n", head->value);
 	return (head);
 }
 

@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:02 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 15:18:52 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:29:31 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,13 @@ int	is_env_var(char *str)
 
 int	main(int ac, char **av, char **envp)
 {
+	char	*str;
+
 	printf("%s\n", getenv("HOME"));
 	printf("%s\n", expand_var("$HOME     "));
-	printf("|%s|\n", expand_token("abc def"));
+	str = expand_token("$HOME     ");
+	printf("Expanded token: |%s|\n", str);
+	free(str);
 	return (0);
 }
 // int i = 0;
