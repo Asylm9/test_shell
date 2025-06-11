@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 13:06:42 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:13:31 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,7 @@ int	main(int ac, char **av, char **envp)
 		print_token(tok_lst);
 		printf("Expanding token list.\n");
 		temp = expand_list(tok_lst, envp);
+		printf("Expansion successful.\n");
 		print_token(temp);
 		ast = malloc(sizeof(t_ast));
 		if (!ast)

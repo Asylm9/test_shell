@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 13:52:43 by matthieu         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:17:10 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,11 @@ t_token	*expand_list(t_token *tok_lst, char **env)
 	if (!current)
 		return (NULL);
 	head = current;
-	while (tok_lst)
+	while (tok_lst->value != NULL)
 	{
+		printf("test1\n");
 		current->expand = NO_EXPAND;
+		printf("test1.5\n");
 		if (tok_lst->expand == NO_EXPAND)
 		{
 			current->value = ft_strdup(tok_lst->value);
@@ -119,7 +121,9 @@ t_token	*expand_list(t_token *tok_lst, char **env)
 		tok_lst = tok_lst->next;
 		if (tok_lst != NULL)
 			current = current->next;
+		printf("test4.5\n");
 	}
+	printf("test5\n");
 	printf("Head value : %s\n", head->value);
 	return (head);
 }
