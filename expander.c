@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 13:32:19 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:52:43 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,19 +105,17 @@ t_token	*expand_list(t_token *tok_lst, char **env)
 				free(current);
 				return (NULL);
 			}
-			current->type = tok_lst->type;
 		}
 		else
 		{
 			printf("|%s| test2\n", tok_lst->value);
 			current->value = expand_token(tok_lst->value);
 			printf("|%s| test3\n", current->value);
-			current->type = tok_lst->type;
-			printf("|%d| test3\n", current->type);
 		}
-		printf("test4\n");
+		current->type = tok_lst->type;
+		printf("|%d| test3\n", current->type);
 		current->next = malloc(sizeof(t_token));
-		printf("test5\n");
+		printf("test4\n");
 		tok_lst = tok_lst->next;
 		if (tok_lst != NULL)
 			current = current->next;
