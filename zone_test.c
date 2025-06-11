@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:02 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 17:57:11 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:20:17 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,24 @@ int	main(int ac, char **av, char **envp)
 	char	*input;
 	t_token	*tok_lst;
 
-	input = ft_strdup("abc def ghi");
-	if (!create_token_list(&tok_lst))
+	create_token_node(&tok_lst);
+	if (!tok_lst)
 	{
-		printf("Token list creation failed.\n");
+		fprintf(stderr, "Error creating token node.\n");
 		return (1);
 	}
-	tokenize_input(tok_lst, input);
-	printf("first token : +++%s+++\n", tok_lst->value);
-	free(input);
+	tok_lst->value = ft_strdup("echo $HOME");
+	tok_lst->type = WORD;
+	tok_lst->expand = EXPAND;
+	tok_lst->next = NULL;
+	printf("Token created: %s\n", tok_lst->value);
+	create_token_node(&tok_lst);
+	tok_lst = tok_lst->next;
+	tok_lst->value = ft_strdup("ls -l");
+	tok_lst->type = WORD;
+	tok_lst->expand = NO_EXPAND;
+	tok_lst->next = NULL;
+	printf("Token created: %s\n", tok_lst->value);
 	return (0);
 }
 // int i = 0;
