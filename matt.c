@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 21:19:30 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 21:35:30 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	main(int ac, char **av, char **envp)
 				Add_token()
 			Fill_token()
 		Expand_tok_lst()
-			Expand_token()				CHANGER EN INT POUR REMONTER ERREUR
+			Expand_token()				CHANGER EN INT POUR REMONTER ERREUR ---- > CHECK ZONE TEST
 				Expand_var()
 		Create_AST()
 			Count_pipes()
