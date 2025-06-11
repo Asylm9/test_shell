@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 14:18:10 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:20:25 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	set_token_type(t_token *tok_lst, const char *input, int *end)
 	}
 }
 
-int	tokenize_input_bis(t_token *tok_lst, const char *input)
+int	tokenize_input(t_token *tok_lst, const char *input)
 {
 	int	start;
 	int	end;
@@ -141,94 +141,79 @@ int	tokenize_input_bis(t_token *tok_lst, const char *input)
 	return (SUCCESS);
 }
 
-/*
-	Skip spaces at the beginning of the input.
-	If the input is empty, break the loop.
-	Find the end of the token by looking for spaces or special characters.
-	If the token starts with a quote, find the matching closing quote.
-	Create a new token with the extracted value.
-	Determine the type of the token based on the next character.
-	If the next character is a pipe, set the type to PIPE.
-	If the next character is a redirection, set the type accordingly.
-	If the next character is a word,
-		set the type to WORD and check if it needs expansion.
-	Move to the next token by skipping spaces.
-	If the next character is the end of the input, break the loop.
-*/
+// int	tokenize_input(t_token *tok_lst, const char *input)
+// {
+// 	int		start;
+// 	int		end;
+// 	int		i;
+// 	char	quote;
 
-int	tokenize_input(t_token *tok_lst, const char *input)
-{
-	int		start;
-	int		end;
-	int		i;
-	char	quote;
-
-	start = 0;
-	end = 0;
-	while (input[start])
-	{
-		while (input[start] && input[start] == ' ')
-			start++;
-		if (input[start] == '\0')
-			break ;
-		end = start;
-		while (input[end] && input[end] != ' ' && input[end] != '|'
-			&& input[end] != '<' && input[end] != '>')
-			end++;
-		if (input[start] == '"' || input[start] == '\'')
-		{
-			quote = input[start++];
-			while (input[end] && input[end] != quote)
-				end++;
-			if (input[end] == '\0')
-				return (ERROR);
-		}
-		tok_lst->value = ft_substr(input, start, end - start);
-		if (!tok_lst->value)
-			return (ERROR);
-		if (input[end] == '|')
-		{
-			tok_lst->type = PIPE;
-		}
-		else if (input[end] == '<')
-		{
-			if (input[end + 1] == '<')
-			{
-				tok_lst->type = REDIR_HEREDOC;
-				end++;
-			}
-			else
-				tok_lst->type = REDIR_IN;
-		}
-		else if (input[end] == '>')
-		{
-			if (input[end + 1] == '>')
-			{
-				tok_lst->type = REDIR_APPEND;
-				end++;
-			}
-			else
-				tok_lst->type = REDIR_OUT;
-		}
-		else
-		{
-			tok_lst->type = WORD;
-			if (input[end] == '\'' || !is_env_var(tok_lst->value))
-				tok_lst->expand = NO_EXPAND;
-			else
-				tok_lst->expand = EXPAND;
-		}
-		tok_lst->next = malloc(sizeof(t_token));
-		if (!tok_lst->next)
-			return (ERROR);
-		i = end;
-		while (input[i] && input[i] == ' ')
-			i++;
-		if (input[i] == '\0')
-			break ;
-		tok_lst = tok_lst->next;
-		start = end + 1;
-	}
-	tok_lst->next = NULL;
-	return (SUCCESS);
-}
+// 	start = 0;
+// 	end = 0;
+// 	while (input[start])
+// 	{
+// 		while (input[start] && input[start] == ' ')
+// 			start++;
+// 		if (input[start] == '\0')
+// 			break ;
+// 		end = start;
+// 		while (input[end] && input[end] != ' ' && input[end] != '|'
+// 			&& input[end] != '<' && input[end] != '>')
+// 			end++;
+// 		if (input[start] == '"' || input[start] == '\'')
+// 		{
+// 			quote = input[start++];
+// 			while (input[end] && input[end] != quote)
+// 				end++;
+// 			if (input[end] == '\0')
+// 				return (ERROR);
+// 		}
+// 		tok_lst->value = ft_substr(input, start, end - start);
+// 		if (!tok_lst->value)
+// 			return (ERROR);
+// 		if (input[end] == '|')
+// 		{
+// 			tok_lst->type = PIPE;
+// 		}
+// 		else if (input[end] == '<')
+// 		{
+// 			if (input[end + 1] == '<')
+// 			{
+// 				tok_lst->type = REDIR_HEREDOC;
+// 				end++;
+// 			}
+// 			else
+// 				tok_lst->type = REDIR_IN;
+// 		}
+// 		else if (input[end] == '>')
+// 		{
+// 			if (input[end + 1] == '>')
+// 			{
+// 				tok_lst->type = REDIR_APPEND;
+// 				end++;
+// 			}
+// 			else
+// 				tok_lst->type = REDIR_OUT;
+// 		}
+// 		else
+// 		{
+// 			tok_lst->type = WORD;
+// 			if (input[end] == '\'' || !is_env_var(tok_lst->value))
+// 				tok_lst->expand = NO_EXPAND;
+// 			else
+// 				tok_lst->expand = EXPAND;
+// 		}
+// 		tok_lst->next = malloc(sizeof(t_token));
+// 		if (!tok_lst->next)
+// 			return (ERROR);
+// 		i = end;
+// 		while (input[i] && input[i] == ' ')
+// 			i++;
+// 		if (input[i] == '\0')
+// 			break ;
+// 		tok_lst = tok_lst->next;
+// 		start = end + 1;
+// 	}
+// 	tok_lst->next = NULL;
+// 	return (SUCCESS);
+// }

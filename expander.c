@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 14:17:10 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 15:19:47 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,20 @@ char	*expand_token(char *input)
 		if (input[pos] == '$')
 		{
 			buffer = ft_substr(input, start, pos - start);
-			if (tmp)
-				free(tmp);
 			tmp = ft_strjoin(result, buffer);
+			free(result);
 			free(buffer);
 			buffer = expand_var(input + pos);
 			if (buffer)
 			{
+				result = ft_strjoin(tmp, buffer);
+				free(tmp);
+				// Do NOT free buffer if it comes from getenv!
+			}
+			else
+			{
 				free(result);
-				result = ft_strjoin(tmp, expand_var(input + pos));
+				result = tmp;
 			}
 			pos++;
 			while ((ft_isalnum(input[pos]) || input[pos] == '_') && input[pos])
@@ -66,19 +71,10 @@ char	*expand_token(char *input)
 			pos++;
 	}
 	buffer = ft_substr(input, start, pos - start);
-	if (is_env_var(input))
-	{
-		free(result);
-		result = ft_strjoin(tmp, buffer);
-	}
-	else
-	{
-		free(result);
-		free(tmp);
-		return (buffer);
-	}
-	free(tmp);
+	tmp = ft_strjoin(result, buffer);
+	free(result);
 	free(buffer);
+	result = tmp;
 	return (result);
 }
 

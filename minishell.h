@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:15 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 21:22:07 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:20:43 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,8 @@ typedef struct s_exec
 int							create_token_list(t_token **tok_lst);
 int							create_token_node(t_token **tok_lst);
 int							tokenize_input(t_token *tok_lst, const char *input);
-int							tokenize_input_bis(t_token *tok_lst,
-								const char *input);
+// int							tokenize_input_bis(t_token *tok_lst,
+// 								const char *input);
 int							skip_spaces(const char *input, int *start);
 int							find_end_of_token(const char *input, int *start,
 								int *end);

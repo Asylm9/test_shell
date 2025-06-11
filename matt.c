@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 14:13:31 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:20:31 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ int	main(int ac, char **av, char **envp)
 			return (1);
 		}
 		printf("Token list created successfully.\n");
-		if (tokenize_input_bis(tok_lst, input))
+		if (tokenize_input(tok_lst, input))
 		{
 			// FREE TOK_LST
 			free(input);
