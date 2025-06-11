@@ -3,7 +3,6 @@
 static int	validate_format_export(char **args, int i)
 {
 	int		j;
-	int		count;
 
 	if (!ft_isalpha(args[i][0]) && args[i][0] != '_')
 	{
@@ -58,7 +57,7 @@ int	builtin_export(char **args, t_env **envl)
 		return (ERROR); // verifier comportement
 	if (args_count(args) == 1 )
 	{
-		print_exp_list(envl);
+		print_exp_list(*envl);
 		return (SUCCESS);
 	}
 	i = 1;
@@ -72,7 +71,7 @@ int	builtin_export(char **args, t_env **envl)
 		i++;
 
 		printf("\n---------------------------------\n");
-		print_exp_list(envl);
+		print_exp_list(*envl);
 	}
 	return (SUCCESS);
 }

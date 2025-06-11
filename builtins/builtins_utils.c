@@ -28,8 +28,6 @@ bool	is_builtin(char *cmd_name)
 
 int		execute_builtin(t_command *cmd, t_sh *shell)
 {
-	t_env	envl;
-
 	if (!cmd || !shell)
 		return (ERROR); 
 	

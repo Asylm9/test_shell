@@ -17,7 +17,6 @@ int	count_elements(t_env *envl)
 	return (n);
 }
 
-/* Initialiser array of pointers */
 t_env	**init_temp_array(t_env *envl, int count)
 {
 	t_env **ptr_array;
@@ -36,7 +35,6 @@ t_env	**init_temp_array(t_env *envl, int count)
 	return (ptr_array);
 }
 
-/* Selection sort: trouver le min et faire un swap avec le premier element, etc  */
 void	selection_sort(t_env **array, int count)
 {
 	int		i;
@@ -48,7 +46,7 @@ void	selection_sort(t_env **array, int count)
 	while (i < count - 1)
 	{
 		min_index = i;
-		j = i + 1; //en dessous = deja trie 
+		j = i + 1;
 		while (j < count)
 		{
 			if (ft_strcmp(array[j]->key, array[min_index]->key) < 0)

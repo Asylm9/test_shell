@@ -88,7 +88,6 @@ typedef struct s_sh
 {
 	char		**env;
 	t_env		*envl;
-
 	t_command	*cmd_list;
 	char		*current_dir;
 	int			saved_stdin;
@@ -174,7 +173,7 @@ char	*ft_pathjoin(char const *s1, char const *s2);
 
 /* List utils */
 void	print_env_list(t_env *envl);
-void	print_exp_list(t_env **envl);
+void	print_exp_list(t_env *envl);
 t_env	*create_node(char *key, char *value);
 t_env	*find_last_node(t_env *head);
 t_env	*add_back_node(t_env *new_node, t_env *head);

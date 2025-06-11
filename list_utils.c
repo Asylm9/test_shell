@@ -13,14 +13,16 @@ void	print_env_list(t_env *envl)
 	}
 }
 
-void	print_exp_list(t_env **envl)
+void	print_exp_list(t_env *envl)
 {
 	t_env	**ptr_array;
 	int		count;
 	int		i;
 
-	count = count_elements(*envl);
-	ptr_array = init_temp_array(*envl, count);
+	count = count_elements(envl);
+	ptr_array = init_temp_array(envl, count);
+	if (!ptr_array)
+		return;
 	selection_sort(ptr_array, count);
 	i = 0;
 	while (i < count)
