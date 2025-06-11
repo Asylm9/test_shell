@@ -2,13 +2,21 @@
 
 static	void delete_env_var(t_env *current, t_env **head)
 {
-	t_env	*prev;
-	t_env	*next;
-
-	prev = current->prev;
-	next = current->next;
-	prev->next = next;
-	next->prev = prev;
+	if (current->prev == NULL)
+	{
+		*head = current->next;
+		if (current->next)
+			current->next->prev = NULL;
+	}
+	else if (current->next == NULL)
+	{
+		current->prev->next = NULL;
+	}
+	else
+	{
+		current->next->prev = current->prev;
+		current->prev->next = current->next;
+	}
 	free(current->key);
 	if (current->value)
 		free(current->value);

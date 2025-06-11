@@ -56,7 +56,6 @@ int	add_new_entry(char *key, char *value, t_env **envl)
 
 char	*get_envl_var(char *name, t_env *envl)
 {
-	int		len;
 	t_env	*current;
 
 	if (!name || !envl)
@@ -74,8 +73,6 @@ char	*get_envl_var(char *name, t_env *envl)
 int	set_envl_var(char *name, t_env **envl, char *value)
 {
 	t_env	*current;
-	char	*key;
-	char	*new_value;
 
 	if (!name || !envl)
 		return (ERROR);
@@ -86,7 +83,7 @@ int	set_envl_var(char *name, t_env **envl, char *value)
 		{
 			free(current->value);
 			if (value)
-				current->value = value;
+				current->value = ft_strdup(value);
 			else 
 				current->value = NULL;
 			if (value && !current->value)

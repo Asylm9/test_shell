@@ -28,6 +28,7 @@ static int	process_export_arg(char **args, int i, t_env **envl)
 	char	*value;
 	int		ret;
 
+	ret = 0;
 	equal_pos = ft_strchr(args[i], '=');
 	if (!equal_pos)	
 	{
@@ -39,9 +40,9 @@ static int	process_export_arg(char **args, int i, t_env **envl)
 		*equal_pos = '\0';
 		value = equal_pos + 1;
 		if (ft_strlen(value) == 0)
-			ret = add_new_entry(args[i], EMPTY, envl);
+			ret = set_envl_var(args[i], envl, EMPTY);
 		else
-			ret = add_new_entry(args[i], value, envl);
+			ret = set_envl_var(args[i], envl, value);
 		*equal_pos = '=';
 	}
 	if (ret != 0)
