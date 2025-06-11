@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 21:27:44 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:06:42 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_token(t_token *tok_lst)
 				tok_lst->value);
 		if (tok_lst->expand == EXPAND && tok_lst->value != NULL)
 			printf("Token %d expand : EXPAND\n", i);
-		else if (tok_lst->expand == NO_EXPAND)
+		else if (tok_lst->value != NULL)
 			printf("Token %d expand : NO_EXPAND\n", i);
 		tok_lst = tok_lst->next;
 		i++;

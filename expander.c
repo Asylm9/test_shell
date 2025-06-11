@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/10 17:38:04 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 13:15:44 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_token	*expand_list(t_token *tok_lst, char **env)
 	int		i;
 
 	i = 0;
-	current = malloc(sizeof(t_token));
+	create_token_node(&current);
 	if (!current)
 		return (NULL);
 	head = current;
@@ -109,11 +109,12 @@ t_token	*expand_list(t_token *tok_lst, char **env)
 		}
 		else
 		{
-			printf("%s test2\n", tok_lst->value);
+			printf("|%s| test2\n", tok_lst->value);
 			current->value = expand_token(tok_lst->value);
+			printf("|%s| test3\n", current->value);
 			current->type = tok_lst->type;
 		}
-		current->next = malloc(sizeof(t_token));
+		create_token_node(&current);
 		current = current->next;
 		tok_lst = tok_lst->next;
 	}
