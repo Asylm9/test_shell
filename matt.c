@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matt.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 15:56:39 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:21:09 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_token(t_token *tok_lst)
 	int	i;
 
 	i = 1;
-	while (tok_lst)
+	while (tok_lst->next)
 	{
 		if (tok_lst->value != NULL)
 			printf("Token %d type : %d value : %s\n", i, tok_lst->type,
@@ -49,12 +49,17 @@ void	free_tok_lst(t_token *list)
 {
 	t_token	*temp;
 
-	while (list->next)
+	while (list)
 	{
-		temp = list->next;
-		list->next = temp->next;
-		free(temp->value);
-		free(temp);
+		temp = list;
+		list = list->next;
+		if (temp->value)
+		{
+			free(temp->value);
+			free(temp->next);
+			free(temp);
+		}
+		// free(temp);
 	}
 }
 
@@ -96,6 +101,7 @@ int	main(int ac, char **av, char **envp)
 		temp = expand_list(tok_lst, envp);
 		printf("Expansion successful.\n");
 		print_token(temp);
+		printf("Creating AST.\n");
 		ast = malloc(sizeof(t_ast));
 		if (!ast)
 		{
@@ -103,11 +109,16 @@ int	main(int ac, char **av, char **envp)
 			free(tok_lst);
 			return (1);
 		}
+		printf("AST created successfully.\n");
+		printf("Freeing token list.\n");
 		free_tok_lst(tok_lst);
+		printf("Token list freed successfully.\n");
+		printf("Freeing expanded token list.\n");
 		free_tok_lst(temp);
+		printf("Expanded token list freed successfully.\n");
 		// free(input);
 		// parse_ast(tok_lst, ast);
-		printf("AST:\n");
+		// printf("AST:\n");
 		// printf("%d\n", execve("/bin/ls", (char *[]){"ls", "-l", NULL},
 		// NULL));
 		// print_ast(ast);

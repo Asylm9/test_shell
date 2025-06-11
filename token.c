@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 14:20:25 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 19:19:53 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 			return (ERROR);
 		tok_lst->value = ft_substr(input, start, end - start);
 		set_token_type(tok_lst, input, &end);
+		// i = end - 1;
 		while (input[i] && input[i] == ' ')
 			i++;
 		if (input[i] == '\0')
