@@ -6,25 +6,27 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 21:00:37 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 21:30:57 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_var(char *str)
+int	expand_var(char *input, char *result)
 {
 	int		i;
 	char	*var;
-	char	*result;
 
+	// char	*result;
 	i = 1;
-	while (ft_isalnum(str[i]) || str[i] == '_')
+	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	var = ft_substr(str, 0, i);
+	var = ft_substr(input, 0, i);
 	result = getenv(var + 1);
 	free(var);
-	return (result);
+	if (!result)
+		return (1);
+	return (0);
 }
 
 char	*expand_token(char *input)
@@ -48,7 +50,11 @@ char	*expand_token(char *input)
 			tmp = ft_strjoin(result, buffer);
 			free(result);
 			free(buffer);
-			buffer = expand_var(input + pos);
+			if (expand_var(input + pos, buffer))
+			{
+				free(tmp);
+				return (NULL); // Error handling if variable expansion fails
+			}
 			if (buffer)
 			{
 				result = ft_strjoin(tmp, buffer);
