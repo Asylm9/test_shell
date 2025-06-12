@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
+/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 21:30:57 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/11 23:31:40 by matthieu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ char	*expand_token(char *input)
 			free(buffer);
 			if (expand_var(input + pos, buffer))
 			{
+				result = ft_strdup(tmp);
 				free(tmp);
-				return (NULL); // Error handling if variable expansion fails
+				return (result); // Error handling if variable expansion fails
 			}
 			if (buffer)
 			{
