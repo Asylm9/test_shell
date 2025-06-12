@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 23:31:40 by matthieu         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:35:55 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	expand_var(char *input, char *result)
 	var = ft_substr(input, 0, i);
 	result = getenv(var + 1);
 	free(var);
-	if (!result)
+	if (result == NULL)
 		return (1);
 	return (0);
 }

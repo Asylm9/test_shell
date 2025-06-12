@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   zone_test.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:02 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 23:33:33 by matthieu         ###   ########.fr       */
+/*   Updated: 2025/06/12 13:34:21 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,14 @@ int	main(int ac, char **av, char **envp)
 
 	i = 0;
 	str = getenv("HOMME");
+	if (str == NULL)
+	{
+		printf("Environment variable not found.\n");
+		// return (1);
+	}
 	printf("|%p|\n", str);
 	// printf("%s\n", expand_var("$HOME     "));
-	str = expand_token("$HOME");
+	expand_var("$HOME", str);
 	printf("Expanded token: |%s|\n", str);
 	free(str);
 	return (0);

@@ -197,13 +197,13 @@ int	init_struct_double_pipe(t_ast *first_node)
 	}
 	second_node->type = PIPE;
 	second_node->cmd = NULL;
-	second_node->left = cmd_second_ast;
-	second_node->right = cmd_third_ast;
+	second_node->left = cmd_first_ast;
+	second_node->right = cmd_second_ast;
 	// First pipe node
 	first_node->type = PIPE;
 	first_node->cmd = NULL;
-	first_node->left = cmd_first_ast;
-	first_node->right = second_node;
+	first_node->left = second_node;
+	first_node->right = cmd_third_ast;
 	return (0);
 }
 
@@ -353,14 +353,18 @@ void	print_ast(t_ast *ast)
 	if (ast->left)
 	{
 		printf("Left child:\n");
+		printf("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL\n");
 		print_ast(ast->left);
+		// printf("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL\n");
 	}
 	// else
 	// 	printf("No left child\n");
 	if (ast->right)
 	{
 		printf("Right child:\n");
+		printf("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n");
 		print_ast(ast->right);
+		// printf("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n");
 	}
 	// else
 	// 	printf("No right child\n");
