@@ -6,13 +6,13 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/12 13:35:55 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:42:00 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	expand_var(char *input, char *result)
+int	expand_var(char *input, char **result)
 {
 	int		i;
 	char	*var;
@@ -22,7 +22,7 @@ int	expand_var(char *input, char *result)
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
 	var = ft_substr(input, 0, i);
-	result = getenv(var + 1);
+	(*result) = getenv(var + 1);
 	free(var);
 	if (result == NULL)
 		return (1);
@@ -50,16 +50,20 @@ char	*expand_token(char *input)
 			tmp = ft_strjoin(result, buffer);
 			free(result);
 			free(buffer);
-			if (expand_var(input + pos, buffer))
+			if (expand_var(input + pos, &buffer))
 			{
-				result = ft_strdup(tmp);
+				result = ft_strdup("");
 				free(tmp);
 				return (result); // Error handling if variable expansion fails
 			}
 			if (buffer)
 			{
+				printf("TEST EXPAND TOKEN\n");
+				printf("Buffer: %s\n", buffer);
+				printf("Tmp: %s\n", tmp);
 				result = ft_strjoin(tmp, buffer);
 				free(tmp);
+				printf("TEST EXPAND TOKEN\n");
 				// Do NOT free buffer if it comes from getenv!
 			}
 			else
@@ -67,6 +71,7 @@ char	*expand_token(char *input)
 				free(result);
 				result = tmp;
 			}
+			printf("TEST EXPAND TOKEN\n");
 			pos++;
 			while ((ft_isalnum(input[pos]) || input[pos] == '_') && input[pos])
 				pos++;
@@ -75,6 +80,7 @@ char	*expand_token(char *input)
 		else
 			pos++;
 	}
+	printf("TEST EXPAND TOKEN\n");
 	buffer = ft_substr(input, start, pos - start);
 	tmp = ft_strjoin(result, buffer);
 	free(result);
@@ -95,6 +101,7 @@ int	expand_list(t_token *tok_lst, char **env, t_token *exp_lst)
 	head = exp_lst;
 	while (tok_lst->next)
 	{
+		printf("Expanding token: %s\n", tok_lst->value);
 		exp_lst->expand = NO_EXPAND;
 		if (tok_lst->expand == NO_EXPAND)
 		{
@@ -107,6 +114,7 @@ int	expand_list(t_token *tok_lst, char **env, t_token *exp_lst)
 		}
 		else
 			exp_lst->value = expand_token(tok_lst->value);
+		printf("test\n");
 		exp_lst->type = tok_lst->type;
 		tok_lst = tok_lst->next;
 		if (tok_lst != NULL)

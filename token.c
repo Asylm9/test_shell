@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: matthieu <matthieu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 19:19:53 by matthieu         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:00:54 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,12 @@ int	find_end_of_token(const char *input, int *start, int *end)
 	char	quote;
 
 	while (input[(*end)] && input[(*end)] != ' ' && input[(*end)] != '|'
-		&& input[(*end)] != '<' && input[(*end)] != '>')
+		&& input[(*end)] != '<' && input[(*end)] != '>' && input[(*end)] != '"'
+		&& input[(*end)] != '\'')
 		(*end)++;
 	if (input[(*start)] == '"' || input[(*start)] == '\'')
 	{
-		quote = input[(*start)++];
+		quote = input[(*start)];
 		while (input[(*end)] && input[(*end)] != quote)
 			(*end)++;
 		if (input[(*end)] == '\0')
@@ -127,7 +128,8 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 			return (ERROR);
 		tok_lst->value = ft_substr(input, start, end - start);
 		set_token_type(tok_lst, input, &end);
-		// i = end - 1;
+		printf("input[end] = %c\n", input[end]);
+		i = end;
 		while (input[i] && input[i] == ' ')
 			i++;
 		if (input[i] == '\0')
@@ -137,6 +139,8 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 			return (ERROR);
 		tok_lst = tok_lst->next;
 		start = end + 1;
+		printf("Token created: %s, type: %d, expand: %d\n", tok_lst->value,
+			tok_lst->type, tok_lst->expand);
 	}
 	tok_lst->next = NULL;
 	return (SUCCESS);

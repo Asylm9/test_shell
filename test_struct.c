@@ -355,7 +355,7 @@ void	print_ast(t_ast *ast)
 		printf("Left child:\n");
 		printf("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL\n");
 		print_ast(ast->left);
-		// printf("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL\n");
+		printf("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL\n");
 	}
 	// else
 	// 	printf("No left child\n");
@@ -364,7 +364,7 @@ void	print_ast(t_ast *ast)
 		printf("Right child:\n");
 		printf("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n");
 		print_ast(ast->right);
-		// printf("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n");
+		printf("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR\n");
 	}
 	// else
 	// 	printf("No right child\n");

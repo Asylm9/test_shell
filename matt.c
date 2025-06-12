@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/11 21:35:30 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/12 14:58:10 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_token(t_token *tok_lst)
 	while (tok_lst->next)
 	{
 		if (tok_lst->value != NULL)
-			printf("Token %d type : %d value : %s\n", i, tok_lst->type,
+			printf("Token %d type : %d value : |%s|\n", i, tok_lst->type,
 				tok_lst->value);
 		if (tok_lst->expand == EXPAND && tok_lst->value != NULL)
 			printf("Token %d expand : EXPAND\n", i);
@@ -55,12 +55,12 @@ void	free_tok_lst(t_token *list)
 		list = list->next;
 		if (temp->value)
 		{
-			printf("Freeing token: %s\n", temp->value);
+			// printf("Freeing token: %s\n", temp->value);
 			free(temp->value);
 		}
-		printf("Freeing token node.\n");
+		// printf("Freeing token node.\n");
 		free(temp);
-		printf("Token node freed successfully.\n");
+		// printf("Token node freed successfully.\n");
 	}
 }
 
@@ -83,23 +83,23 @@ int	main(int ac, char **av, char **envp)
 		input = readline("Minishell> ");
 		add_history(input);
 		printf("Input: %s\n", input);
-		printf("Creating new token node.\n");
+		// printf("Creating new token node.\n");
 		if (create_token_node(&tok_lst))
 		{
 			free(input);
 			return (1);
 		}
-		printf("Token list created successfully.\n");
+		// printf("Token list created successfully.\n");
 		if (tokenize_input(tok_lst, input))
 		{
 			// FREE TOK_LST
 			free(input);
 			return (1);
 		}
-		printf("Tokenization successful.\n");
+		// printf("Tokenization successful.\n");
 		free(input);
 		print_token(tok_lst);
-		printf("Expanding token list.\n");
+		// printf("Expanding token list.\n");
 		if (create_token_node(&temp))
 		{
 			free_tok_lst(tok_lst);
@@ -107,9 +107,9 @@ int	main(int ac, char **av, char **envp)
 			return (1);
 		}
 		expand_list(tok_lst, envp, temp);
-		printf("Expansion successful.\n");
+		// printf("Expansion successful.\n");
 		print_token(temp);
-		printf("Creating AST.\n");
+		// printf("Creating AST.\n");
 		ast = malloc(sizeof(t_ast));
 		if (!ast)
 		{
@@ -118,14 +118,14 @@ int	main(int ac, char **av, char **envp)
 			tok_lst = NULL;
 			return (1);
 		}
-		printf("AST created successfully.\n");
-		printf("Freeing token list.\n");
+		// printf("AST created successfully.\n");
+		// printf("Freeing token list.\n");
 		free_tok_lst(tok_lst);
 		tok_lst = NULL;
-		printf("Token list freed successfully.\n");
-		printf("Freeing expanded token list.\n");
+		// printf("Token list freed successfully.\n");
+		// printf("Freeing expanded token list.\n");
 		free_tok_lst(temp);
-		printf("Expanded token list freed successfully.\n");
+		// printf("Expanded token list freed successfully.\n");
 		temp = NULL;
 		// free(input);
 		// parse_ast(tok_lst, ast);
