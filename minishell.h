@@ -88,12 +88,27 @@ typedef struct s_sh
 {
 	char		**env;
 	t_env		*envl;
-	t_command	*cmd_list;
+	//t_command	*cmd_list;
 	char		*current_dir;
 	int			saved_stdin;
 	int			saved_stdout;
 	int			exit_status;
 }			t_sh;
+
+
+typedef enum e_token_type
+{
+	CMD,
+	PIPE,
+}							t_token_type;
+
+typedef struct s_ast
+{
+	t_token_type			type;
+	t_command				*cmd;
+	t_ast					*left;
+	t_ast					*right;
+}							t_ast;
 
 typedef	struct s_exec
 {
@@ -109,10 +124,15 @@ typedef	struct s_exec
 char	*expand_exit_status(t_sh *shell, t_token token);
 
 /* Execution */
-int		process_wait_status(int status);
-int		execute(t_command *cmd_list, t_sh *shell); //transformer en execute_ast probablement :v
+int		execute_ast(t_ast *ast, t_sh *shell);
 int		execute_command(t_command *cmd, t_sh *shell);
-int		execute_pipeline(t_command *cmds, t_sh *shell);
+int		execute_pipeline(t_ast *ast, t_sh *shell);
+
+
+int		process_wait_status(int status);
+/* int		execute(t_command *cmd_list, t_sh *shell); //transformer en execute_ast probablement :v
+int		execute_command(t_command *cmd, t_sh *shell);
+int		execute_pipeline(t_command *cmds, t_sh *shell); */
 int		execute_binary(t_command *cmd, char **env);
 
 /* Path and environment handling */
