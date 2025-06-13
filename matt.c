@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/13 13:09:31 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:31:46 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,4 +159,17 @@ int	main(int ac, char **av, char **envp)
 			Create_cmd_nodes()
 				Init_cmd_node()
 				Fill_cmd()
+
+	EXPAND CASES :
+		- $VAR
+		- ${VAR}
+		- $?
+		- $$
+		- $VAR1$VAR2
+		- $VAR1$VAR2$VAR3
+		- $VAR1$VAR2$VAR3$
+		- $VAR1$VAR2$VAR3$$
+		- $VAR1$VAR2$VAR3${VAR4}
+		- $'string'
+		- $"string"
 */

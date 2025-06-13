@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/13 17:01:53 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:20:55 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,14 @@ void	set_token_type(t_token *tok_lst, const char *input, int *end)
 
 int	set_value(t_token *tok_lst, const char *input, int *start, int *end)
 {
+	printf("input[start] = %c, input[end] = %c\n", input[(*start)], input[(*end)
+		- 1]);
 	if (input[(*end)] == '\'' || input[(*end)] == '"')
 	{
-		(*end)--;
+		(*end) -= 2;
+		printf("input[end] = %c\n", input[(*end)]);
 		tok_lst->value = ft_substr(input, (*start), (*end) - (*start));
-		(*end)++;
+		(*end) += 2;
 	}
 	else
 		tok_lst->value = ft_substr(input, (*start), (*end) - (*start));

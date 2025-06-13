@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/13 13:14:56 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:38:26 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*expand_token(char *input)
 		if (input[pos] == '$')
 		{
 			buffer = ft_substr(input, start, pos - start);
-			tmp = ft_strjoin(result, buffer);
+			tmp = ft_strjoin(result, buffer, 3);
 			free(result);
 			free(buffer);
 			if (expand_var(input + pos, &buffer))
