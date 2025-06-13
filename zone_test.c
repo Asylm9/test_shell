@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:55:02 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/12 13:34:21 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:13:36 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,20 +73,14 @@ int	is_env_var(char *str)
 int	main(int ac, char **av, char **envp)
 {
 	char	*str;
+	char	*result;
 	int		i;
 
-	i = 0;
-	str = getenv("HOMME");
-	if (str == NULL)
-	{
-		printf("Environment variable not found.\n");
-		// return (1);
-	}
-	printf("|%p|\n", str);
-	// printf("%s\n", expand_var("$HOME     "));
-	expand_var("$HOME", str);
-	printf("Expanded token: |%s|\n", str);
+	str = ft_strdup("test abc def ghi $HOME hehe ouou");
+	result = expand_token(str);
+	printf("Result: |%s|\n", result);
 	free(str);
+	free(result);
 	return (0);
 }
 // int i = 0;

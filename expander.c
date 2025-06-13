@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/13 17:38:26 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:49:54 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*expand_token(char *input)
 		if (input[pos] == '$')
 		{
 			buffer = ft_substr(input, start, pos - start);
-			tmp = ft_strjoin(result, buffer, 3);
+			tmp = ft_strjoin(&result, &buffer, 0);
 			free(result);
 			free(buffer);
 			if (expand_var(input + pos, &buffer))
@@ -61,7 +61,7 @@ char	*expand_token(char *input)
 				printf("TEST EXPAND TOKEN\n");
 				printf("Buffer: %s\n", buffer);
 				printf("Tmp: %s\n", tmp);
-				result = ft_strjoin(tmp, buffer);
+				result = ft_strjoin(&tmp, &buffer, 0);
 				free(tmp);
 				printf("TEST EXPAND TOKEN\n");
 				// Do NOT free buffer if it comes from getenv!
@@ -82,7 +82,7 @@ char	*expand_token(char *input)
 	}
 	printf("TEST EXPAND TOKEN\n");
 	buffer = ft_substr(input, start, pos - start);
-	tmp = ft_strjoin(result, buffer);
+	tmp = ft_strjoin(&result, &buffer, 0);
 	free(result);
 	free(buffer);
 	result = tmp;
