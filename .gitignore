@@ -33,3 +33,7 @@ vgcore.*
 
 # Visual Studio Code or other IDE config folders
 .vscode/
+
+# Test files
+input.txt
+output.txt
