@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:09:51 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/12 14:42:00 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 13:14:56 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	expand_list(t_token *tok_lst, char **env, t_token *exp_lst)
 	if (!exp_lst)
 		return (1);
 	head = exp_lst;
-	while (tok_lst->next)
+	while (tok_lst)
 	{
 		printf("Expanding token: %s\n", tok_lst->value);
 		exp_lst->expand = NO_EXPAND;

@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 16:10:00 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/12 14:58:10 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 13:09:31 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_token(t_token *tok_lst)
 	int	i;
 
 	i = 1;
-	while (tok_lst->next)
+	while (tok_lst)
 	{
 		if (tok_lst->value != NULL)
 			printf("Token %d type : %d value : |%s|\n", i, tok_lst->type,
@@ -146,7 +146,7 @@ int	main(int ac, char **av, char **envp)
 		Readline()
 		Tokenize()
 			Create_tok_lst()
-				Init_token()
+				Init_token()			CHECK FIND END OF TOKEN FOR QUOTE
 				Add_token()
 			Fill_token()
 		Expand_tok_lst()
