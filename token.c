@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/13 15:48:40 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 17:01:53 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,10 @@ int	find_end_of_token(const char *input, int *start, int *end)
 		else
 			(*end)++;
 	}
+	if (input[(*start)] == '\'' || input[(*start)] == '"')
+		(*start)++;
+	if (input[(*end)] == '\'' || input[(*end)] == '"')
+		(*end)--;
 	return (SUCCESS);
 }
 
@@ -117,6 +121,24 @@ void	set_token_type(t_token *tok_lst, const char *input, int *end)
 	}
 }
 
+int	set_value(t_token *tok_lst, const char *input, int *start, int *end)
+{
+	if (input[(*end)] == '\'' || input[(*end)] == '"')
+	{
+		(*end)--;
+		tok_lst->value = ft_substr(input, (*start), (*end) - (*start));
+		(*end)++;
+	}
+	else
+		tok_lst->value = ft_substr(input, (*start), (*end) - (*start));
+	if (!tok_lst->value)
+	{
+		perror("ft_substr failed.\n");
+		return (ERROR);
+	}
+	return (SUCCESS);
+}
+
 int	tokenize_input(t_token *tok_lst, const char *input)
 {
 	int	start;
@@ -132,7 +154,7 @@ int	tokenize_input(t_token *tok_lst, const char *input)
 		end = start;
 		if (find_end_of_token(input, &start, &end) == ERROR)
 			return (ERROR);
-		tok_lst->value = ft_substr(input, start, end - start);
+		set_value(tok_lst, input, &start, &end);
 		set_token_type(tok_lst, input, &end);
 		printf("input[end] = %c\n", input[end]);
 		i = end;
