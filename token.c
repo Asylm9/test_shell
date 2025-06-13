@@ -6,7 +6,7 @@
 /*   By: magoosse <magoosse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:05:28 by magoosse          #+#    #+#             */
-/*   Updated: 2025/06/13 12:50:16 by magoosse         ###   ########.fr       */
+/*   Updated: 2025/06/13 15:48:40 by magoosse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,22 @@ int	find_end_of_token(const char *input, int *start, int *end)
 	char	quote;
 
 	while (input[(*end)] && input[(*end)] != ' ' && input[(*end)] != '|'
-		&& input[(*end)] != '<' && input[(*end)] != '>' && input[(*end)] != '"'
-		&& input[(*end)] != '\'')
-		(*end)++;
-	if (input[(*start)] == '"' || input[(*start)] == '\'')
+		&& input[(*end)] != '<' && input[(*end)] != '>')
 	{
-		quote = input[(*start)];
-		while (input[(*end)] && input[(*end)] != quote)
+		if (input[(*end)] == '"' || input[(*end)] == '\'')
+		{
+			quote = input[(*end)];
 			(*end)++;
-		if (input[(*end)] == '\0')
-			return (ERROR);
+			while (input[(*end)] != quote)
+			{
+				(*end)++;
+				if (input[(*end)] == '\0')
+					return (ERROR);
+			}
+			(*end)++;
+		}
+		else
+			(*end)++;
 	}
 	return (SUCCESS);
 }
