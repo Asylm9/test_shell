@@ -89,6 +89,7 @@ typedef struct s_sh
 	char		**env;
 	t_env		*envl;
 	//t_command	*cmd_list;
+	bool		in_pipeline; //assigner a false par defaut
 	char		*current_dir;
 	int			saved_stdin;
 	int			saved_stdout;

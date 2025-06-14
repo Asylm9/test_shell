@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
+/* int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
 {
 	if (i > 0)
 	{
@@ -13,7 +13,7 @@ int	setup_pipes_redirections(int **pipes, int nb_pipes, int i)
 			return (1);
 	}
 	return (0);
-}
+} */
 
 int	redirect_in(t_redirect *redir)
 {
