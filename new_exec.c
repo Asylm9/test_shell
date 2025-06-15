@@ -78,7 +78,7 @@ int	execute_command(t_command *cmd, t_sh *shell)
 
 int	execute_ast(t_ast *ast, t_sh *shell)
 {
-	int status;
+	//int status;
 
 	if (!ast)
 		return (0);
@@ -86,5 +86,5 @@ int	execute_ast(t_ast *ast, t_sh *shell)
 		return (execute_command(ast->cmd, shell));
 	else if (ast->type == PIPE)
 		return (execute_pipeline(ast, shell));
-	return (0);
+	return (shell->exit_status);
 }

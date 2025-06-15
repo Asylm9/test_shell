@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	builtin_pwd(t_sh *shell)
+int	builtin_pwd(void)
 {
 	char	buffer[PATH_MAX]; //normalement present dans limits.h
 

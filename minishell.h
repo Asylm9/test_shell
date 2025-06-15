@@ -36,11 +36,21 @@ typedef struct s_command	t_command;
 typedef struct s_sh		    t_sh;
 typedef struct s_token		t_token;
 typedef struct s_env		t_env;
+typedef struct s_ast		t_ast;
 
+/* typedef enum e_token_type
+{
+	TOKEN_EXIT_STATUS
+}			t_token_type; */
 
 typedef enum e_token_type
 {
-	TOKEN_EXIT_STATUS
+	CMD,
+	PIPE,
+	REDIR_IN,
+	REDIR_OUT,
+	REDIR_APPEND,
+	REDIR_HEREDOC
 }			t_token_type;
 
 typedef struct s_token
@@ -69,7 +79,7 @@ typedef struct s_command
 {
 	char		*cmd_name;
 	char 		**args;
-	//int		arg_count;
+	int			argc;
 	t_redirect	*redirections;
 	t_command	*next;
 }			t_command;
@@ -94,13 +104,6 @@ typedef struct s_sh
 	int			saved_stdout;
 	int			exit_status;
 }			t_sh;
-
-
-typedef enum e_token_type
-{
-	CMD,
-	PIPE,
-}							t_token_type;
 
 typedef struct s_ast
 {
@@ -147,15 +150,8 @@ int		apply_redirections(t_command *cmd);
 int		setup_pipes_redirections(int **pipes, int nb_pipes, int i);
 int		setup_heredoc(t_redirect *redir); // parsing ou exec?
 
-/* Pipe handling */
-void	get_pipe_count(t_command *cmd_list, int *nb_pipes);
-void	close_pipes(int **pipes, int nb_pipes);
-int		init_pipes(int **pipes, int nb_pipes);
-int		**create_pipes(int nb_pipes);
-
 /* Builtin commands */
 int		args_count(char **args);
-bool	state_changing_builtin(char *cmd_name);
 bool	is_builtin(char *cmd_name);
 int		execute_builtin(t_command *cmd, t_sh *shell);
 
@@ -164,7 +160,7 @@ int		builtin_echo(char **args);
 
 int		builtin_cd(char **args, t_sh *shell); //double pointeur??
 
-int		builtin_pwd(t_sh *shell);
+int		builtin_pwd(void);
 
 int		builtin_export(char **args, t_env **envl);
 t_env	**init_temp_array(t_env *envl, int count);
