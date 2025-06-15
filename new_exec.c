@@ -2,13 +2,12 @@
 
 int	execute_pipeline(t_ast *ast, t_sh *shell)
 {
-	int	pfd[2];
-	int	pid_left;
-	int	pid_right;
-	int	status;
+	int		pfd[2];
+	pid_t	pid_left;
+	pid_t	pid_right;
+	int		status;
 
-	pipe(pfd);
-	if (pipe < 0)
+	if (pipe(pfd) < 0)
 		return (ERROR);
 	pid_left = fork();
 	if (pid_left == 0)
@@ -76,7 +75,6 @@ int	execute_command(t_command *cmd, t_sh *shell)
 		return (process_wait_status(status));
 	}
 }
-
 
 int	execute_ast(t_ast *ast, t_sh *shell)
 {

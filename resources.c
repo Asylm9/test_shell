@@ -48,7 +48,7 @@ void	free_envl(t_env **head)
 
 void	cleanup_shell(t_sh *shell)
 {
-	if (shell || shell->env)
+	if (shell && shell->env)
 	{
 		free_array(shell->env, -1);
 		shell->env = NULL;
