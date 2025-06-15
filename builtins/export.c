@@ -9,7 +9,7 @@ static int	validate_format_export(char **args, int i)
 		printf_fd(2, "minishell: export: `%s': not a valid identifier\n", args[i]);
 		return (ERROR);
 	}
-	j = 0;
+	j = 1;
 	while (args[i][j] && args[i][j] != '=')
 	{
 		if (!ft_isalnum(args[i][j]) && args[i][j] != '_')
@@ -25,10 +25,12 @@ static int	validate_format_export(char **args, int i)
 static int	process_export_arg(char **args, int i, t_env **envl)
 {
 	char 	*equal_pos;
+	char	*append_pos;
 	char	*value;
 	int		ret;
 
 	ret = 0;
+	append_pos = ft_strchr(args[i], '+');
 	equal_pos = ft_strchr(args[i], '=');
 	if (!equal_pos)	
 	{
@@ -37,8 +39,13 @@ static int	process_export_arg(char **args, int i, t_env **envl)
 	}
 	else
 	{
-		*equal_pos = '\0';
 		value = equal_pos + 1;
+		if (append_pos)
+		{
+			append_pos = '\0';
+		} //en cours
+		else
+			*equal_pos = '\0';
 		if (ft_strlen(value) == 0)
 			ret = set_envl_var(args[i], envl, EMPTY);
 		else
@@ -70,6 +77,9 @@ int	builtin_export(char **args, t_env **envl)
 		if (process_export_arg(args, i, envl) != 0)
 			return (ERROR);
 		i++;
+
+/* 		bash: export: -=: invalid option
+		export: usage: export [-fn] [name[=value] ...] or export -p */
 
 		printf("\n---------------------------------\n");
 		print_exp_list(*envl);

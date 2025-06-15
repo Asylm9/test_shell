@@ -35,7 +35,7 @@ t_env	**init_temp_array(t_env *envl, int count)
 	return (ptr_array);
 }
 
-void	selection_sort(t_env **array, int count)
+void	sort_env_list(t_env **array, int count)
 {
 	int		i;
 	int		j;

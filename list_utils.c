@@ -23,7 +23,7 @@ void	print_exp_list(t_env *envl)
 	ptr_array = init_temp_array(envl, count);
 	if (!ptr_array)
 		return;
-	selection_sort(ptr_array, count);
+	sort_env_list(ptr_array, count);
 	i = 0;
 	while (i < count)
 	{
