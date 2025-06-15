@@ -4,7 +4,7 @@ NAME = texec
 
 # Compilateur et flags
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -w
 LIBS = -lreadline -lhistory
 
 # Répertoires

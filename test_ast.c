@@ -234,10 +234,10 @@ int	init_struct_redir_in(t_ast *first_node)
 		return (1);
 	}
 	cmd->redirections->type = IN;             // Example type
-	cmd->redirections->target = "output.txt"; // Example target
+	cmd->redirections->target = "file.txt"; // Example target
 	cmd->redirections->fd = -1;               // Not used for this example
 	cmd->redirections->next = NULL;
-	if ((file = fopen(cmd->redirections->target, "r")) == NULL)
+/* 	if ((file = fopen(cmd->redirections->target, "r")) == NULL)
 	{
 		perror("fopen");
 		free(cmd->redirections);
@@ -249,10 +249,10 @@ int	init_struct_redir_in(t_ast *first_node)
 	cmd->cmd_name = "cat";
 	cmd->args[0] = "cat";
 	cmd->args[1] = NULL;
-	cmd->redirections->next = NULL;
+	cmd->redirections->next = NULL; */
 	// Initialize the command structure
 	cmd->next = NULL;
-	first_node->type = REDIR_IN; // Example type
+	first_node->type = CMD; // remplace REDIR_IN
 	first_node->cmd = cmd;
 	first_node->left = NULL;
 	first_node->right = NULL;
@@ -422,7 +422,7 @@ int	main(int ac, char **av, char **envp)
 		return (1);
 	}
 
-/* 	if (init_struct_pipe(ast) != 0)
+	if (init_struct_pipe(ast) != 0)
 	{
 		free(ast);
 		return (1);
@@ -432,10 +432,11 @@ int	main(int ac, char **av, char **envp)
 	print_ast(ast);
 
 	init_shell(&shell, envp);
+
 	printf("-------EXECUTE AST 1-------------------------------------------------------------------------------------------------\n");
 	execute_ast(ast, &shell);
 	printf("---------------------------------------------------------------------------------------------------------------------\n");
- */
+
 
 	if (init_struct_double_pipe(ast_double_pipe) != 0)
 	{
@@ -447,12 +448,11 @@ int	main(int ac, char **av, char **envp)
 	printf("Double Pipe AST:\n");
 	print_ast(ast_double_pipe);
 
-	init_shell(&shell, envp);
 	printf("-------EXECUTE AST 2-------------------------------------------------------------------------------------------------\n");
-	execute_ast(ast, &shell);
+	execute_ast(ast_double_pipe, &shell);
 	printf("---------------------------------------------------------------------------------------------------------------------\n");
 
-/* 	if (init_struct_redir_in(ast_redir) != 0)
+	if (init_struct_redir_in(ast_redir) != 0)
 	{
 		free(ast);
 		free(ast_double_pipe);
@@ -461,7 +461,11 @@ int	main(int ac, char **av, char **envp)
 	}
 	printf("---------------------------------------------------------------------------------------------------------------------\n");
 	printf("Redirection AST:\n");
-	print_ast(ast_redir); */
+	print_ast(ast_redir);
+
+		printf("-------EXECUTE AST 3-------------------------------------------------------------------------------------------------\n");
+	execute_ast(ast_redir, &shell);
+	printf("---------------------------------------------------------------------------------------------------------------------\n");
 
 	// Free allocated memory
 	if (ast->left && ast->left->cmd)
